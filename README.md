@@ -1,2 +1,7 @@
-# Learning-Enhancement-Platform-Using-ChatPDF
- 
+# TUK 2024 컴퓨터 공학부 졸업 작품
+
+## ChatPDF을 활용한 학습 증진 플랫폼
+<br>
+
+ChatPDF 활용한 학습 증진 플랫폼은 ChatPDF API를 활용하여 웹 서비스에서 운영하는 응용프로그램을 통해
+사용자의 학습을 증진해 주는 플랫폼 서비스 입니다.
