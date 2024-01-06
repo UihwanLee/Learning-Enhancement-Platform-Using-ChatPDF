@@ -16,9 +16,14 @@ function App() {
     sendMessage("ButtonManager", "BtnClick");
   }
 
+  function send_prompt() {
+    sendMessage("PromptManager", "ShowPrompt", "Test Prompt Message: 'hello!'");
+  }
+
   return (
     <div className="App">
         <button onClick={TestA}>버튼 유니티 호출</button>
+        <button onClick={send_prompt}>Prompt 테스트 호출</button>
         <Unity style={{
             width: '90%',
             height: '100%',
