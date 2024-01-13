@@ -1,12 +1,14 @@
 import logo from './logo.svg';
 import './App.css';
-import React from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 
 import './TTS.js';
 import { speak } from './TTS.js';
 
 function App() {
+  const [prompt, setPrompt] = useState("Hello world");
+
   const { unityProvider, sendMessage, addEventListener, removeEventListener } =
     useUnityContext({
       loaderUrl: "Build/Build.loader.js",
@@ -15,23 +17,36 @@ function App() {
       codeUrl: "Build/Build.wasm",
     });
 
+  const handleReactCall = useCallback((prompt) => {
+    Listen_Prompt()
+    setPrompt(prompt)
+  }, [prompt]);
+
+
+  useEffect(() => {
+    addEventListener("sendPrompt", handleReactCall);
+    return () => {
+      removeEventListener("sendPrompt", handleReactCall);
+    };
+  }, [addEventListener, removeEventListener, handleReactCall]);
+
   function TestA() {
     sendMessage("ButtonManager", "BtnClick");
   }
 
   function send_prompt() {
-    sendMessage("PromptManager", "ShowPrompt", "Test Prompt Message: 'hello!'");
+    sendMessage("PromptManager", "ShowPrompt", prompt);
   }
 
-  function TTS_Text() {
-    speak('Hello world', window.speechSynthesis)
+  function Listen_Prompt() {
+    speak(prompt, window.speechSynthesis)
   }
 
   return (
     <div className="App">
         <button onClick={TestA}>버튼 유니티 호출</button>
         <button onClick={send_prompt}>Prompt 테스트 호출</button>
-        <button onClick={TTS_Text}>TTS</button>
+        <button onClick={Listen_Prompt}>TTS</button>
         <Unity style={{
             width: '90%',
             height: '100%',
