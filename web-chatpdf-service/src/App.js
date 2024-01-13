@@ -3,6 +3,9 @@ import './App.css';
 import React from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
 
+import './TTS.js';
+import { speak } from './TTS.js';
+
 function App() {
   const { unityProvider, sendMessage, addEventListener, removeEventListener } =
     useUnityContext({
@@ -20,10 +23,15 @@ function App() {
     sendMessage("PromptManager", "ShowPrompt", "Test Prompt Message: 'hello!'");
   }
 
+  function TTS_Text() {
+    speak('Hello world', window.speechSynthesis)
+  }
+
   return (
     <div className="App">
         <button onClick={TestA}>버튼 유니티 호출</button>
         <button onClick={send_prompt}>Prompt 테스트 호출</button>
+        <button onClick={TTS_Text}>TTS</button>
         <Unity style={{
             width: '90%',
             height: '100%',
