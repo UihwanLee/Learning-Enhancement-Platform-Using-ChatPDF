@@ -70,8 +70,8 @@ function App() {
         <button onClick={resetTranscript}>Reset</button>
         <br/>
         <Unity style={{
-            width: '90%',
-            height: '90%',
+            width: '80%',
+            height: '100%',
             justifySelf: 'center',
             alignSelf: 'center',
         }} unityProvider={unityProvider} />
