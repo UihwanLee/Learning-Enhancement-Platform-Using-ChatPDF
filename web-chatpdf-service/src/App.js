@@ -29,8 +29,11 @@ function App() {
 
   const handleReactCall = useCallback((prompt) => {
     setPrompt(prompt)
-    Listen_Prompt()
   }, [prompt]);
+
+  const listenPrompt = useCallback(() =>{
+    speak(prompt, window.speechSynthesis)
+  });
 
 
   useEffect(() => {
@@ -40,12 +43,15 @@ function App() {
     };
   }, [addEventListener, removeEventListener, handleReactCall]);
 
-  function TestA() {
-    sendMessage("ButtonManager", "BtnClick");
-  }
+  useEffect(() => {
+    addEventListener("listenPrompt", listenPrompt);
+    return () => {
+      removeEventListener("listenPrompt", listenPrompt);
+    };
+  }, [addEventListener, removeEventListener, listenPrompt])
 
   function send_prompt() {
-    sendMessage("PromptManager", "ShowPrompt", transcript);
+    sendMessage("PromptManager", "ReceivePrompt", transcript);
   }
 
   function Listen_Prompt() {
@@ -69,14 +75,15 @@ function App() {
         >Hold to talk</button>
         <button onClick={resetTranscript}>Reset</button>
         <br/>
+        <br/>
         <Unity style={{
-            width: '80%',
+            width: '84%',
             height: '100%',
             justifySelf: 'center',
             alignSelf: 'center',
         }} unityProvider={unityProvider} />
         <br/>
-        <button onClick={TestA}>버튼 유니티 호출</button>
+        <h1>{prompt}</h1>
         <button onClick={send_prompt}>Prompt Unity 전송</button>
         <button onClick={Listen_Prompt}>TTS</button>
     </div>
