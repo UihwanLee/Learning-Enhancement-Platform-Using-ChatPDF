@@ -11,6 +11,12 @@ public class ButtonManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI sampleText;
 
+    [SerializeField]
+    private GameObject sendButton;
+
+    [SerializeField]
+    private GameObject listenButton;
+
     public int Score
     {
         get
@@ -28,6 +34,23 @@ public class ButtonManager : MonoBehaviour
     public void BtnClick()
     {
         Score += 1;
+    }
+
+    // Button Active On/Off
+    public void SetButton(GameObject button)
+    {
+        if(button.gameObject.activeSelf)
+        {
+            button.gameObject.SetActive(false);
+            listenButton.SetActive(true);
+            sendButton.SetActive(false);
+        }
+        else
+        {
+            button.gameObject.SetActive(true);
+            listenButton.SetActive(false);
+            sendButton.SetActive(true);
+        }
     }
 
     // Start is called before the first frame update
