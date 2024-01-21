@@ -26,6 +26,7 @@ function App() {
     browserSupportsSpeechRecognition
   } = useSpeechRecognition();
   const startListening = () => SpeechRecognition.startListening({ continuous: true });
+  const stopListening = () => SpeechRecognition.stopListening();
 
   const handleReactCall = useCallback((prompt) => {
     setPrompt(prompt)
@@ -51,7 +52,7 @@ function App() {
   }, [addEventListener, removeEventListener, listenPrompt])
 
   function send_prompt() {
-    sendMessage("PromptManager", "ReceivePrompt", transcript);
+    sendMessage("PromptManager", "ReceivePrompt", prompt);
   }
 
   function Listen_Prompt() {
@@ -60,7 +61,7 @@ function App() {
 
   function set_prompt_by_audio() {
     setPrompt(transcript)
-    sendMessage("PromptManager", "ShowPrompt", prompt);
+    stopListening();
   }
 
   return (
@@ -70,8 +71,8 @@ function App() {
         <button
         onTouchStart={startListening}
         onMouseDown={startListening}
-        onTouchEnd={SpeechRecognition.stopListening}
-        onMouseUp={SpeechRecognition.stopListening}
+        onTouchEnd={set_prompt_by_audio}
+        onMouseUp={set_prompt_by_audio}
         >Hold to talk</button>
         <button onClick={resetTranscript}>Reset</button>
         <br/>
