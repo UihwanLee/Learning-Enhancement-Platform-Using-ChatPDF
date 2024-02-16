@@ -18,7 +18,7 @@ function App() {
       frameworkUrl: "Build/Build.framework.js",
       codeUrl: "Build/Build.wasm",
     });
-
+ 
   const {
     transcript,
     listening,
