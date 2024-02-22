@@ -3145,7 +3145,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1688564894}
           m_TargetAssemblyTypeName: ButtonManager, Assembly-CSharp
-          m_MethodName: StartVoice
+          m_MethodName: StopVoice
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

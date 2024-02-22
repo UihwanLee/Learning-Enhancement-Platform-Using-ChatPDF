@@ -50,6 +50,7 @@ public class PromptManager : MonoBehaviour
     {
         // 답변 보내기
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
+    answer = inputField.text;
     SendAnswer(answer);
 #endif
     }
