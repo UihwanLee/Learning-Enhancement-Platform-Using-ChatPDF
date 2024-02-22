@@ -9,8 +9,11 @@ import { speak } from './TTS.js';
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 function App() {
-  const [prompt, setPrompt] = useState("Hello world");
+  // 질문과 답변
+  const [question, setQuestion] = useState("Question");
+  const [answer, setAnswer] = useState("Answer");
 
+  // react-unity-package 설정
   const { unityProvider, sendMessage, addEventListener, removeEventListener } =
     useUnityContext({
       loaderUrl: "Build/Build.loader.js",
@@ -19,49 +22,74 @@ function App() {
       codeUrl: "Build/Build.wasm",
     });
  
+  // TTS 기능 
   const {
     transcript,
     listening,
     resetTranscript,
     browserSupportsSpeechRecognition
   } = useSpeechRecognition();
+
+  // 마이크 녹음 함수
   const startListening = () => SpeechRecognition.startListening({ continuous: true });
   const stopListening = () => SpeechRecognition.stopListening();
 
-  const handleReactCall = useCallback((prompt) => {
-    setPrompt(prompt)
-  }, [prompt]);
+  // 사용자의 answer 받기
+  const ReceiveAnswer = useCallback((answer) => {
+    setAnswer(answer)
+    console.log(answer);
+  }, [answer]);
 
-  const listenPrompt = useCallback(() =>{
-    speak(prompt, window.speechSynthesis)
+  // API 질문 다시 듣기
+  const ReplayQuestion = useCallback(() =>{
+    speak(question, window.speechSynthesis)
   });
 
-
+  // Unity->React 사용자의 answer 보내기
   useEffect(() => {
-    addEventListener("sendPrompt", handleReactCall);
+    addEventListener("SendAnswer", ReceiveAnswer);
     return () => {
-      removeEventListener("sendPrompt", handleReactCall);
+      removeEventListener("SendAnswer", ReceiveAnswer);
     };
-  }, [addEventListener, removeEventListener, handleReactCall]);
+  }, [addEventListener, removeEventListener, ReceiveAnswer]);
 
+  // Unity->React API 질문 다시 듣기 호출
   useEffect(() => {
-    addEventListener("listenPrompt", listenPrompt);
+    addEventListener("ReplayQuestion", ReplayQuestion);
     return () => {
-      removeEventListener("listenPrompt", listenPrompt);
+      removeEventListener("ReplayQuestion", ReplayQuestion);
     };
-  }, [addEventListener, removeEventListener, listenPrompt])
+  }, [addEventListener, removeEventListener, ReplayQuestion])
 
-  function send_prompt() {
-    sendMessage("PromptManager", "ReceivePrompt", prompt);
+  // React->Unity API 질문 보내기
+  function SendQuestion() {
+    sendMessage("PromptManager", "ReceiveQuestion", question);
   }
 
-  function Listen_Prompt() {
-    speak(prompt, window.speechSynthesis)
-  }
-
-  function set_prompt_by_audio() {
-    setPrompt(transcript)
+  // API 질문 다시 듣기
+  const StopSTT = useCallback(() =>{
+    setAnswer(transcript)
     stopListening();
+  });
+
+  // Unity->React 마이크 녹음 시작 호출
+  useEffect(() => {
+    addEventListener("StartSTT", startListening);
+    return () => {
+      removeEventListener("StartSTT", startListening);
+    };
+  }, [addEventListener, removeEventListener, startListening])
+
+  // Unity->React 마이크 녹음 중지 호출
+  useEffect(() => {
+    addEventListener("StopSTT", StopSTT);
+    return () => {
+      addEventListener("StopSTT", StopSTT);
+    };
+  }, [addEventListener, removeEventListener, StopSTT])
+
+  function ListenAnswer() {
+    speak(answer, window.speechSynthesis)
   }
 
   return (
@@ -71,8 +99,8 @@ function App() {
         <button
         onTouchStart={startListening}
         onMouseDown={startListening}
-        onTouchEnd={set_prompt_by_audio}
-        onMouseUp={set_prompt_by_audio}
+        onTouchEnd={StopSTT}
+        onMouseUp={StopSTT}
         >Hold to talk</button>
         <button onClick={resetTranscript}>Reset</button>
         <br/>
@@ -84,9 +112,11 @@ function App() {
             alignSelf: 'center',
         }} unityProvider={unityProvider} />
         <br/>
-        <h1>{prompt}</h1>
-        <button onClick={send_prompt}>Prompt Unity 전송</button>
-        <button onClick={Listen_Prompt}>TTS</button>
+        <h1>question: {question}</h1>
+        <h1>answer: {answer}</h1>
+        <h1>transcript: {transcript}</h1>
+        <button onClick={SendQuestion}>질문 전송</button>
+        <button onClick={ListenAnswer}>답변 듣기</button>
     </div>
   );
 }
