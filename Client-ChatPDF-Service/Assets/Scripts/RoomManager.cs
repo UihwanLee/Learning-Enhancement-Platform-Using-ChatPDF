@@ -27,8 +27,10 @@ public class RoomManager : MonoBehaviour
     private string category;
     private int index;
 
-    private int interviewer;
-    private int styleInterview;
+    private int interviewerCount;
+    private int interviewerGender;
+    private int interviewStyle;
+    private float interviewTime;
 
     // Start is called before the first frame update
     void Start()
@@ -36,31 +38,30 @@ public class RoomManager : MonoBehaviour
         
     }
 
-    public void OpenCreateRoom()
-    {
-        SetRecommendRoom();
-    }
-
     public void SetRecommendRoom()
     {
+        // 추천 설정으로 세팅
         InitTitle();
         SetCategory(0);
         SetIndex();
-        SetInterviewer(1);
+        SetInterviewerCount(1);
     }
 
     public void InitTitle()
     {
+        // 방 제목 초기화
         this.titleInputField.text = "나만의 학습방(" + roomList.Count + ")";
     }
 
     public void SetTitle()
     {
+        // 입력 받은 제목 설정
         this.title = this.titleInputField.text;
     }
 
     public void SetCategory(int category)
     {
+        // 학습 카테고리 설정
         switch (category)
         {
             case 0:
@@ -82,23 +83,37 @@ public class RoomManager : MonoBehaviour
 
     public void SetIndex()
     {
+        // 학습 목차 설정
         this.index = 0;
     }
 
-    public void SetInterviewer(int num)
+    public void SetInterviewerCount(int num)
     {
-        this.interviewer = num;
+        // 면접자 수 설정
+        this.interviewerCount = num;
     }
 
-    // Update is called once per frame
-    void Update()
+    public void SetInterviewerGender(int gender)
     {
-        
+        // 면접자 성별 설정
+        this.interviewerGender = gender;
+    }
+
+    public void SetInterviewTime(float time)
+    {
+        // 면접 답변 시간 초 설정
+        this.interviewTime = time;
+    }
+
+    public void SetInterviewStyle(int style)
+    {
+        // 면접 스타일 설정
+        this.interviewStyle = style;
     }
 
     public void TryCreateRoom()
     {
-
+        // 방 생성 전 예외처리
     }
 
     public void CreateRoom()
@@ -118,7 +133,7 @@ public class RoomManager : MonoBehaviour
         //room.roomData.interviewer = this.interviewer;
         roomList.Add(roomObj);
 
-        // UI 설정
+        // UI 방 목록 생성
         string roomTitle = "<size=36>" + room.roomData.title + "|</size> " + " <size=20>" + room.roomData.category + " | " + room.roomData.index + "</size>" ;
         room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
         room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(sceneManager.LoadRoom);

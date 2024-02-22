@@ -8,7 +8,10 @@ using UnityEngine.UI;
 public class PromptManager : MonoBehaviour
 {
     [SerializeField]
-    string prompt;
+    string question;
+
+    [SerializeField]
+    string answer;
 
     [SerializeField]
     private TMP_InputField inputField;
@@ -17,10 +20,10 @@ public class PromptManager : MonoBehaviour
     private TextMeshProUGUI promptGUI;
 
     [DllImport("__Internal")]
-    private static extern void sendPrompt(string prompt);
+    private static extern void SendAnswer(string answer);
 
     [DllImport("__Internal")]
-    private static extern void listenPrompt();
+    private static extern void ReplayQuestion();
 
     // Start is called before the first frame update
     void Start()
@@ -30,22 +33,24 @@ public class PromptManager : MonoBehaviour
 
     public void ListenAgain()
     {
+        // 질문 다시듣기
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
-    listenPrompt();
+    ReplayQuestion();
 #endif
     }
 
-    public void Send()
+    public void ReceiveQuestion(string _question)
     {
-#if UNITY_WEBGL == true && UNITY_EDITOR == false
-    prompt = inputField.text;
-    sendPrompt(prompt);
-#endif
+        // 질문 받기
+        question = _question;
+        promptGUI.text = question;
     }
 
-    public void ReceivePrompt(string _prompt)
+    public void SendAnswerUnity()
     {
-        prompt = _prompt;
-        promptGUI.text = prompt;
+        // 답변 보내기
+#if UNITY_WEBGL == true && UNITY_EDITOR == false
+    SendAnswer(answer);
+#endif
     }
 }

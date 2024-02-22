@@ -17,6 +17,9 @@ public class RoomData
     public int index;
 
     // Prompt Setting
-    public int interviewer;     // 면접자 수
-    public int styleInterview;  // 면접 스타일
+    public int interviewerCount;    // 면접자 수
+    public int interviewerGender;   // 면접자 성별
+    public int interviewTime;       // 면접 답변 시간
+    public int interviewStyle;      // 면접 스타일
+
 }
