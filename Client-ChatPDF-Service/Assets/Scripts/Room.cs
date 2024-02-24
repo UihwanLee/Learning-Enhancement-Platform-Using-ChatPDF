@@ -5,6 +5,12 @@ using UnityEngine;
 public class Room : MonoBehaviour
 {
     public RoomData roomData;
+
+    public void SaveData()
+    {
+        string data = JsonUtility.ToJson(roomData);
+        Debug.Log(data);
+    }
 }
 
 [System.Serializable]

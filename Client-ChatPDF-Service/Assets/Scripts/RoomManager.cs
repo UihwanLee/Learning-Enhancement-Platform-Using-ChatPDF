@@ -23,6 +23,8 @@ public class RoomManager : MonoBehaviour
     [SerializeField]
     private SceneManagment sceneManager;
 
+    private Server sever;
+
     private string title;
     private string category;
     private int index;
@@ -35,7 +37,8 @@ public class RoomManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        // Sever 초기화
+        sever = FindObjectOfType<Server>();
     }
 
     public void SetRecommendRoom()
@@ -138,6 +141,9 @@ public class RoomManager : MonoBehaviour
         room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
         room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(sceneManager.LoadRoom);
         room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(()=> DestroyRoom(room.roomData.id));
+
+        // Room Data 저장
+        sever.SaveRoomData(room);
     }
 
     public void DestroyRoom(int id)
