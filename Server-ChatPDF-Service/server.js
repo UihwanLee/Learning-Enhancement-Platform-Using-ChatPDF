@@ -10,7 +10,7 @@ app.use(express.urlencoded({ extended: true }));
 const { MongoClient } = require('mongodb')
 
 let db
-const url = 'mongodb+srv://tukorea_user:qwerasdfzxcv308@cluster0.doxelnj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+const url = process.env.MONGODB_URL;
 new MongoClient(url).connect().then((client)=>{
   console.log('DB연결성공')
   db = client.db('ChatPDF_test')
