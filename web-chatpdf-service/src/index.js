@@ -4,10 +4,20 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+import { BrowserRouter as Router, Route, Routes, BrowserRouter } from 'react-router-dom';
+import Service from './Service';
+import MyPage from './components/MyPage'
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<App/>} />
+        <Route path="/mypage" element={<MyPage/>} />
+        <Route path="/service" element={<Service/>} />
+      </Routes>
+    </BrowserRouter>
   </React.StrictMode>
 );
 
