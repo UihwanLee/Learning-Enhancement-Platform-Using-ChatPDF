@@ -23,6 +23,19 @@ function Service() {
       frameworkUrl: "Build/Build.framework.js",
       codeUrl: "Build/Build.wasm",
     });
+
+  // Server 데이터 받기
+  const RequestData = useCallback(() =>{
+    // USER 데이터 보내기
+
+    // ROOM DATA 보내기
+
+  });
+
+  // Room Data 저장
+  const SaveRoomData = useCallback(() =>{
+    // TO DO LIST..
+  });
  
   // TTS 기능 
   const {
@@ -63,9 +76,35 @@ function Service() {
     };
   }, [addEventListener, removeEventListener, ReplayQuestion])
 
+  // Unity-> React Server 데이터 통신 요구
+  useEffect(() => {
+    addEventListener("RequestData", RequestData);
+    return () => {
+      removeEventListener("RequestData", RequestData);
+    };
+  }, [addEventListener, removeEventListener, RequestData])
+
+  // Unity-> React Room Data 저장
+  useEffect(() => {
+    addEventListener("SendRoomData", SaveRoomData);
+    return () => {
+      removeEventListener("SendRoomData", SaveRoomData);
+    };
+  }, [addEventListener, removeEventListener, SaveRoomData])
+
   // React->Unity API 질문 보내기
   function SendQuestion() {
     sendMessage("PromptManager", "ReceiveQuestion", question);
+  }
+
+  // React->Unity NickName 보내기
+  function SendNickName() {
+    // sendMessage("Server", "LoadUserData", nickname);
+  }
+
+  // React->Unity Room Data JSON 파일 보내기
+  function SendRoomData() {
+    // sendMessage("Server", "LoadRoomData", roomData);
   }
 
   // API 질문 다시 듣기
