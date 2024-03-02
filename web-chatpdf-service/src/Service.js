@@ -8,6 +8,8 @@ import { speak } from './TTS.js';
 
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
+import Header from './components/Header'
+
 function Service() {
   // 질문과 답변
   const [question, setQuestion] = useState("Question");
@@ -94,6 +96,7 @@ function Service() {
 
   return (
     <div className="App">
+        <Header element="nexon" />
         <p>Microphone: {listening ? 'on' : 'off'}</p>
         <p>{transcript}</p>
         <button
