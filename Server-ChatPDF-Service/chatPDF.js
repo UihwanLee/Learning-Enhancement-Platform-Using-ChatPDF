@@ -1,5 +1,6 @@
 const axios = require("axios");
 const { fileUpload } = require('./fileUpload');
+require('dotenv').config();
 
 async function chatPDF(filePath, prompt){
   const sourceId = await fileUpload(filePath);
@@ -7,7 +8,7 @@ async function chatPDF(filePath, prompt){
 
   const config = {
     headers: {
-      "x-api-key": "sec_wbV7QqbCwy8sey31myjMz8GI7eq1mkjN",
+      "x-api-key": process.env.CHATPDF_KEY,
       "Content-Type": "application/json",
     },
   };
@@ -23,8 +24,8 @@ async function chatPDF(filePath, prompt){
   }; 
 
   try {
-    const response = await axios.post("https://api.chatpdf.com/v1/chats/message", data, config);
-    console.log("Result:", response.data.content);
+    const response = await axios.post ("https://api.chatpdf.com/v1/chats/message", data, config);
+    //console.log("Result:", response.data.content);
     return response.data.content;
   } catch (error) {
     console.log("Error:", error.message);

@@ -7,6 +7,7 @@ import './TTS.js';
 import { speak } from './TTS.js';
 
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
+import axios from 'axios';
 
 function App() {
   // 질문과 답변
@@ -45,6 +46,13 @@ function App() {
     speak(question, window.speechSynthesis)
   });
 
+  // Node.js 서버에서 question 데이터 가져오기
+  useEffect(() => {
+    const fetchQuestion = axios.get('http://localhost:3001/api/question')
+      .then(response => setQuestion(response.data))
+      .catch(error => console.error('Error fetching question:', error));
+  }, []);
+
   // Unity->React 사용자의 answer 보내기
   useEffect(() => {
     addEventListener("SendAnswer", ReceiveAnswer);
@@ -62,8 +70,17 @@ function App() {
   }, [addEventListener, removeEventListener, ReplayQuestion])
 
   // React->Unity API 질문 보내기
-  function SendQuestion() {
+  async function SendQuestion() {
     sendMessage("PromptManager", "ReceiveQuestion", question);
+
+    // 세현 수정, 서버에서 question 데이터 가져오기
+    try {
+      console.log("질문 전송 버튼 클릭됨.");
+      const res = await axios.get('http://localhost:3001/api/question');
+      setQuestion(res.data); 
+    } catch (error) {
+      console.error('question 데이터 가져오기 중 오류 발생:', error);
+    }
   }
 
   // API 질문 다시 듣기

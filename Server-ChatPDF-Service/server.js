@@ -6,11 +6,13 @@ app.set('view engine', 'ejs')
 require('dotenv').config()
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }));
+const cors = require("cors");
+app.use(cors());
 
 const { MongoClient } = require('mongodb')
 
 let db
-const url = 'mongodb+srv://tukorea_user:qwerasdfzxcv308@cluster0.doxelnj.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+const url = process.env.MONGODB_KEY;
 new MongoClient(url).connect().then((client)=>{
   console.log('DB연결성공')
   db = client.db('ChatPDF_test')
@@ -30,8 +32,8 @@ app.get('/', async (req, res) => {
 app.post('/', async (req, res) => {
     console.log('POST / 호출');
     const filePath = './algo.pdf';
-    const prompt = `이 pdf 파일을 참조해서 이 주제와 관련해서 나의 학습 수준을 파악하기 위한 주관식 문제 5개를 직접 만들어서 내줘. 다른 말은 하지말고 문제만 말해주고 말 끝은 반드시 ! 하나를 넣어줘.
-    다음에 내가 문제마다 각각 답변을 하면 채점은 채점 결과에 따라 great, good, not bad, bad 순서대로 점수를 매겨주고 great, good, not bad, bad로만 대답해줘`;
+    const prompt = `이 pdf 파일을 참조해서 이 주제와 관련해서 나의 학습 수준을 파악하기 위한 주관식 문제 5개를 직접 만들어서 내줘.
+    다른 말은 하지말고 문제만 말해주고 말 끝은 반드시 ! 하나를 넣어줘.`;
     
     const result = await chatPDF(filePath, prompt);
     // Question buffer
@@ -151,23 +153,40 @@ app.post('/score', async (req, res) => {
  
 });
 
-// app.get('/ask', async (req, res) => {
-//     res.render('askPDF.ejs');
-// })
+// app.post("/question", async (req, res) => {
+//     // question 필드가 존재하는 문서를 찾는 쿼리
+//     const query = {
+//     $and: [
+//         { question: { $exists: true } },
+//         { answer: { $exists: true } }
+//     ]
+//     };
 
-// app.post('/ask', async (req, res) => {
-//     const filePath = req.body.filePath;
-//     const prompt = req.body.prompt;
-//     // result = 답변
-//     const result = await chatPDF(filePath, prompt);
-//     console.log(result);
-    
-//     if (result) {
-//         res.send(result);
-//     } else {
-//         res.status(500).json({ 'error': 'Failed to get response from ChatPDF API' });
+//     try {
+//     // 쿼리에 맞는 문서들 가져오기
+//     const documentsWithFields = await db.collection('prompt').find(query).toArray();
+
+//     documentsWithFields.forEach(document => {
+//         console.log('Question:', document.question);
+//         console.log('Answer:', document.answer);
+        
+//     });
+//     } catch (error) {
+//     console.error('문서 가져오기 실패:', error);
 //     }
 // });
+
+// 질문 전송 버튼 클릭 이벤트, api 통해 질문 1개 뽑아줌.
+app.get("/api/question", async (req, res) => {
+    console.log('POST /api/question 호출');
+    const filePath = './algo.pdf';
+    const prompt = `이 pdf 파일을 참고해서 알고리즘을 제대로 공부했는지 테스트하기 위한 주관식 문제를 하나 내줘.
+    다양한 문제를 풀어보기 위해 물어볼때마다 다른 문제를 내줘. 그리고 다른 말은 하지말고 오직 문제만 말해줘.`;
+    
+    const question = await chatPDF(filePath, prompt);
+    console.log("question: ", question);
+    res.send(question);
+});
 
 
 

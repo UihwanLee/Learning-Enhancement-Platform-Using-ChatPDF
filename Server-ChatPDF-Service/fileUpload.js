@@ -1,6 +1,7 @@
 const axios = require("axios");
 const fs = require("fs");
 const FormData = require("form-data");
+require('dotenv').config();
 
 async function fileUpload(filePath) {
     const formData = new FormData();
@@ -11,7 +12,7 @@ async function fileUpload(filePath) {
 
     const options = {
       headers: {
-        "x-api-key": "sec_wbV7QqbCwy8sey31myjMz8GI7eq1mkjN",
+        "x-api-key": process.env.CHATPDF_KEY,
         ...formData.getHeaders(),
       },
     };    
