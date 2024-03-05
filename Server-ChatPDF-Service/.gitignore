@@ -1,7 +1,8 @@
 # Created by https://www.toptal.com/developers/gitignore/api/dotenv,visualstudiocode,java,react,windows
 # Edit at https://www.toptal.com/developers/gitignore?templates=dotenv,visualstudiocode,java,react,windows
 
-### dotenv ###
+### dotenv ###;
+*.env
 .env
 
 ### Java ###
