@@ -2,6 +2,7 @@ import logo from './logo.svg';
 import './App.css';
 import React, { useCallback, useState, useEffect } from "react";
 import { Unity, useUnityContext } from "react-unity-webgl";
+import axios from "axios";
 
 import './TTS.js';
 import { speak } from './TTS.js';
@@ -50,10 +51,28 @@ function Service() {
   const stopListening = () => SpeechRecognition.stopListening();
 
   // 사용자의 answer 받기
+  // send 눌렀을 때 호출 -> send 누르면 text(answer) 서버에 보냄
   const ReceiveAnswer = useCallback((answer) => {
     setAnswer(answer)
     console.log(answer);
+    sendAnswerToServer();
   }, [answer]);
+
+  const sendAnswerToServer = async () => {
+    try {
+      // Axios를 사용하여 Node.js 서버로 POST 요청을 보냅니다.
+      const response = await axios.post('http://localhost:3001/api/sendAnswer', {
+        // 보낼 데이터를 객체 형태로 전달
+        answer: answer, 
+      });
+
+      // 서버에서 받은 응답을 출력합니다.
+      console.log('Server response:', response.data);
+    } catch (error) {
+      console.error('Error sending answer:', error);
+    }
+  };
+
 
   // API 질문 다시 듣기
   const ReplayQuestion = useCallback(() =>{
@@ -133,6 +152,19 @@ function Service() {
     speak(answer, window.speechSynthesis)
   }
 
+  async function RequestServer()
+  {
+    // TO DO LIST
+    try{
+      const createQuestion = await axios.get('http://localhost:3001/api/createQuestion');
+      setQuestion(createQuestion.data);
+      speak(question, window.speechSynthesis);
+    }
+    catch (error) {
+      console.error('Error fetching data - question:', error);
+    }
+  }
+
   return (
     <div className="App">
         <Header element="nexon" />
@@ -157,6 +189,7 @@ function Service() {
         <h1>question: {question}</h1>
         <h1>answer: {answer}</h1>
         <h1>transcript: {transcript}</h1>
+        <button onClick={RequestServer}>면접시작</button>
         <button onClick={SendQuestion}>질문 전송</button>
         <button onClick={ListenAnswer}>답변 듣기</button>
     </div>

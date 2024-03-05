@@ -188,7 +188,47 @@ app.get("/api/question", async (req, res) => {
     res.send(question);
 });
 
+app.get('/api/createQuestion', async (req, res) => {
+    console.log('GET /api/createQuestion 호출');
+    const filePath = './algo.pdf';
+    const prompt = `이 pdf 파일을 참조해서 이 주제와 관련해서 나의 학습 수준을 파악하기 위한 주관식 문제 5개를 직접 만들어서 내줘.
+    다른 말은 하지말고 문제만 말해주고 말 끝은 반드시 ! 하나를 넣어줘.`;
+    
+    const question = await chatPDF(filePath, prompt);
+    // Question buffer
+    const Qbuffer = question.split('!');
+    
+    
+    for (let i = 0; i < 5; i++){
+        // userID: user의 ID, question: chatpdf의 질문, answer: user의 답변, score: [great, good, not bad, bad] 중 하나
+        // General_opinion: user의 답변에 따른 chatpdf의 종합 의견, Model_answer: chatpdf의 질문의 모범 답변
+        await db.collection('prompt').insertOne( { userID: null, question: Qbuffer[i], answer: null, score: null, General_opinion: null, Model_answer: null});
+    }
+    
 
+         
+    if (question) {
+        //react로 question 전송
+        res.send(Qbuffer[0]);
+    } else {
+        res.status(500).json({ 'error': 'Failed to get response from ChatPDF API' });
+    }
+});
+
+app.post('/api/sendAnswer', async (req, res) => {
+    console.log('POST /api/sendAnswer 호출');
+    
+    await db.prompt.updateOne(
+        // 조건: question 필드가 null이 아닌 경우
+        { question: { $ne: null } },
+        // 업데이트할 필드 및 값: answer 필드에 원하는 값을 설정합니다.
+        { $set: { answer: req.body.answer } }
+    );
+    console.log(req.body);
+      
+
+  
+});
 
 
 
