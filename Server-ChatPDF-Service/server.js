@@ -217,16 +217,14 @@ app.get('/api/createQuestion', async (req, res) => {
 
 app.post('/api/sendAnswer', async (req, res) => {
     console.log('POST /api/sendAnswer 호출');
+    console.log(req.body);
     
-    await db.prompt.updateOne(
-        // 조건: question 필드가 null이 아닌 경우
-        { question: { $ne: null } },
-        // 업데이트할 필드 및 값: answer 필드에 원하는 값을 설정합니다.
+    await db.collection('prompt').updateOne(
+        // 조건: answer 필드가 null인 경우 answer 값 수정
+        { answer: null },
         { $set: { answer: req.body.answer } }
     );
-    console.log(req.body);
-      
-
+    
   
 });
 
