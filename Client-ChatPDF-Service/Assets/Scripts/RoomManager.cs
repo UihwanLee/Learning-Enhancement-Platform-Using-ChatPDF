@@ -23,7 +23,7 @@ public class RoomManager : MonoBehaviour
     [SerializeField]
     private SceneManagment sceneManager;
 
-    private Server sever;
+    private Server server;
 
     private string title;
     private string category;
@@ -34,11 +34,87 @@ public class RoomManager : MonoBehaviour
     private int interviewStyle;
     private float interviewTime;
 
+    // 색상
+    private Color changeColor;
+    private string baseColor = "#BFBFBF";
+    private string highlightedColor = "#FFFFFF";
+
+    [SerializeField]
+    private GameObject roomSetting;
+    [SerializeField]
+    private TextMeshProUGUI roomSettingButton;
+    private int roomSettingClicked;
+
+    [SerializeField]
+    private GameObject promptSetting;
+    [SerializeField]
+    private TextMeshProUGUI promptSettingButton;
+    private int promptSettingClicked;
+
     // Start is called before the first frame update
     void Start()
     {
         // Sever 초기화
-        sever = FindObjectOfType<Server>();
+        server = FindObjectOfType<Server>();
+
+        roomSettingClicked = 1;
+        promptSettingClicked = 0;
+    }
+
+    public int CheckClicked(TextMeshProUGUI setting)
+    {
+        if(setting.gameObject.name == roomSettingButton.gameObject.name)
+        {
+            return roomSettingClicked;
+        }
+        else
+        {
+            return promptSettingClicked;
+        }
+    }
+
+    public void EnterSetting(TextMeshProUGUI setting)
+    {
+        if (CheckClicked(setting) == 1) return;
+
+        ColorUtility.TryParseHtmlString(highlightedColor, out changeColor);
+        setting.color = changeColor;
+    }
+
+    public void ExitSetting(TextMeshProUGUI setting)
+    {
+        if (CheckClicked(setting) == 1) return;
+
+        ColorUtility.TryParseHtmlString(baseColor, out changeColor);
+        setting.color = changeColor;
+    }
+
+    public void ClickRoomSetting()
+    {
+        roomSettingClicked = 1;
+        promptSettingClicked = 0;
+        roomSetting.SetActive(true);
+        promptSetting.SetActive(false);
+
+        ColorUtility.TryParseHtmlString(highlightedColor, out changeColor);
+        roomSettingButton.color = changeColor;
+
+        ColorUtility.TryParseHtmlString(baseColor, out changeColor);
+        promptSettingButton.color = changeColor;
+    }
+
+    public void ClickPromptSetting()
+    {
+        roomSettingClicked = 0;
+        promptSettingClicked = 1;
+        roomSetting.SetActive(false);
+        promptSetting.SetActive(true);
+
+        ColorUtility.TryParseHtmlString(baseColor, out changeColor);
+        roomSettingButton.color = changeColor;
+
+        ColorUtility.TryParseHtmlString(highlightedColor, out changeColor);
+        promptSettingButton.color = changeColor;
     }
 
     public void SetRecommendRoom()
@@ -48,6 +124,7 @@ public class RoomManager : MonoBehaviour
         SetCategory(0);
         SetIndex();
         SetInterviewerCount(1);
+        SetInterviewerGender(1);
     }
 
     public void InitTitle()
@@ -133,6 +210,8 @@ public class RoomManager : MonoBehaviour
         room.roomData.title = this.title;
         room.roomData.category = this.category;
         room.roomData.index = this.index;
+
+        room.roomData.interviewerGender = this.interviewerGender;
         //room.roomData.interviewer = this.interviewer;
         roomList.Add(roomObj);
 
@@ -143,7 +222,11 @@ public class RoomManager : MonoBehaviour
         room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(()=> DestroyRoom(room.roomData.id));
 
         // Room Data 저장
-        sever.SaveRoomData(room);
+        if (server)
+        {
+            server.SetInterViewGender(this.interviewerGender);
+            server.SaveRoomData(room);
+        }
     }
 
     public void DestroyRoom(int id)

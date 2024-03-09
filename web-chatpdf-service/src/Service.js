@@ -33,8 +33,8 @@ function Service() {
   });
 
   // Room Data 저장
-  const SaveRoomData = useCallback(() =>{
-    // TO DO LIST..
+  const SaveRoomData = useCallback((roomData) =>{
+    // RoomDataList에 roomData JSON 정보 저장
   });
  
   // TTS 기능 
