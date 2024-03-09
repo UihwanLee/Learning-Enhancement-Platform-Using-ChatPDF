@@ -124,6 +124,7 @@ public class RoomManager : MonoBehaviour
         SetCategory(0);
         SetIndex();
         SetInterviewerCount(1);
+        SetInterviewerGender(1);
     }
 
     public void InitTitle()
@@ -209,6 +210,8 @@ public class RoomManager : MonoBehaviour
         room.roomData.title = this.title;
         room.roomData.category = this.category;
         room.roomData.index = this.index;
+
+        room.roomData.interviewerGender = this.interviewerGender;
         //room.roomData.interviewer = this.interviewer;
         roomList.Add(roomObj);
 
@@ -219,7 +222,11 @@ public class RoomManager : MonoBehaviour
         room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(()=> DestroyRoom(room.roomData.id));
 
         // Room Data ¿˙¿Â
-        if(server) server.SaveRoomData(room);
+        if (server)
+        {
+            server.SetInterViewGender(this.interviewerGender);
+            server.SaveRoomData(room);
+        }
     }
 
     public void DestroyRoom(int id)

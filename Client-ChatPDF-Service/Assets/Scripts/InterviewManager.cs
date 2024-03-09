@@ -10,13 +10,25 @@ public class InterviewManager : MonoBehaviour
 
     private GameObject currentInterviewer;
 
+    private Server server;
+
     // Start is called before the first frame update
     void Start()
     {
-        // 搁立包 积己
-        CreateInterviewer(1);
+        // Sever 檬扁拳
+        server = FindObjectOfType<Server>();
 
         currentInterviewer = null;
+
+        if (server)
+        {
+            // 搁立包 积己
+            CreateInterviewer(server.GetInterViewGender());
+        }
+        else
+        {
+            CreateInterviewer(1);
+        }
     }
 
     public void CreateInterviewer(int gender)

@@ -14,6 +14,7 @@ public class Server : MonoBehaviour
     // Server에서 관리할 객체
     private string userNickName;
     private List<string> roomDataList = new List<string>();
+    private int interviewGender;
 
     private void Awake()
     {
@@ -29,6 +30,7 @@ public class Server : MonoBehaviour
            - 사용자 데이터
            - room 데이터
         */
+        interviewGender = 1;
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
     RequestData();
 #endif
@@ -42,6 +44,13 @@ public class Server : MonoBehaviour
     SendRoomData(roomData);
 #endif
     }
+
+    public void SetInterViewGender(int gender)
+    {
+        interviewGender = gender;
+    }
+
+    public int GetInterViewGender() { return interviewGender; }
 
     public void LoadUserData(string nickname)
     {
