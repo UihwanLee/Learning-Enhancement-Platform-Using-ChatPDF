@@ -8,8 +8,10 @@ public class InterviewManager : MonoBehaviour
     [SerializeField]
     private GameObject[] interviewer;
 
+    // 현재 면접관 프리팹
     private GameObject currentInterviewer;
 
+    // 서버 클래스
     private Server server;
 
     // Start is called before the first frame update

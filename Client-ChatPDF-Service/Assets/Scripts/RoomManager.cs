@@ -7,12 +7,15 @@ using UnityEngine.SceneManagement;
 
 public class RoomManager : MonoBehaviour
 {
+    // Room 생성될 부모 오브젝트
     [SerializeField]
     private GameObject parent;
 
+    // Room 프리팹
     [SerializeField]
     private GameObject prefab;
 
+    // Title InputField
     [SerializeField]
     private TMP_InputField titleInputField;
 
@@ -20,15 +23,19 @@ public class RoomManager : MonoBehaviour
     [SerializeField]
     private List<GameObject> roomList = new List<GameObject>();
 
+    // 씬 매니저 클래스
     [SerializeField]
     private SceneManagment sceneManager;
 
+    // 서버 클래스
     private Server server;
 
+    // RoomSetting variable
     private string title;
     private string category;
     private int index;
 
+    // PromptSetting variable
     private int interviewerCount;
     private int interviewerGender;
     private int interviewStyle;
@@ -39,12 +46,12 @@ public class RoomManager : MonoBehaviour
     private string baseColor = "#BFBFBF";
     private string highlightedColor = "#FFFFFF";
 
+    // Setting GUI
     [SerializeField]
     private GameObject roomSetting;
     [SerializeField]
     private TextMeshProUGUI roomSettingButton;
     private int roomSettingClicked;
-
     [SerializeField]
     private GameObject promptSetting;
     [SerializeField]
@@ -57,13 +64,15 @@ public class RoomManager : MonoBehaviour
         // Sever 초기화
         server = FindObjectOfType<Server>();
 
+        // Setting Variable 초기화
         roomSettingClicked = 1;
         promptSettingClicked = 0;
     }
 
     public int CheckClicked(TextMeshProUGUI setting)
     {
-        if(setting.gameObject.name == roomSettingButton.gameObject.name)
+        // 클릭한 상태인지 체크
+        if (setting.gameObject.name == roomSettingButton.gameObject.name)
         {
             return roomSettingClicked;
         }
@@ -77,6 +86,7 @@ public class RoomManager : MonoBehaviour
     {
         if (CheckClicked(setting) == 1) return;
 
+        // 텍스트 활성화
         ColorUtility.TryParseHtmlString(highlightedColor, out changeColor);
         setting.color = changeColor;
     }
@@ -85,12 +95,14 @@ public class RoomManager : MonoBehaviour
     {
         if (CheckClicked(setting) == 1) return;
 
+        // 텍스트 비활성화
         ColorUtility.TryParseHtmlString(baseColor, out changeColor);
         setting.color = changeColor;
     }
 
     public void ClickRoomSetting()
     {
+        // RoomSetting 패널로 전환
         roomSettingClicked = 1;
         promptSettingClicked = 0;
         roomSetting.SetActive(true);
@@ -105,6 +117,7 @@ public class RoomManager : MonoBehaviour
 
     public void ClickPromptSetting()
     {
+        // PromptSetting 패널로 전환
         roomSettingClicked = 0;
         promptSettingClicked = 1;
         roomSetting.SetActive(false);
