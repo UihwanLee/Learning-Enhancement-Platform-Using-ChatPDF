@@ -1,8 +1,20 @@
 mergeInto(LibraryManager.library, {
-  sendPrompt: function (prompt) {
-    window.dispatchReactUnityEvent("sendPrompt", UTF8ToString(prompt));
+  RequestData: function () {
+    window.dispatchReactUnityEvent("RequestData");
   },
-  listenPrompt: function () {
-    window.dispatchReactUnityEvent("listenPrompt");
+  SendRoomData: function (roomData) {
+    window.dispatchReactUnityEvent("SendRoomData", UTF8ToString(roomData));
+  },
+  SendAnswer: function (answer) {
+    window.dispatchReactUnityEvent("SendAnswer", UTF8ToString(answer));
+  },
+  ReplayQuestion: function () {
+    window.dispatchReactUnityEvent("ReplayQuestion");
+  },
+  StartSTT: function () {
+    window.dispatchReactUnityEvent("StartSTT");
+  },
+  StopSTT: function () {
+    window.dispatchReactUnityEvent("StopSTT");
   },
 });
