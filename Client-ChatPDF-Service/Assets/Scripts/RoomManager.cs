@@ -4,9 +4,11 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using static Unity.VisualScripting.Metadata;
 
 public class RoomManager : MonoBehaviour
 {
+    [Header("Room")]
     // Room 생성될 부모 오브젝트
     [SerializeField]
     private GameObject parent;
@@ -15,17 +17,14 @@ public class RoomManager : MonoBehaviour
     [SerializeField]
     private GameObject prefab;
 
-    // Title InputField
-    [SerializeField]
-    private TMP_InputField titleInputField;
-
     // Room 전체를 관리할 RoomList
     [SerializeField]
     private List<GameObject> roomList = new List<GameObject>();
 
-    // 씬 매니저 클래스
+    [Header("UI")]
+    // Title InputField
     [SerializeField]
-    private SceneManagment sceneManager;
+    private TMP_InputField titleInputField;
 
     // 서버 클래스
     private Server server;
@@ -41,22 +40,18 @@ public class RoomManager : MonoBehaviour
     private int interviewStyle;
     private float interviewTime;
 
-    // 색상
-    private Color changeColor;
-    private string baseColor = "#BFBFBF";
-    private string highlightedColor = "#FFFFFF";
+    // Room
+    private RoomData newRoom;
+    private List<string> roomDataList;
 
-    // Setting GUI
+    [Header("Manager")]
+    // 씬 매니저 클래스
     [SerializeField]
-    private GameObject roomSetting;
+    private SceneManagment sceneManager;
+
+    // UI 매니저
     [SerializeField]
-    private TextMeshProUGUI roomSettingButton;
-    private int roomSettingClicked;
-    [SerializeField]
-    private GameObject promptSetting;
-    [SerializeField]
-    private TextMeshProUGUI promptSettingButton;
-    private int promptSettingClicked;
+    private UIManager uiManager;
 
     // Start is called before the first frame update
     void Start()
@@ -64,70 +59,19 @@ public class RoomManager : MonoBehaviour
         // Sever 초기화
         server = FindObjectOfType<Server>();
 
-        // Setting Variable 초기화
-        roomSettingClicked = 1;
-        promptSettingClicked = 0;
-    }
-
-    public int CheckClicked(TextMeshProUGUI setting)
-    {
-        // 클릭한 상태인지 체크
-        if (setting.gameObject.name == roomSettingButton.gameObject.name)
+        // 방 초기 생성
+        if(server)
         {
-            return roomSettingClicked;
+            roomDataList = server.GetRoomDataList();
+
+            foreach(string roomData in roomDataList)
+            {
+                InitCreateRoom(roomData);
+            }
+
+            // 방 정렬
+            SortRoomByID();
         }
-        else
-        {
-            return promptSettingClicked;
-        }
-    }
-
-    public void EnterSetting(TextMeshProUGUI setting)
-    {
-        if (CheckClicked(setting) == 1) return;
-
-        // 텍스트 활성화
-        ColorUtility.TryParseHtmlString(highlightedColor, out changeColor);
-        setting.color = changeColor;
-    }
-
-    public void ExitSetting(TextMeshProUGUI setting)
-    {
-        if (CheckClicked(setting) == 1) return;
-
-        // 텍스트 비활성화
-        ColorUtility.TryParseHtmlString(baseColor, out changeColor);
-        setting.color = changeColor;
-    }
-
-    public void ClickRoomSetting()
-    {
-        // RoomSetting 패널로 전환
-        roomSettingClicked = 1;
-        promptSettingClicked = 0;
-        roomSetting.SetActive(true);
-        promptSetting.SetActive(false);
-
-        ColorUtility.TryParseHtmlString(highlightedColor, out changeColor);
-        roomSettingButton.color = changeColor;
-
-        ColorUtility.TryParseHtmlString(baseColor, out changeColor);
-        promptSettingButton.color = changeColor;
-    }
-
-    public void ClickPromptSetting()
-    {
-        // PromptSetting 패널로 전환
-        roomSettingClicked = 0;
-        promptSettingClicked = 1;
-        roomSetting.SetActive(false);
-        promptSetting.SetActive(true);
-
-        ColorUtility.TryParseHtmlString(baseColor, out changeColor);
-        roomSettingButton.color = changeColor;
-
-        ColorUtility.TryParseHtmlString(highlightedColor, out changeColor);
-        promptSettingButton.color = changeColor;
     }
 
     public void SetRecommendRoom()
@@ -138,6 +82,10 @@ public class RoomManager : MonoBehaviour
         SetIndex();
         SetInterviewerCount(1);
         SetInterviewerGender(1);
+        SetInterviewTime(60.0f);
+        SetInterviewStyle(0);
+
+        uiManager.SetRecommandSprite();
     }
 
     public void InitTitle()
@@ -209,6 +157,34 @@ public class RoomManager : MonoBehaviour
         // 방 생성 전 예외처리
     }
 
+    private void InitCreateRoom(string roomData)
+    {
+        // 초기 방 생성 
+        newRoom = JsonUtility.FromJson<RoomData>(roomData);
+
+        var roomObj = Instantiate(prefab, parent.transform) as GameObject;
+
+        // Room Setting 적용
+        var room = roomObj.GetComponent<Room>();
+        room.roomData.id = newRoom.id;
+        room.roomData.title = newRoom.title;
+        room.roomData.category = newRoom.category;
+        room.roomData.index = newRoom.index;
+
+        room.roomData.interviewerCount = newRoom.interviewerCount;
+        room.roomData.interviewerGender = newRoom.interviewerGender;
+        room.roomData.interviewTime = newRoom.interviewTime;
+        room.roomData.interviewStyle = newRoom.interviewStyle;
+
+        roomList.Add(roomObj);
+
+        // UI 방 목록 생성
+        string roomTitle = "<size=36>" + room.roomData.title + "|</size> " + " <size=20>" + room.roomData.category + " | " + room.roomData.index + "</size>";
+        room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
+        room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => sceneManager.LoadRoom(room.roomData.interviewerGender));
+        room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() => DestroyRoom(room.roomData.id));
+    }
+
     public void CreateRoom()
     {
         // Room 생성
@@ -224,21 +200,71 @@ public class RoomManager : MonoBehaviour
         room.roomData.category = this.category;
         room.roomData.index = this.index;
 
+        room.roomData.interviewerCount = this.interviewerCount;
         room.roomData.interviewerGender = this.interviewerGender;
-        //room.roomData.interviewer = this.interviewer;
+        room.roomData.interviewTime = this.interviewTime;
+        room.roomData.interviewStyle = this.interviewStyle;
+
         roomList.Add(roomObj);
 
         // UI 방 목록 생성
         string roomTitle = "<size=36>" + room.roomData.title + "|</size> " + " <size=20>" + room.roomData.category + " | " + room.roomData.index + "</size>" ;
         room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
-        room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(sceneManager.LoadRoom);
+        room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(()=> sceneManager.LoadRoom(room.roomData.interviewerGender));
         room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(()=> DestroyRoom(room.roomData.id));
 
         // Room Data 저장
         if (server)
         {
-            server.SetInterViewGender(this.interviewerGender);
             server.SaveRoomData(room);
+        }
+
+        SortRoomByID();
+    }
+
+    public void SortRoomByID()
+    {
+        // ID 순대로 방 정렬(생성된 순으로 정렬)
+        roomList.Sort((a, b) => {
+            Room roomA = a.GetComponent<Room>();
+            Room roomB = b.GetComponent<Room>();
+            if (roomA != null && roomB != null)
+            {
+                return roomB.roomData.id.CompareTo(roomA.roomData.id);
+            }
+            else
+            {
+                Debug.LogError("Room component not found on child object.");
+                return 0;
+            }
+        });
+
+        for (int i = 0; i < roomList.Count; i++)
+        {
+            roomList[i].transform.SetSiblingIndex(i);
+        }
+    }
+
+    public void SortRoomByCategory()
+    {
+        // 카테고리 순대로 방 정렬(생성된 순으로 정렬)
+        roomList.Sort((a, b) => {
+            Room roomA = a.GetComponent<Room>();
+            Room roomB = b.GetComponent<Room>();
+            if (roomA != null && roomB != null)
+            {
+                return roomB.roomData.category.CompareTo(roomA.roomData.category);
+            }
+            else
+            {
+                Debug.LogError("Room component not found on child object.");
+                return 0;
+            }
+        });
+
+        for (int i = 0; i < roomList.Count; i++)
+        {
+            roomList[i].transform.SetSiblingIndex(i);
         }
     }
 
