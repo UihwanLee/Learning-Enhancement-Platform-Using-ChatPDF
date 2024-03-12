@@ -1,7 +1,7 @@
 const pitch = 1;
 const rate = 1;
 
-async function populateVoiceList(synth) {
+export async function populateVoiceList(synth) {
   try {
       const voices = (await synth.getVoices()).sort(function (a, b) {
           const aname = a.name.toUpperCase();
@@ -17,7 +17,7 @@ async function populateVoiceList(synth) {
   }
 }
 
-export async function speak(textToRead, synth) {
+export async function speak(textToRead, setVoice, synth) {
   if (speechSynthesis.onvoiceschanged !== undefined) {
       speechSynthesis.onvoiceschanged = () => populateVoiceList;
   }
@@ -34,6 +34,7 @@ export async function speak(textToRead, synth) {
       utterThis.onerror = function (event) {
           console.error("SpeechSynthesisUtterance.onerror");
       };
+
       // utterThis.voice = voices[0];
       utterThis.pitch = pitch; // assuming pitch and rate are defined elsewhere
       utterThis.rate = rate;
