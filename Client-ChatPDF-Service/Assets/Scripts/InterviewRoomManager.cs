@@ -4,7 +4,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using static Unity.VisualScripting.Metadata;
 
 public class InterviewRoomManager : MonoBehaviour
 {
