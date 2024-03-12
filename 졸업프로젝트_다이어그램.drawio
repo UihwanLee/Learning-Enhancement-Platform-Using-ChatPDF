@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-03-12T04:26:32.327Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" etag="Ah7xnrvddOdhlhvzOtDc" version="24.0.5" type="github" pages="6">
+<mxfile host="app.diagrams.net" modified="2024-03-12T04:26:59.234Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" etag="jeFPX73FmmkGn0XGP-Xh" version="24.0.5" type="github" pages="7">
   <diagram name="기술스택구성도" id="lxz3IJRdc6AnGWi2tXEg">
     <mxGraphModel dx="1434" dy="749" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -1044,6 +1044,50 @@
         </mxCell>
         <mxCell id="g9bc3_sfvitGaqAs9TxQ-16" value="나의 페이지" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="480" y="320" width="120" height="50" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="MNmrMw6ghOUBxwQhYhUR" name="mongoDB">
+    <mxGraphModel dx="1434" dy="749" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="0sThwn4z5j0AIrrGIU3Z-1" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="50" width="880" height="460" as="geometry" />
+        </mxCell>
+        <mxCell id="0sThwn4z5j0AIrrGIU3Z-2" value="&lt;span style=&quot;font-size: 17px;&quot;&gt;&lt;b&gt;&amp;nbsp;MongoDB 스키마 구조&lt;/b&gt;&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=default;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="70" y="70" width="570" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="0sThwn4z5j0AIrrGIU3Z-3" value="&lt;br&gt;&quot;_id&quot;: &quot;&lt;font color=&quot;#ff0505&quot;&gt;&lt;b&gt;ObjectID(&#39;1&#39;)&lt;/b&gt;&lt;/font&gt;&quot;&lt;br&gt;&quot;id&quot;: &quot;luh&quot;&lt;br&gt;&quot;pw&quot;: &quot;1234&quot;&lt;br&gt;&quot;nickname&quot;: &quot;uihwan&quot;&lt;br&gt;&quot;state&quot;: &quot;2&quot;&lt;br&gt;&lt;div&gt;&quot;roomList&quot;: {&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &quot;roomID&quot;: &quot;&lt;font color=&quot;#0000ff&quot;&gt;&lt;b&gt;ObjectID(&#39;2&#39;)&lt;/b&gt;&lt;/font&gt;&quot;&lt;/div&gt;&lt;div&gt;&amp;nbsp; &amp;nbsp; &quot;roomID&quot;: &quot;ObjectID(&#39;3&#39;)&quot;&lt;/div&gt;&lt;div&gt;}&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="110" y="140" width="160" height="190" as="geometry" />
+        </mxCell>
+        <mxCell id="0sThwn4z5j0AIrrGIU3Z-4" value="&quot;_id&quot;: &quot;&lt;font color=&quot;#0000ff&quot;&gt;&lt;b&gt;ObjectID(&#39;2&#39;)&lt;/b&gt;&lt;/font&gt;&quot;&lt;br&gt;&quot;title&quot;: &quot;나만의 학습방&quot;&lt;br&gt;&quot;index&quot;: &quot;2&quot;&lt;br&gt;&quot;option&quot;: &quot;&lt;font color=&quot;#cc00cc&quot;&gt;&lt;b&gt;ObjectID(&#39;11&#39;)&lt;/b&gt;&lt;/font&gt;&quot;&lt;br&gt;&quot;log&quot;: [&lt;br&gt;&lt;span style=&quot;&quot;&gt;&lt;span style=&quot;&quot;&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&lt;/span&gt;&lt;/span&gt;{&quot;prompt&quot;: &quot;&lt;font color=&quot;#00cc00&quot;&gt;&lt;b&gt;ObjectID(&#39;111&#39;)&lt;/b&gt;&lt;/font&gt;&quot;, &quot;evaluation&quot;: &quot;&lt;font color=&quot;#6600cc&quot;&gt;&lt;b&gt;ObjectID(&#39;1111&#39;)&lt;/b&gt;&lt;/font&gt;&quot;},&lt;br&gt;&amp;nbsp; &amp;nbsp; {&quot;prompt&quot;: &quot;ObjectID(&#39;222&#39;)&quot;,&amp;nbsp;&quot;evaluation&quot;: &quot;ObjectID(&#39;2222&#39;)&quot;},&lt;br&gt;]" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="300" y="140" width="350" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="0sThwn4z5j0AIrrGIU3Z-5" value="&amp;lt;user&amp;gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="110" y="120" width="160" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="0sThwn4z5j0AIrrGIU3Z-6" value="&amp;lt;room&amp;gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="300" y="120" width="350" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="0sThwn4z5j0AIrrGIU3Z-7" value="&quot;_id&quot;: &quot;&lt;font color=&quot;#cc00cc&quot;&gt;&lt;b&gt;ObjectID(&#39;11&#39;)&lt;/b&gt;&lt;/font&gt;&quot;&lt;br&gt;&quot;interviewerCount&quot;: &quot;1&quot;&lt;br&gt;&quot;interviewerGender&quot;: &quot;1&quot;&lt;br&gt;&quot;interviewTime&quot;: &quot;6.0&quot;&lt;br&gt;&quot;interviewStyle&quot;: &quot;1&quot;&lt;br&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="710" y="140" width="160" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="0sThwn4z5j0AIrrGIU3Z-8" value="&amp;lt;option&amp;gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="710" y="120" width="160" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="0sThwn4z5j0AIrrGIU3Z-9" value="&quot;_id&quot;: &quot;&lt;font color=&quot;#00cc00&quot;&gt;&lt;b&gt;ObjectID(&#39;111&#39;)&lt;/b&gt;&lt;/font&gt;&quot;&lt;br&gt;&quot;quest&quot;: [&quot;Q1&quot;, &quot;Q2&quot;, &quot;Q3&quot;]&lt;br&gt;&quot;answer&quot;: [&quot;A1&quot;, &quot;A2, &quot;A3&quot;]&lt;br&gt;&quot;correct_answer&quot;: [&quot;C1, &quot;C2&quot;, C3&quot;]" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="300" y="310" width="210" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="0sThwn4z5j0AIrrGIU3Z-10" value="&amp;lt;prompt&amp;gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="300" y="290" width="210" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="0sThwn4z5j0AIrrGIU3Z-11" value="&quot;_id&quot;: &quot;&lt;font color=&quot;#6600cc&quot;&gt;&lt;b&gt;ObjectID(&#39;1111&#39;)&lt;/b&gt;&lt;/font&gt;&quot;&lt;br&gt;&quot;score&quot;: [&quot;70&quot;, &quot;50&quot;, &quot;10&quot;]&lt;br&gt;&quot;indicator&quot;: [&quot;good&quot;, &quot;not bad&quot;, &quot;bad&quot;]&lt;br&gt;&quot;goodPoint&quot;: &quot;...&quot;&lt;br&gt;&quot;badPoint&quot;: &quot;...&quot;&lt;br&gt;&quot;comment&quot;: [&quot;...&quot;, &quot;...&quot;, &quot;...&quot;]" style="rounded=0;whiteSpace=wrap;html=1;align=left;" vertex="1" parent="1">
+          <mxGeometry x="540" y="310" width="220" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="0sThwn4z5j0AIrrGIU3Z-12" value="&amp;lt;evaluation&amp;gt;" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeColor=none;" vertex="1" parent="1">
+          <mxGeometry x="540" y="290" width="220" height="20" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
