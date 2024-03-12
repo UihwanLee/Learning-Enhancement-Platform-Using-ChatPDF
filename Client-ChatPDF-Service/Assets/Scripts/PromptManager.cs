@@ -20,6 +20,9 @@ public class PromptManager : MonoBehaviour
     private TextMeshProUGUI promptGUI;
 
     [DllImport("__Internal")]
+    private static extern void StartInterview();
+
+    [DllImport("__Internal")]
     private static extern void SendAnswer(string answer);
 
     [DllImport("__Internal")]
@@ -29,6 +32,14 @@ public class PromptManager : MonoBehaviour
     void Start()
     {
         
+    }
+
+    public void StartInterviewUnity()
+    {
+        // 면접 시작
+#if UNITY_WEBGL == true && UNITY_EDITOR == false
+    StartInterview();
+#endif
     }
 
     public void ListenAgain()
