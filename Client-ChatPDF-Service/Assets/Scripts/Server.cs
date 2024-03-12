@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using TMPro;
 using UnityEngine;
 
 public class Server : MonoBehaviour
@@ -30,10 +31,18 @@ public class Server : MonoBehaviour
            - 사용자 데이터
            - room 데이터
         */
+        userNickName = string.Empty;
         interviewGender = 1;
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
     RequestData();
 #endif
+    }
+
+    public void SetUserNickName(string nickName)
+    {
+        userNickName = nickName;
+        TextMeshProUGUI nicknameText = GameObject.Find("NickName").GetComponent<TextMeshProUGUI>();
+        nicknameText.text = userNickName + "님의 학습 증진 서비스";
     }
 
     public void SaveRoomData(Room room)
@@ -68,5 +77,10 @@ public class Server : MonoBehaviour
     {
         // roomDataList 반환
         return roomDataList;
+    }
+
+    public string GetUserNickName() 
+    {  
+        return userNickName;
     }
 }

@@ -59,6 +59,9 @@ public class RoomManager : MonoBehaviour
         // Sever 초기화
         server = FindObjectOfType<Server>();
 
+        // User 닉네임 초기화
+        SetUserNickName();
+
         // 방 초기 생성
         if(server)
         {
@@ -71,6 +74,15 @@ public class RoomManager : MonoBehaviour
 
             // 방 정렬
             SortRoomByID();
+        }
+    }
+
+    private void SetUserNickName()
+    {
+        if(server)
+        {
+            TextMeshProUGUI nicknameText = GameObject.Find("NickName").GetComponent<TextMeshProUGUI>();
+            nicknameText.text = server.GetUserNickName() + System.Environment.NewLine + "님의 로비";
         }
     }
 
