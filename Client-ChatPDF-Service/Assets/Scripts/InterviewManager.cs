@@ -4,27 +4,27 @@ using UnityEngine;
 
 public class InterviewManager : MonoBehaviour
 {
-    // ÀÎÅÍºä ÇÁ¸®ÆÕ
+    // ï¿½ï¿½ï¿½Íºï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     [SerializeField]
     private GameObject[] interviewer;
 
-    // ÇöÀç ¸éÁ¢°ü ÇÁ¸®ÆÕ
+    // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     private GameObject currentInterviewer;
 
-    // ¼­¹ö Å¬·¡½º
+    // ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
     private Server server;
 
     // Start is called before the first frame update
     void Start()
     {
-        // Sever ÃÊ±âÈ­
+        // Sever ï¿½Ê±ï¿½È­
         server = FindObjectOfType<Server>();
 
         currentInterviewer = null;
 
         if (server)
         {
-            // ¸éÁ¢°ü »ý¼º
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             CreateInterviewer(server.GetInterViewGender());
         }
         else
@@ -35,7 +35,7 @@ public class InterviewManager : MonoBehaviour
 
     public void CreateInterviewer(int gender)
     {
-        // ÀÎÅÍºä ¿ÀºêÁ§Æ® »ý¼º ¹× ÃÊ±âÈ­
+        // ï¿½ï¿½ï¿½Íºï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ê±ï¿½È­
         currentInterviewer = Instantiate(interviewer[gender]);
     }
 }
