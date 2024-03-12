@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-03-12T04:27:49.395Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" etag="_E9bzAKleNsOEpNoxoyu" version="24.0.5" type="github" pages="8">
+<mxfile host="app.diagrams.net" modified="2024-03-12T04:28:35.883Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" etag="JpM08kkeGsoPwc908rse" version="24.0.5" type="github" pages="9">
   <diagram name="기술스택구성도" id="lxz3IJRdc6AnGWi2tXEg">
     <mxGraphModel dx="1434" dy="749" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -1383,6 +1383,514 @@
         </mxCell>
         <mxCell id="XEIt8EGrv_QR9WRJHDHe-91" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.99;entryY=0.034;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="XEIt8EGrv_QR9WRJHDHe-34" target="XEIt8EGrv_QR9WRJHDHe-57">
           <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram id="A7B6NMOcp-lFgMw4evxJ" name="Client 씬 구성도">
+    <mxGraphModel dx="1434" dy="749" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-1" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="41" width="2830" height="1419" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-2" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="80" y="110" width="290" height="1330" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-3" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="390" y="110" width="260" height="1330" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-4" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="670" y="110" width="2170" height="1330" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-5" value="0. Start" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="110" y="160" width="210" height="230" as="geometry">
+            <mxRectangle x="550" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-6" value="서비스 시작 화면.&#xa;로그인 인증이 되어야 시작된다." style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-5">
+          <mxGeometry y="26" width="210" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-7" value="Canvas" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-5">
+          <mxGeometry y="70" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-8" value="Image : BackGround" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-5">
+          <mxGeometry y="96" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-9" value="TextMeshProUGUI : TWelcomeTitle" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-5">
+          <mxGeometry y="122" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-10" value="Button : StartButton" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-5">
+          <mxGeometry y="148" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-11" value="Component" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-5">
+          <mxGeometry y="174" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-12" value="SceneManager" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-5">
+          <mxGeometry y="200" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-13" value="&lt;span style=&quot;font-size: 17px;&quot;&gt;&lt;b&gt;Client 구성도&lt;/b&gt;&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=default;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="70" y="70" width="570" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-14" value="1. Lobby" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="414" y="160" width="210" height="292" as="geometry">
+            <mxRectangle x="550" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-15" value="사용자 로비 화면.&#xa;로비에서 3가지 패널을 가지고 있다.&#xa; &lt;01. 학습 문서 패널&gt;&#xa; &lt;02. 면접 패널&gt;&#xa; &lt;03. 해설 패널&gt;" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-14">
+          <mxGeometry y="26" width="210" height="84" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-16" value="Canvas" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-14">
+          <mxGeometry y="110" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-17" value="Pannel : Document" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-14">
+          <mxGeometry y="136" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-18" value="Pannel : Interview" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-14">
+          <mxGeometry y="162" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-19" value="Pannel : Commentary" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-14">
+          <mxGeometry y="188" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-20" value="Component" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-14">
+          <mxGeometry y="214" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-21" value="Room" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-14">
+          <mxGeometry y="240" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-22" value="RoomManager" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-14">
+          <mxGeometry y="266" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-23" value="1.1 Document" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="720" y="160" width="210" height="292" as="geometry">
+            <mxRectangle x="550" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-24" value="&lt;학습 문서 패널&gt;&#xa;사용자가 문서를 학습 할 수 있는 곳.&#xa;기본적으로 4가지의 학습 카테고리가&#xa;지정되어 있으며 이를 &quot;학습방&quot;을 통해&#xa;학습을 진행 할 수 있다." style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-23">
+          <mxGeometry y="26" width="210" height="84" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-25" value="GameObject" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-23">
+          <mxGeometry y="110" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-26" value="Prefab : DocumentRoom" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-23">
+          <mxGeometry y="136" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-27" value="Canvas" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-23">
+          <mxGeometry y="162" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-28" value="Button : CreateCategory" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-23">
+          <mxGeometry y="188" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-29" value="Component" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-23">
+          <mxGeometry y="214" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-30" value="Room" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-23">
+          <mxGeometry y="240" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-31" value="RoomManager" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-23">
+          <mxGeometry y="266" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-32" value="1.2 InterView" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="720" y="510" width="210" height="280" as="geometry">
+            <mxRectangle x="550" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-33" value="&lt;면접 패널&gt;&#xa;사용자로 하여금 면접을 진행하는 곳.&#xa;학습 카테고리를 기준으로 &quot;면접방&quot;을&#xa;생성하여 면접을 진행 할 수 있다.&#xa;또한 사용자의 요구에 맞게 면접을&#xa;세팅할 수 있다." style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-32">
+          <mxGeometry y="26" width="210" height="94" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-34" value="GameObject" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-32">
+          <mxGeometry y="120" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-35" value="Prefab : InterviewRoom" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-32">
+          <mxGeometry y="146" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-36" value="Canvas" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-32">
+          <mxGeometry y="172" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-37" value="Button : CreateInterviewRoom" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-32">
+          <mxGeometry y="198" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-38" value="Component" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-32">
+          <mxGeometry y="224" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-39" value="RoomManager" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-32">
+          <mxGeometry y="250" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-40" value="1.2.1 CreateInterViewRoom" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1031" y="510" width="210" height="172" as="geometry">
+            <mxRectangle x="550" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-41" value="&lt;면접 방 생성&gt;&#xa;면접 방은 다음 2가지 세팅을 통해 &#xa;생성된다.&#xa;&#xa;1. Room Setting         : const&#xa;2. Interview Setting    : variable" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-40">
+          <mxGeometry y="26" width="210" height="94" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-42" value="Canvas" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-40">
+          <mxGeometry y="120" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-43" value="Pannel : RoomSetting " style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-40">
+          <mxGeometry y="146" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-44" value="1.2.1.1 RoomSetting" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1330" y="510" width="210" height="306" as="geometry">
+            <mxRectangle x="550" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-45" value="&lt;Room Setting&gt;&#xa;기본적으로 방 생성 시 설정하는 값.&#xa;방 생성 후에는 값을 변경 할 수 없다.&#xa;&#xa;[설정 목록]&#xa; - 방 제목&#xa; - 학습 카테고리&#xa; - 학습 목차" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-44">
+          <mxGeometry y="26" width="210" height="124" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-46" value="Canvas" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-44">
+          <mxGeometry y="150" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-47" value="TMP_InputField : Title" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-44">
+          <mxGeometry y="176" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-48" value="Button : Category" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-44">
+          <mxGeometry y="202" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-49" value="DropDown : Index" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-44">
+          <mxGeometry y="228" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-50" value="Button : Next" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-44">
+          <mxGeometry y="254" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-51" value="Button : Cancel" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-44">
+          <mxGeometry y="280" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-52" value="1.2.1.2 InterviewSetting" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1610" y="510" width="210" height="372" as="geometry">
+            <mxRectangle x="550" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-53" value="&lt;Interview Setting&gt;&#xa;면접 진행 시 사용자의 요구에 따라&#xa;설정 할 수 있는 값.&#xa;방 생성 이후에도 자유롭게 변경할 수&#xa;있다.&#xa;&#xa;[설정 목록]&#xa; - 면접관 수&#xa; - 면접관 성별&#xa; - 면접 대답 시간&#xa; - 면접 스타일" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-52">
+          <mxGeometry y="26" width="210" height="164" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-54" value="Canvas" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-52">
+          <mxGeometry y="190" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-55" value="Button : InterviewerCount" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-52">
+          <mxGeometry y="216" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-56" value="Button : InterviewerGender" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-52">
+          <mxGeometry y="242" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-57" value="DropDown : InterviewTimer" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-52">
+          <mxGeometry y="268" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-58" value="Button : InterviewStyle" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-52">
+          <mxGeometry y="294" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-59" value="Button : CreatRoom" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-52">
+          <mxGeometry y="320" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-60" value="Button : Cancel" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-52">
+          <mxGeometry y="346" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-61" value="1.2.2 Prefab_InterviewRoom" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1890" y="515" width="210" height="282" as="geometry">
+            <mxRectangle x="550" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-62" value="&lt;면접방 프리팹 오브젝트&gt;&#xa;면접 방 생성 시 만들어지는 prefab.&#xa;면접방을 들어갈 수 있는 매개체이며&#xa;진행/삭제/설정변경 기능이 있다." style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-61">
+          <mxGeometry y="26" width="210" height="74" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-63" value="Canvas" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-61">
+          <mxGeometry y="100" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-64" value="Button : StartInterview" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-61">
+          <mxGeometry y="126" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-65" value="Button : DestroyRoom" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-61">
+          <mxGeometry y="152" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-66" value="Button : ChangeOption" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-61">
+          <mxGeometry y="178" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-67" value="Component" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-61">
+          <mxGeometry y="204" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-68" value="Room" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-61">
+          <mxGeometry y="230" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-69" value="RoomData" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-61">
+          <mxGeometry y="256" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-70" value="2.2 InterviewRoom" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="2280" y="515" width="210" height="348" as="geometry">
+            <mxRectangle x="550" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-71" value="&lt;면접방&gt;&#xa;설정한 값으로 서버에서 ChatPDF API&#xa;와 Prompt를 주고 받으며 면접 진행.&#xa;&#xa;면접 진행 도중 상호작용에 의해&#xa;입력 된 모든 로그와 데이터는 서버에&#xa;저장한다." style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-70">
+          <mxGeometry y="26" width="210" height="114" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-72" value="Canvas" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-70">
+          <mxGeometry y="140" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-73" value="Button : Microphone" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-70">
+          <mxGeometry y="166" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-74" value="Button : Replay" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-70">
+          <mxGeometry y="192" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-75" value="Button : Subtitle" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-70">
+          <mxGeometry y="218" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-76" value="Button : Log" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-70">
+          <mxGeometry y="244" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-77" value="Component" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-70">
+          <mxGeometry y="270" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-78" value="ButtonManager" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-70">
+          <mxGeometry y="296" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-79" value="PromptManager" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-70">
+          <mxGeometry y="322" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-80" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.007;entryY=0.083;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="o-GeJyudOE4F_K8HZ_jj-37" target="o-GeJyudOE4F_K8HZ_jj-40">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="990" y="721" />
+              <mxPoint x="990" y="524" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-81" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.046;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="o-GeJyudOE4F_K8HZ_jj-43" target="o-GeJyudOE4F_K8HZ_jj-44">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-82" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.004;entryY=0.045;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="o-GeJyudOE4F_K8HZ_jj-50" target="o-GeJyudOE4F_K8HZ_jj-52">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-83" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.004;entryY=0.062;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="o-GeJyudOE4F_K8HZ_jj-59" target="o-GeJyudOE4F_K8HZ_jj-61">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-84" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.004;entryY=0.054;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="o-GeJyudOE4F_K8HZ_jj-64" target="o-GeJyudOE4F_K8HZ_jj-70">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-85" value="1.3 Commentary" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="720" y="940" width="210" height="234" as="geometry">
+            <mxRectangle x="550" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-86" value="&lt;해설 패널&gt;&#xa;면접에 대한 해설방을 들을 수 있는&#xa;패널.&#xa;&#xa;면접방이 끝나면 그 면접에 대한&#xa;해설방이 자동으로 생성된다.&#xa;&#xa;" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-85">
+          <mxGeometry y="26" width="210" height="104" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-87" value="GameObject" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-85">
+          <mxGeometry y="130" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-88" value="Prefab : CommentaryRoom" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-85">
+          <mxGeometry y="156" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-89" value="Component" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-85">
+          <mxGeometry y="182" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-90" value="RoomManager" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-85">
+          <mxGeometry y="208" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-91" value="2.3 CommentaryRoom" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="2280" y="940" width="210" height="340" as="geometry">
+            <mxRectangle x="550" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-92" value="&lt;해설방&gt;&#xa;면접이 모두 완료한 뒤 면접에 대한&#xa;해설을 들을 수 있는 방.&#xa;&#xa;[서비스 목록]&#xa; - 면접에 나온 질문에 대한 모법답안&#xa; - 면접 당시 답변에 대한 평가&#xa;     - 좋았던 점&#xa;     - 아쉬웠던 점&#xa;     - 종합 평가&#xa;&#xa;주의) 평가 O / 지표 X" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-91">
+          <mxGeometry y="26" width="210" height="184" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-93" value="Canvas" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-91">
+          <mxGeometry y="210" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-94" value="Pannel : ShowIndiactor" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-91">
+          <mxGeometry y="236" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-95" value="Component" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-91">
+          <mxGeometry y="262" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-96" value="ButtonManager" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-91">
+          <mxGeometry y="288" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-97" value="PromptManager" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-91">
+          <mxGeometry y="314" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-98" value="2.2.1 Log" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="2570" y="515" width="210" height="218" as="geometry">
+            <mxRectangle x="550" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-99" value="&lt;로그&gt;&#xa;사용자와 API 간의 주고받은 prompt를&#xa;메신저 형식처럼 나타낸 패널.&#xa;&#xa;또한 voice를 통한 상호작용을 못할 &#xa;환경 일 시 Text 기반 prompt를 보내기&#xa;위해 SendAnswer 기능을 제공한다." style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-98">
+          <mxGeometry y="26" width="210" height="114" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-100" value="Canvas" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-98">
+          <mxGeometry y="140" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-101" value="Pannel : Pannel_Log" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-98">
+          <mxGeometry y="166" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-102" value="Button : SendAnswer" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-98">
+          <mxGeometry y="192" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-103" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.001;entryY=0.086;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="o-GeJyudOE4F_K8HZ_jj-76" target="o-GeJyudOE4F_K8HZ_jj-98">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-104" value="2.2 DocumentRoom" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="2280" y="160" width="210" height="270" as="geometry">
+            <mxRectangle x="550" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-105" value="&lt;학습방&gt;&#xa;지정한 학습 카테고리 내에 학습 문서&#xa;를 학습 할 수 있는 방.&#xa;&#xa;서버에 저장된 pdf 문서에서 이미지&#xa;데이터를 화면에 표시에 학습을 진행&#xa;할 수 있도록 기능을 제공한다." style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-104">
+          <mxGeometry y="26" width="210" height="114" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-106" value="Canvas" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-104">
+          <mxGeometry y="140" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-107" value="Image : Background" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-104">
+          <mxGeometry y="166" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-108" value="Image[] : DocumentSlideBuffer" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-104">
+          <mxGeometry y="192" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-109" value="Component" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-104">
+          <mxGeometry y="218" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-110" value="RoomManager" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-104">
+          <mxGeometry y="244" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-111" value="1.1.1 CreateDocumentRoom" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1031" y="160" width="210" height="254" as="geometry">
+            <mxRectangle x="550" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-112" value="&lt;학습방 생성&gt;&#xa;사용자 지정의 학습 문서를 업로드해&#xa;학습 카테고리를 지정하고 학습할 &#xa;수 있다.&#xa;&#xa;[요구되는 데이터&#xa;1. 학습 문서 : .pdf&#xa;2. 학습 카테고리 : type" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-111">
+          <mxGeometry y="26" width="210" height="124" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-113" value="Canvas" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-111">
+          <mxGeometry y="150" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-114" value="Data : PDF_FILE" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-111">
+          <mxGeometry y="176" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-115" value="Button : CreatRoom" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-111">
+          <mxGeometry y="202" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-116" value="Button : Cancel" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-111">
+          <mxGeometry y="228" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-117" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.004;entryY=0.09;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="o-GeJyudOE4F_K8HZ_jj-28" target="o-GeJyudOE4F_K8HZ_jj-111">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-118" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.011;entryY=0.044;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="o-GeJyudOE4F_K8HZ_jj-88" target="o-GeJyudOE4F_K8HZ_jj-119">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="930" y="1109" as="sourcePoint" />
+            <mxPoint x="2282" y="957" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="990" y="1109" />
+              <mxPoint x="990" y="956" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-119" value="1.3.1 Prefab_CommentaryRoom" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1900" y="946" width="210" height="230" as="geometry">
+            <mxRectangle x="550" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-120" value="&lt;해설방 프리팹 오브젝트&gt;&#xa;해설방 생성 시 만들어지는 prefab.&#xa;해설방을 들어갈 수 있는 매개체이며&#xa;연결된 면접방 삭제 시 자동 삭제된다." style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-119">
+          <mxGeometry y="26" width="210" height="74" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-121" value="Canvas" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-119">
+          <mxGeometry y="100" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-122" value="Button : StartCommentary" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-119">
+          <mxGeometry y="126" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-123" value="Component" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-119">
+          <mxGeometry y="152" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-124" value="Room" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-119">
+          <mxGeometry y="178" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-125" value="RoomData" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-119">
+          <mxGeometry y="204" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-126" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.006;entryY=0.041;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="o-GeJyudOE4F_K8HZ_jj-122" target="o-GeJyudOE4F_K8HZ_jj-91">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-127" value="1.3.1 Prefab_DocumentRoom" style="swimlane;fontStyle=0;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeLast=0;collapsible=1;marginBottom=0;rounded=0;shadow=0;strokeWidth=1;fillColor=#647687;strokeColor=#314354;fontColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="1890" y="160" width="210" height="230" as="geometry">
+            <mxRectangle x="550" y="140" width="160" height="26" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-128" value="&lt;학습방 프리팹 오브젝트&gt;&#xa;학습방 생성 시 만들어지는 prefab.&#xa;학습방을 들어갈 수 있는 매개체이며&#xa;진행 기능이 있다." style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-127">
+          <mxGeometry y="26" width="210" height="74" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-129" value="Canvas" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-127">
+          <mxGeometry y="100" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-130" value="Button : StartDocument" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-127">
+          <mxGeometry y="126" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-131" value="Component" style="text;align=center;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;rounded=0;shadow=0;html=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-127">
+          <mxGeometry y="152" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-132" value="Room" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-127">
+          <mxGeometry y="178" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-133" value="RoomData" style="text;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="o-GeJyudOE4F_K8HZ_jj-127">
+          <mxGeometry y="204" width="210" height="26" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-134" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.012;entryY=0.059;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="o-GeJyudOE4F_K8HZ_jj-130" target="o-GeJyudOE4F_K8HZ_jj-104">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-135" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.013;entryY=0.053;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="o-GeJyudOE4F_K8HZ_jj-115" target="o-GeJyudOE4F_K8HZ_jj-127">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1280" y="375" />
+              <mxPoint x="1280" y="172" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-136" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.005;entryY=0.059;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="o-GeJyudOE4F_K8HZ_jj-17" target="o-GeJyudOE4F_K8HZ_jj-23">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-137" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=-0.003;entryY=0.081;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="o-GeJyudOE4F_K8HZ_jj-18" target="o-GeJyudOE4F_K8HZ_jj-32">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-138" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="o-GeJyudOE4F_K8HZ_jj-19">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="720" y="960" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="650" y="361" />
+              <mxPoint x="650" y="960" />
+              <mxPoint x="720" y="960" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-139" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0.006;entryY=0.061;entryDx=0;entryDy=0;entryPerimeter=0;" edge="1" parent="1" source="o-GeJyudOE4F_K8HZ_jj-10" target="o-GeJyudOE4F_K8HZ_jj-14">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-140" value="&lt;b&gt;&lt;font style=&quot;font-size: 24px;&quot;&gt;시작 화면&lt;/font&gt;&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#dae8fc;" vertex="1" parent="1">
+          <mxGeometry x="155" y="1370" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-141" value="&lt;b&gt;&lt;font style=&quot;font-size: 24px;&quot;&gt;방&lt;/font&gt;&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#f8cecc;" vertex="1" parent="1">
+          <mxGeometry x="1695" y="1370" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-142" value="&lt;b&gt;&lt;font style=&quot;font-size: 24px;&quot;&gt;로비&lt;/font&gt;&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#d5e8d4;" vertex="1" parent="1">
+          <mxGeometry x="450" y="1370" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-143" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeWidth=5;" vertex="1" parent="1">
+          <mxGeometry x="690" y="140" width="2120" height="322" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-144" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeWidth=5;" vertex="1" parent="1">
+          <mxGeometry x="690" y="494" width="2120" height="416" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-145" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeWidth=5;" vertex="1" parent="1">
+          <mxGeometry x="690" y="930" width="2120" height="416" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-146" value="&lt;b&gt;&lt;font style=&quot;font-size: 24px;&quot;&gt;학습방&lt;/font&gt;&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#f8cecc;" vertex="1" parent="1">
+          <mxGeometry x="2600" y="370" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-147" value="&lt;b&gt;&lt;font style=&quot;font-size: 24px;&quot;&gt;면접방&lt;/font&gt;&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#f8cecc;" vertex="1" parent="1">
+          <mxGeometry x="2615" y="830" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="o-GeJyudOE4F_K8HZ_jj-148" value="&lt;b&gt;&lt;font style=&quot;font-size: 24px;&quot;&gt;평가방&lt;/font&gt;&lt;/b&gt;" style="rounded=0;whiteSpace=wrap;html=1;strokeColor=none;fillColor=#f8cecc;" vertex="1" parent="1">
+          <mxGeometry x="2630" y="1260" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
