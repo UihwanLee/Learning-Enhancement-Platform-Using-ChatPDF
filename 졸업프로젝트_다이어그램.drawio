@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2024-03-12T04:26:04.517Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" etag="Uec_vWsxAhXbda83a7jz" version="24.0.5" type="github" pages="6">
+<mxfile host="app.diagrams.net" modified="2024-03-12T04:26:32.327Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36" etag="Ah7xnrvddOdhlhvzOtDc" version="24.0.5" type="github" pages="6">
   <diagram name="기술스택구성도" id="lxz3IJRdc6AnGWi2tXEg">
     <mxGraphModel dx="1434" dy="749" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
@@ -992,11 +992,59 @@
       </root>
     </mxGraphModel>
   </diagram>
-  <diagram id="oaehDBbVt5WJRs68RkD7" name="페이지-6">
+  <diagram id="oaehDBbVt5WJRs68RkD7" name="web 로직">
     <mxGraphModel dx="1434" dy="749" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
+        <mxCell id="g9bc3_sfvitGaqAs9TxQ-1" value="" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="40" y="50" width="770" height="400" as="geometry" />
+        </mxCell>
+        <mxCell id="g9bc3_sfvitGaqAs9TxQ-2" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeWidth=3;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="90" y="151.25" width="550" height="97.5" as="geometry" />
+        </mxCell>
+        <mxCell id="g9bc3_sfvitGaqAs9TxQ-3" value="&lt;span style=&quot;font-size: 17px;&quot;&gt;&lt;b&gt;Web 알고리즘 로직&lt;/b&gt;&lt;/span&gt;" style="text;html=1;strokeColor=none;fillColor=default;align=left;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="70" y="70" width="570" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="g9bc3_sfvitGaqAs9TxQ-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="g9bc3_sfvitGaqAs9TxQ-5" target="g9bc3_sfvitGaqAs9TxQ-7">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="g9bc3_sfvitGaqAs9TxQ-5" value="웹 시작 페이지" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="110" y="175" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="g9bc3_sfvitGaqAs9TxQ-6" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="g9bc3_sfvitGaqAs9TxQ-7" target="g9bc3_sfvitGaqAs9TxQ-8">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="g9bc3_sfvitGaqAs9TxQ-7" value="로그인 페이지" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="294" y="175" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="g9bc3_sfvitGaqAs9TxQ-8" value="서비스 페이지" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="175" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="g9bc3_sfvitGaqAs9TxQ-9" value="&lt;b&gt;&amp;nbsp;Web-Client&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=default;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="120" y="140" width="110" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="g9bc3_sfvitGaqAs9TxQ-10" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeWidth=3;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="90" y="290" width="550" height="97.5" as="geometry" />
+        </mxCell>
+        <mxCell id="g9bc3_sfvitGaqAs9TxQ-11" value="&lt;b&gt;&amp;nbsp;Web-나의 페이지&lt;/b&gt;" style="text;html=1;strokeColor=none;fillColor=default;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="115" y="280" width="135" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="g9bc3_sfvitGaqAs9TxQ-12" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="g9bc3_sfvitGaqAs9TxQ-13" target="g9bc3_sfvitGaqAs9TxQ-15">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="g9bc3_sfvitGaqAs9TxQ-13" value="웹 시작 페이지" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="115" y="320" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="g9bc3_sfvitGaqAs9TxQ-14" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;" edge="1" parent="1" source="g9bc3_sfvitGaqAs9TxQ-15" target="g9bc3_sfvitGaqAs9TxQ-16">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="g9bc3_sfvitGaqAs9TxQ-15" value="로그인 페이지" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="295" y="320" width="120" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="g9bc3_sfvitGaqAs9TxQ-16" value="나의 페이지" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="480" y="320" width="120" height="50" as="geometry" />
+        </mxCell>
       </root>
     </mxGraphModel>
   </diagram>
