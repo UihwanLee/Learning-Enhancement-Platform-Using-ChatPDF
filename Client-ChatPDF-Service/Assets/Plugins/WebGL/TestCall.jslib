@@ -5,7 +5,7 @@ mergeInto(LibraryManager.library, {
   StartInterview: function () {
     window.dispatchReactUnityEvent("StartInterview");
   },
-  SendRoomData: function (roomData) {
+  SendInterviewRoomData: function (roomData) {
     window.dispatchReactUnityEvent("SendRoomData", UTF8ToString(roomData));
   },
   SendAnswer: function (answer) {

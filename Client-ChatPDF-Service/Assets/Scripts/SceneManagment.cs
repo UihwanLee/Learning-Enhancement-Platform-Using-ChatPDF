@@ -19,7 +19,12 @@ public class SceneManagment : MonoBehaviour
         SceneManager.LoadScene(1);
     }
 
-    public void LoadRoom(int interviewGender)
+    public void LoadStudyRoom(string titlePDF)
+    {
+
+    }
+
+    public void LoadInterviewRoom(int interviewGender)
     {
         // Room 이동 전 성별 설정
         if(server) server.SetInterViewGender(interviewGender);

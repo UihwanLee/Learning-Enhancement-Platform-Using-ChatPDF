@@ -8,6 +8,14 @@ using Image = UnityEngine.UI.Image;
 
 public class UIManager : MonoBehaviour
 {
+    [Header("Room Pannel")]
+    [SerializeField]
+    private GameObject[] roomPannels;
+    [SerializeField]
+    private TextMeshProUGUI[] roomPannelButtons;
+    [SerializeField]
+    private int[] roomPannelsClicked;
+
     [Header("Setting")]
     [SerializeField]
     private GameObject roomSetting;
@@ -36,11 +44,17 @@ public class UIManager : MonoBehaviour
 
     [Header("Manager")]
     [SerializeField]
-    private RoomManager roomManager;
+    private StudyRoomManager studyRoomManager;
+    [SerializeField]
+    private InterviewRoomManager interviewRoomManager;
 
     // Start is called before the first frame update
     void Start()
     {
+        // room panel 변수 초기화
+        roomPannelsClicked = new int[roomPannelButtons.Length];
+        roomPannelsClicked[0] = 1;
+
         // Setting Variable 초기화
         roomSettingClicked = 1;
         promptSettingClicked = 0;
@@ -49,68 +63,101 @@ public class UIManager : MonoBehaviour
         settingButtonCliked = new int[settingsButtons.Count];
     }
 
-    private int CheckSettingClicked(TextMeshProUGUI setting)
+    private int CheckButtonClicked(TextMeshProUGUI button)
     {
         // 클릭한 상태인지 체크
-        if (setting.gameObject.name == roomSettingButton.gameObject.name)
+        if (button.gameObject.name == roomSettingButton.gameObject.name)
         {
             return roomSettingClicked;
         }
-        else
+        else if (button.gameObject.name == promptSettingButton.gameObject.name)
         {
             return promptSettingClicked;
         }
+        else
+        {
+            // Room Pannel 상태 반환
+            for(int i=0; i< roomPannelButtons.Length; i++)
+            {
+                if (button.gameObject.name == roomPannelButtons[i].name)
+                {
+                    return roomPannelsClicked[i];
+                }
+            }
+
+            return 1;
+        }
     }
 
-    public void EnterSetting(TextMeshProUGUI setting)
+    public void EnterButton(TextMeshProUGUI button)
     {
-        if (CheckSettingClicked(setting) == 1) return;
+        if (CheckButtonClicked(button) == 1) return;
 
         // 텍스트 활성화
         ColorUtility.TryParseHtmlString(highlightedColor, out changeColor);
-        setting.color = changeColor;
+        button.color = changeColor;
     }
 
-    public void ExitSetting(TextMeshProUGUI setting)
+    public void ExitButton(TextMeshProUGUI button)
     {
-        if (CheckSettingClicked(setting) == 1) return;
+        if (CheckButtonClicked(button) == 1) return;
 
         // 텍스트 비활성화
         ColorUtility.TryParseHtmlString(baseColor, out changeColor);
-        setting.color = changeColor;
+        button.color = changeColor;
     }
 
-    public void ClickRoomSetting()
+    public void ClickButton(TextMeshProUGUI button)
     {
-        // RoomSetting 패널로 전환
-        roomSettingClicked = 1;
-        promptSettingClicked = 0;
-        roomSetting.SetActive(true);
-        promptSetting.SetActive(false);
+        if (button.gameObject.name == roomSettingButton.gameObject.name)
+        {
+            // RoomSetting 패널로 전환
+            roomSettingClicked = 1;
+            promptSettingClicked = 0;
+            roomSetting.SetActive(true);
+            promptSetting.SetActive(false);
 
-        ColorUtility.TryParseHtmlString(highlightedColor, out changeColor);
-        roomSettingButton.color = changeColor;
+            ColorUtility.TryParseHtmlString(highlightedColor, out changeColor);
+            roomSettingButton.color = changeColor;
 
-        ColorUtility.TryParseHtmlString(baseColor, out changeColor);
-        promptSettingButton.color = changeColor;
+            ColorUtility.TryParseHtmlString(baseColor, out changeColor);
+            promptSettingButton.color = changeColor;
+        }
+        else if (button.gameObject.name == promptSettingButton.gameObject.name)
+        {
+            // PromptSetting 패널로 전환
+            roomSettingClicked = 0;
+            promptSettingClicked = 1;
+            roomSetting.SetActive(false);
+            promptSetting.SetActive(true);
+
+            ColorUtility.TryParseHtmlString(baseColor, out changeColor);
+            roomSettingButton.color = changeColor;
+
+            ColorUtility.TryParseHtmlString(highlightedColor, out changeColor);
+            promptSettingButton.color = changeColor;
+        }
+        else
+        {
+            for (int i = 0; i < roomPannels.Length; i++)
+            {
+                ColorUtility.TryParseHtmlString(baseColor, out changeColor);
+                bool active = false;
+                int clicked = 0;
+                if (button.gameObject.name == roomPannelButtons[i].gameObject.name)
+                {
+                    clicked = 1;
+                    ColorUtility.TryParseHtmlString(highlightedColor, out changeColor);
+                    active = true;
+                }
+                roomPannelButtons[i].color = changeColor;
+                roomPannels[i].gameObject.SetActive(active);
+                roomPannelsClicked[i] = clicked;
+            }
+        }
     }
 
-    public void ClickPromptSetting()
-    {
-        // PromptSetting 패널로 전환
-        roomSettingClicked = 0;
-        promptSettingClicked = 1;
-        roomSetting.SetActive(false);
-        promptSetting.SetActive(true);
-
-        ColorUtility.TryParseHtmlString(baseColor, out changeColor);
-        roomSettingButton.color = changeColor;
-
-        ColorUtility.TryParseHtmlString(highlightedColor, out changeColor);
-        promptSettingButton.color = changeColor;
-    }
-
-    public void SetRecommandSprite()
+    public void SetRecommandState()
     {
         // Category / PromptSetting Recommand Sprite로 변환
         ClickSettingButton(0);  // Category
@@ -118,6 +165,9 @@ public class UIManager : MonoBehaviour
         ClickSettingButton(7);  // InterviewerGender
         ClickSettingButton(8);  // InterviewTime
         ClickSettingButton(12);  // InterviewStyle
+
+        // 초기 roomSetting 패널로 세팅
+        ClickButton(roomSettingButton);
     }
 
     public void EnterSettingButton(int id)
@@ -196,16 +246,29 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void SortDropdown(TMP_Dropdown select)
+    public void SortStudyRoom(TMP_Dropdown select)
+    {
+        // Dropdown value에 맞게 정렬
+        switch (select.value)
+        {
+            case 0:
+                studyRoomManager.SortRoomByID();
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void SortInterviewRoom(TMP_Dropdown select)
     {
         // Dropdown value에 맞게 정렬
         switch(select.value)
         {
             case 0:
-                roomManager.SortRoomByID();
+                interviewRoomManager.SortRoomByID();
                 break;
             case 1:
-                roomManager.SortRoomByCategory();
+                interviewRoomManager.SortRoomByCategory();
                 break;
             default:
                 break;

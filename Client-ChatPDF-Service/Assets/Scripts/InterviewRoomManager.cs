@@ -6,18 +6,18 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using static Unity.VisualScripting.Metadata;
 
-public class RoomManager : MonoBehaviour
+public class InterviewRoomManager : MonoBehaviour
 {
-    [Header("Room")]
-    // Room 생성될 부모 오브젝트
+    [Header("InterviewRoom")]
+    // InterviewRoom 생성될 부모 오브젝트
     [SerializeField]
     private GameObject parent;
 
-    // Room 프리팹
+    // InterviewRoom 프리팹
     [SerializeField]
     private GameObject prefab;
 
-    // Room 전체를 관리할 RoomList
+    // InterviewRoom 전체를 관리할 RoomList
     [SerializeField]
     private List<GameObject> roomList = new List<GameObject>();
 
@@ -40,8 +40,8 @@ public class RoomManager : MonoBehaviour
     private int interviewStyle;
     private float interviewTime;
 
-    // Room
-    private RoomData newRoom;
+    // InterviewRoom
+    public InterviewRoom newRoom;
     private List<string> roomDataList;
 
     [Header("Manager")]
@@ -65,7 +65,8 @@ public class RoomManager : MonoBehaviour
         // 방 초기 생성
         if(server)
         {
-            roomDataList = server.GetRoomDataList();
+            newRoom = new InterviewRoom();
+            roomDataList = server.GetInterviewRoomDataList();
 
             foreach(string roomData in roomDataList)
             {
@@ -97,7 +98,7 @@ public class RoomManager : MonoBehaviour
         SetInterviewTime(60.0f);
         SetInterviewStyle(0);
 
-        uiManager.SetRecommandSprite();
+        uiManager.SetRecommandState();
     }
 
     public void InitTitle()
@@ -172,29 +173,29 @@ public class RoomManager : MonoBehaviour
     private void InitCreateRoom(string roomData)
     {
         // 초기 방 생성 
-        newRoom = JsonUtility.FromJson<RoomData>(roomData);
+        JsonUtility.FromJsonOverwrite(roomData, newRoom);
 
         var roomObj = Instantiate(prefab, parent.transform) as GameObject;
 
         // Room Setting 적용
-        var room = roomObj.GetComponent<Room>();
-        room.roomData.id = newRoom.id;
-        room.roomData.title = newRoom.title;
-        room.roomData.category = newRoom.category;
-        room.roomData.index = newRoom.index;
+        var room = roomObj.GetComponent<InterviewRoom>();
+        room.id = newRoom.id;
+        room.title = newRoom.title;
+        room.category = newRoom.category;
+        room.index = newRoom.index;
 
-        room.roomData.interviewerCount = newRoom.interviewerCount;
-        room.roomData.interviewerGender = newRoom.interviewerGender;
-        room.roomData.interviewTime = newRoom.interviewTime;
-        room.roomData.interviewStyle = newRoom.interviewStyle;
+        room.interviewerCount = newRoom.interviewerCount;
+        room.interviewerGender = newRoom.interviewerGender;
+        room.interviewTime = newRoom.interviewTime;
+        room.interviewStyle = newRoom.interviewStyle;
 
         roomList.Add(roomObj);
 
         // UI 방 목록 생성
-        string roomTitle = "<size=36>" + room.roomData.title + "|</size> " + " <size=20>" + room.roomData.category + " | " + room.roomData.index + "</size>";
+        string roomTitle = "<size=36>" + room.title + "|</size> " + " <size=20>" + room.category + " | " + room.index + "</size>";
         room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
-        room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => sceneManager.LoadRoom(room.roomData.interviewerGender));
-        room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() => DestroyRoom(room.roomData.id));
+        room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => sceneManager.LoadInterviewRoom(room.interviewerGender));
+        room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() => DestroyRoom(room.id));
     }
 
     public void CreateRoom()
@@ -206,29 +207,29 @@ public class RoomManager : MonoBehaviour
         SetTitle();
 
         // Room Setting 적용
-        var room = roomObj.GetComponent<Room>();
-        room.roomData.id = roomList.Count;
-        room.roomData.title = this.title;
-        room.roomData.category = this.category;
-        room.roomData.index = this.index;
+        var room = roomObj.GetComponent<InterviewRoom>();
+        room.id = roomList.Count;
+        room.title = this.title;
+        room.category = this.category;
+        room.index = this.index;
 
-        room.roomData.interviewerCount = this.interviewerCount;
-        room.roomData.interviewerGender = this.interviewerGender;
-        room.roomData.interviewTime = this.interviewTime;
-        room.roomData.interviewStyle = this.interviewStyle;
+        room.interviewerCount = this.interviewerCount;
+        room.interviewerGender = this.interviewerGender;
+        room.interviewTime = this.interviewTime;
+        room.interviewStyle = this.interviewStyle;
 
         roomList.Add(roomObj);
 
         // UI 방 목록 생성
-        string roomTitle = "<size=36>" + room.roomData.title + "|</size> " + " <size=20>" + room.roomData.category + " | " + room.roomData.index + "</size>" ;
+        string roomTitle = "<size=36>" + room.title + "|</size> " + " <size=20>" + room.category + " | " + room.index + "</size>" ;
         room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
-        room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(()=> sceneManager.LoadRoom(room.roomData.interviewerGender));
-        room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(()=> DestroyRoom(room.roomData.id));
+        room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(()=> sceneManager.LoadInterviewRoom(room.interviewerGender));
+        room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(()=> DestroyRoom(room.id));
 
         // Room Data 저장
         if (server)
         {
-            server.SaveRoomData(room);
+            server.SaveInterviewRoomData(room);
         }
 
         SortRoomByID();
@@ -238,11 +239,11 @@ public class RoomManager : MonoBehaviour
     {
         // ID 순대로 방 정렬(생성된 순으로 정렬)
         roomList.Sort((a, b) => {
-            Room roomA = a.GetComponent<Room>();
-            Room roomB = b.GetComponent<Room>();
+            InterviewRoom roomA = a.GetComponent<InterviewRoom>();
+            InterviewRoom roomB = b.GetComponent<InterviewRoom>();
             if (roomA != null && roomB != null)
             {
-                return roomB.roomData.id.CompareTo(roomA.roomData.id);
+                return roomB.id.CompareTo(roomA.id);
             }
             else
             {
@@ -261,11 +262,11 @@ public class RoomManager : MonoBehaviour
     {
         // 카테고리 순대로 방 정렬(생성된 순으로 정렬)
         roomList.Sort((a, b) => {
-            Room roomA = a.GetComponent<Room>();
-            Room roomB = b.GetComponent<Room>();
+            InterviewRoom roomA = a.GetComponent<InterviewRoom>();
+            InterviewRoom roomB = b.GetComponent<InterviewRoom>();
             if (roomA != null && roomB != null)
             {
-                return roomB.roomData.category.CompareTo(roomA.roomData.category);
+                return roomB.category.CompareTo(roomA.category);
             }
             else
             {
