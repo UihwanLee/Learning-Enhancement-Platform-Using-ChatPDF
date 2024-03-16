@@ -1,5 +1,5 @@
 const axios = require("axios");
-const { chatPDF } = require('./chatPDF');
+const { chatPDF } = require('../utils/chatPDF');
 const express = require('express');
 const app = express();
 app.set('view engine', 'ejs')
@@ -10,6 +10,8 @@ const cors = require("cors");
 app.use(cors());
 
 const { MongoClient } = require('mongodb')
+
+
 
 let db
 const url = process.env.MONGODB_KEY;
@@ -226,6 +228,47 @@ app.post('/api/sendAnswer', async (req, res) => {
     );
     
   
+});
+
+app.get('/test', async (req, res) => {
+  
+  await db.room.aggregate([
+    {
+      $match: {
+        "_id": ObjectId("2")
+      }
+    },
+    {
+      $lookup: {
+        from: "prompt",
+        localField: "log.prompt",
+        foreignField: "_id",
+        as: "promptInfo"
+      }
+    },
+    {
+      $unwind: "$log"
+    },
+    {
+      $lookup: {
+        from: "evaluation",
+        localField: "log.evaluation",
+        foreignField: "_id",
+        as: "evaluationInfo"
+      }
+    },
+    {
+      $unwind: "$evaluationInfo"
+    },
+    {
+      $project: {
+        _id: 1,
+        title: 1,
+        promptInfo: 1,
+        evaluationInfo: 1
+      }
+    }
+  ])
 });
 
 
