@@ -2,7 +2,10 @@ mergeInto(LibraryManager.library, {
   RequestData: function () {
     window.dispatchReactUnityEvent("RequestData");
   },
-  SendRoomData: function (roomData) {
+  StartInterview: function () {
+    window.dispatchReactUnityEvent("StartInterview");
+  },
+  SendInterviewRoomData: function (roomData) {
     window.dispatchReactUnityEvent("SendRoomData", UTF8ToString(roomData));
   },
   SendAnswer: function (answer) {

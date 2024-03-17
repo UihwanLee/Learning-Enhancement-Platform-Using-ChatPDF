@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using TMPro;
 using UnityEngine;
 
 public class Server : MonoBehaviour
@@ -9,11 +10,11 @@ public class Server : MonoBehaviour
     private static extern void RequestData();
 
     [DllImport("__Internal")]
-    private static extern void SendRoomData(string roomData);
+    private static extern void SendInterviewRoomData(string roomData);
 
     // Server에서 관리할 객체
     private string userNickName;
-    private List<string> roomDataList = new List<string>();
+    private List<string> interviewRoomDataList = new List<string>();
     private int interviewGender;
 
     private void Awake()
@@ -30,18 +31,27 @@ public class Server : MonoBehaviour
            - 사용자 데이터
            - room 데이터
         */
+        userNickName = string.Empty;
         interviewGender = 1;
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
     RequestData();
 #endif
     }
 
-    public void SaveRoomData(Room room)
+    public void SetUserNickName(string nickName)
+    {
+        userNickName = nickName;
+        TextMeshProUGUI nicknameText = GameObject.Find("NickName").GetComponent<TextMeshProUGUI>();
+        nicknameText.text = userNickName + "님의 학습 증진 서비스";
+    }
+
+    public void SaveInterviewRoomData(InterviewRoom room)
     {
         // Room Data를 JSON 형식으로 변환하여 서버에 저장
+        string roomData = JsonUtility.ToJson(room);
+        LoadInterviewRoomData(roomData);
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
-    string roomData = JsonUtility.ToJson(room.roomData);
-    SendRoomData(roomData);
+    SendInterviewRoomData(roomData);
 #endif
     }
 
@@ -57,15 +67,20 @@ public class Server : MonoBehaviour
         userNickName = nickname;
     }
 
-    public void LoadRoomData(string roomData)
+    public void LoadInterviewRoomData(string roomData)
     {
         // roomData JSON 데이터 저장
-        roomDataList.Add(roomData);
+        interviewRoomDataList.Add(roomData);
     }
 
-    public List<string> GetRoomDataList()
+    public List<string> GetInterviewRoomDataList()
     {
         // roomDataList 반환
-        return roomDataList;
+        return interviewRoomDataList;
+    }
+
+    public string GetUserNickName() 
+    {  
+        return userNickName;
     }
 }
