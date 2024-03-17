@@ -34,10 +34,11 @@ function Service() {
   // Server 데이터 받기
   const RequestData = useCallback(() =>{
     console.log("데이터 요청받음!");
-
+    
     // Scene 상태 보내기
 
     // USER Nickname 데이터 보내기
+    sendRoomdataToServer();
 
     // ROOM DATA 보내기
     for(let i=0; i<roomList.length; i++)
@@ -49,11 +50,27 @@ function Service() {
 
   });
 
+  // roomdata 서버로 send
+  const sendRoomdataToServer = async (roomData) => {
+    try {
+      const response = await axios.post('http://localhost:3001/room/RoomData', {
+        roomData: roomData
+      });
+      
+      console.log('Server response:', response.data);
+    } catch (error) {
+      console.error('Error sending answer:', error);
+    }
+  };
+
   // Room Data 저장
   const SaveRoomData = useCallback((roomData) =>{
     // RoomDataList에 roomData JSON 정보 저장
+    console.log(roomData);
+    sendRoomdataToServer(roomData);
     setRoomList(...roomList, roomData);
   });
+
  
   // TTS 기능 
   const {
