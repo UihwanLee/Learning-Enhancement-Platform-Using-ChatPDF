@@ -17,7 +17,7 @@ export async function populateVoiceList(synth) {
   }
 }
 
-export async function speak(textToRead, setVoice, synth) {
+export async function speak(textToRead, synth) {
   if (speechSynthesis.onvoiceschanged !== undefined) {
       speechSynthesis.onvoiceschanged = () => populateVoiceList;
   }

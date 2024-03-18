@@ -18,9 +18,11 @@ function Service() {
   const [answer, setAnswer] = useState("Answer");
 
   // 리스트 형태의 roomData
-  const [roomList, setRoomList] = useState([""]);
-
-  // 
+  const [roomList, setRoomList] = useState([]);
+  // 질문 배열
+  const [questions, setQuestions] = useState([]);
+  const [idx, setIdx] = useState(0);
+  
 
   // react-unity-package 설정
   const { unityProvider, sendMessage, addEventListener, removeEventListener } =
@@ -34,11 +36,13 @@ function Service() {
   // Server 데이터 받기
   const RequestData = useCallback(() =>{
     console.log("데이터 요청받음!");
+    // roomlist 초기화
     
+
     // Scene 상태 보내기
 
     // USER Nickname 데이터 보내기
-    sendRoomdataToServer();
+    //sendRoomdataToServer();
 
     // ROOM DATA 보내기
     for(let i=0; i<roomList.length; i++)
@@ -64,13 +68,14 @@ function Service() {
   };
 
   // Room Data 저장
+  // 방 생성 누르면 호출
   const SaveRoomData = useCallback((roomData) =>{
     // RoomDataList에 roomData JSON 정보 저장
     console.log(roomData);
     sendRoomdataToServer(roomData);
-    setRoomList(...roomList, roomData);
   });
 
+  
  
   // TTS 기능 
   const {
@@ -84,33 +89,41 @@ function Service() {
   const startListening = () => SpeechRecognition.startListening({ continuous: true });
   const stopListening = () => SpeechRecognition.stopListening();
 
+  useEffect(() => {
+    if(idx < questions.length){
+      setQuestion(questions[idx]);
+    } else{
+      setQuestion("더 이상 질문이 없습니다.");
+    }
+  }, [idx]);
+
   // 사용자의 answer 받기
   // send 눌렀을 때 호출 -> send 누르면 text(answer) 서버에 보냄
   const ReceiveAnswer = useCallback((answer) => {
-    setAnswer(answer);
-    sendAnswerToServer(answer);
+    if(idx < question.length){
+      setAnswer(answer);
+      sendAnswerToServer(answer);
+      setIdx(prevIdx => prevIdx + 1);
+    }  
   }, [answer]);
+  
+  
 
   const sendAnswerToServer = async (answer) => {
     try {
-      // Axios를 사용하여 Node.js 서버로 POST 요청을 보냅니다.
-      const response = await axios.post('http://localhost:3001/api/sendAnswer', {
-        // 보낼 데이터를 객체 형태로 전달
+      const response = await axios.post('http://localhost:3001/prompt/sendAnswer', {
         answer: answer, 
       });
-
-      // 서버에서 받은 응답을 출력합니다.
-      console.log('Server response:', response.data);
+      
     } catch (error) {
       console.error('Error sending answer:', error);
     }
   };
 
-
   // API 질문 다시 듣기
   const ReplayQuestion = useCallback(() =>{
     const voices = populateVoiceList(window.speechSynthesis)
-    speak(question, voices[3], window.speechSynthesis)
+    speak(question, window.speechSynthesis)
   });
 
   // Unity->React 사용자의 answer 보내기
@@ -162,8 +175,8 @@ function Service() {
   }
 
   // API 질문 다시 듣기
-  const StopSTT = useCallback(async () =>{
-    await setAnswer(transcript);
+  const StopSTT = useCallback(() =>{
+    setAnswer(transcript);
     sendAnswerToServer(transcript);
     stopListening();
   });
@@ -184,18 +197,44 @@ function Service() {
     };
   }, [addEventListener, removeEventListener, StopSTT])
 
+  // 면접 시작 버튼 클릭 이벤트 호출 구현
+  const StartInterview = useCallback(() =>{
+    axios.get('http://localhost:3001/prompt/getQuestions')
+      .then(response => {
+        setQuestions(response.data);
+        console.log("questions: ", response.data);
+        setQuestion(response.data[0]);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+    //질문 말하고 Subtitle로 전송
+    //speak(question, window.speechSynthesis);
+    SendQuestion();
+  });
+
+
+
+
+  // unity -> react, 면접 시작 버튼 클릭 이벤트 호출
+  useEffect(() => {
+    addEventListener("StartInterview", StartInterview);
+    return () => {
+      addEventListener("StartInterview", StartInterview);
+    };
+  }, [addEventListener, removeEventListener, StartInterview])
+
+  
+
   function ListenAnswer() {
     const voices = populateVoiceList(window.speechSynthesis)
-    speak(answer, voices[1], window.speechSynthesis)
+    speak(answer, window.speechSynthesis)
   }
 
   async function RequestServer()
   {
     // TO DO LIST
     try{
-      const createQuestion = await axios.get('http://localhost:3001/api/createQuestion');
-      setQuestion(createQuestion.data);
-
       // 질문 말하고 Subtitle로 전송
       speak(question, window.speechSynthesis);
       SendQuestion();
