@@ -21,15 +21,19 @@ public class SceneManagment : MonoBehaviour
 
     public void LoadStudyRoom(string titlePDF)
     {
+        // StudyRoom 이동 전 성별 설정
+        if (server) server.SetPDFTitle(titlePDF);
 
+        // StudyRoom 씬으로 이동
+        SceneManager.LoadScene(2);
     }
 
     public void LoadInterviewRoom(int interviewGender)
     {
-        // Room 이동 전 성별 설정
-        if(server) server.SetInterViewGender(interviewGender);
+        // InterviewRoom 이동 전 성별 설정
+        if (server) server.SetInterViewGender(interviewGender);
 
-        // Room 씬으로 이동
-        SceneManager.LoadScene(2);
+        // InterviewRoom 씬으로 이동
+        SceneManager.LoadScene(3);
     }
 }
