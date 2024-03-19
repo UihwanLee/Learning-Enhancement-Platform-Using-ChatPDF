@@ -92,8 +92,12 @@ function Service() {
   useEffect(() => {
     if(idx < questions.length){
       setQuestion(questions[idx]);
+      speak(questions[idx], window.speechSynthesis);
+      console.log(questions[idx]);
+      SendQuestion(questions[idx]);
+      
     } else{
-      setQuestion("더 이상 질문이 없습니다.");
+      setQuestion("질문이 없습니다.");
     }
   }, [idx]);
 
@@ -160,7 +164,7 @@ function Service() {
 
 
   // React->Unity API 질문 보내기
-  function SendQuestion() {
+  function SendQuestion(question) {
     sendMessage("PromptManager", "ReceiveQuestion", question);
   }
 
@@ -174,26 +178,42 @@ function Service() {
     sendMessage("Server", "LoadRoomData", roomData);
   }
 
+  useEffect(() => {
+    setAnswer(transcript);
+  }, [transcript])
+
+  const StartSTT = useCallback(() =>{
+    console.log("start stt");
+    resetTranscript();
+    startListening();
+  });
+
+
   // API 질문 다시 듣기
   const StopSTT = useCallback(() =>{
-    setAnswer(transcript);
-    sendAnswerToServer(transcript);
+    
+    console.log("stop stt");
+    //sendAnswerToServer(answer);
     stopListening();
+    
+    //endAnswerToServer(answer);
   });
+
 
   // Unity->React 마이크 녹음 시작 호출
   useEffect(() => {
-    addEventListener("StartSTT", startListening);
+    addEventListener("StartSTT", StartSTT);
     return () => {
-      removeEventListener("StartSTT", startListening);
+      removeEventListener("StartSTT", StartSTT);
     };
-  }, [addEventListener, removeEventListener, startListening])
+  }, [addEventListener, removeEventListener, StartSTT])
 
   // Unity->React 마이크 녹음 중지 호출
   useEffect(() => {
     addEventListener("StopSTT", StopSTT);
     return () => {
       addEventListener("StopSTT", StopSTT);
+      console.log("answer:", answer);
     };
   }, [addEventListener, removeEventListener, StopSTT])
 
@@ -204,13 +224,14 @@ function Service() {
         setQuestions(response.data);
         console.log("questions: ", response.data);
         setQuestion(response.data[0]);
+        speak(response.data[0], window.speechSynthesis);
       })
       .catch(error => {
         console.error('Error fetching data:', error);
       });
     //질문 말하고 Subtitle로 전송
     //speak(question, window.speechSynthesis);
-    SendQuestion();
+    //SendQuestion();
   });
 
 
@@ -237,7 +258,7 @@ function Service() {
     try{
       // 질문 말하고 Subtitle로 전송
       speak(question, window.speechSynthesis);
-      SendQuestion();
+      //SendQuestion();
     }
     catch (error) {
       console.error('Error fetching data - question:', error);
