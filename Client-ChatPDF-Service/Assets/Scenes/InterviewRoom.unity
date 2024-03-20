@@ -3180,6 +3180,9 @@ MonoBehaviour:
   - {fileID: 21300000, guid: cdb219d8140c971498b3095105e3ea1d, type: 3}
   - {fileID: 21300000, guid: ad6e55c372119f4428b64bd8d6ec797c, type: 3}
   buttonsClicked: 
+  parentUI: {fileID: 749831614}
+  noticeUI: {fileID: 5283996064310786372, guid: 0a64c06d5c4f0b14a9e03c6ab296ec0c, type: 3}
+  sceneManager: {fileID: 784814298}
 --- !u!4 &1688564895
 Transform:
   m_ObjectHideFlags: 0
