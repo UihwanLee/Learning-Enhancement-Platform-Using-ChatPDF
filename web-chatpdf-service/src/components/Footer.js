@@ -10,10 +10,10 @@ const Footer = ( props ) => {
                     <div>
                         <h3>사이트</h3>
                         <ul>
-                            <li><a href="/">어쩌구 사이트</a></li>
-                            <li><a href="/">저쩌구 사이트</a></li>
-                            <li><a href="/">훔냐ㅑㄴ 사이트</a></li>
-                            <li><a href="/">냐옹 사이트</a></li>
+                            <li><a href="/">논문 사이트</a></li>
+                            <li><a href="/">학교 사이트</a></li>
+                            <li><a href="/">깃허브 사이트</a></li>
+                            <li><a href="/">뉴스 사이트</a></li>
                         </ul>
                     </div>
                     <div>
