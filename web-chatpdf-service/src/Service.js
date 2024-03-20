@@ -265,6 +265,16 @@ function Service() {
     }
   }
 
+  function getEval(){
+    const evalData = axios.get('http://localhost:3001/prompt/eval')
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }
+
   return (
     <div className="App">
         <Header element="nexon" />
@@ -292,6 +302,7 @@ function Service() {
         <button onClick={RequestServer}>면접시작</button>
         <button onClick={SendQuestion}>질문 전송</button>
         <button onClick={ListenAnswer}>답변 듣기</button>
+        <button onClick={getEval}>질문 답변 평가하기</button>
     </div>
   );
 }
