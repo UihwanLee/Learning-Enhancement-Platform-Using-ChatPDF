@@ -16,6 +16,7 @@ public class Server : MonoBehaviour
     private string userNickName;
     private List<string> interviewRoomDataList = new List<string>();
     private int interviewGender;
+    private string pdfTitle;
 
     private void Awake()
     {
@@ -82,5 +83,10 @@ public class Server : MonoBehaviour
     public string GetUserNickName() 
     {  
         return userNickName;
+    }
+
+    public void SetPDFTitle(string title)
+    {
+        pdfTitle = title;
     }
 }
