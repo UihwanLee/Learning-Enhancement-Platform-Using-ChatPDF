@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEngine.UIElements;
 
 public class ButtonManager : MonoBehaviour
 {
+    [Header("Pannel")]
     [SerializeField]
     private GameObject chatPannel;
 
@@ -29,6 +31,18 @@ public class ButtonManager : MonoBehaviour
     private Color changeColor;
     private string baseColor = "#A5A7AA";
     private string highlightedColor = "#26EB60";
+
+    [Header("UI")]
+    [SerializeField]
+    private GameObject parentUI;
+
+    [SerializeField]
+    private GameObject noticeUI;
+
+    [Header("Manager")]
+    // 씬 매니저 클래스
+    [SerializeField]
+    private SceneManagment sceneManager;
 
     [DllImport("__Internal")]
     private static extern void StartSTT();
@@ -147,5 +161,18 @@ public class ButtonManager : MonoBehaviour
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
     StopSTT();
 #endif
+    }
+
+    public void NoticeEndInterview()
+    {
+        // 면접이 끝났다고 알리고 로비로 돌아가는 UI 생성
+
+        // Notice UI 생성
+        var newNoticeUI = Instantiate(noticeUI, parentUI.transform) as GameObject;
+
+        // noticeUI 설정
+        string content = "<size=24>" + "면접이 끝났습니다." + "</size>";
+        newNoticeUI.gameObject.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = content;
+        newNoticeUI.gameObject.transform.GetChild(3).GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => sceneManager.LoadLobby());
     }
 }
