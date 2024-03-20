@@ -12,6 +12,9 @@ import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognitio
 
 import Header from './components/Header'
 
+import { useUnityProvider } from "./unity-components/buildUnity.js";
+import { useReplayQuestionEventListener } from "./unity-components/replayQuestion.js";
+
 function Service() {
   // 질문과 답변
   const [question, setQuestion] = useState("Question");
@@ -25,13 +28,7 @@ function Service() {
   
 
   // react-unity-package 설정
-  const { unityProvider, sendMessage, addEventListener, removeEventListener } =
-    useUnityContext({
-      loaderUrl: "Build/Build.loader.js",
-      dataUrl: "Build/Build.data",
-      frameworkUrl: "Build/Build.framework.js",
-      codeUrl: "Build/Build.wasm",
-    });
+  const { unityProvider, sendMessage, addEventListener, removeEventListener } = useUnityProvider();
 
   // Server 데이터 받기
   const RequestData = useCallback(() =>{
@@ -98,6 +95,7 @@ function Service() {
       
     } else{
       setQuestion("질문이 없습니다.");
+      //EndInterview();
     }
   }, [idx]);
 
@@ -124,11 +122,9 @@ function Service() {
     }
   };
 
-  // API 질문 다시 듣기
-  const ReplayQuestion = useCallback(() =>{
-    const voices = populateVoiceList(window.speechSynthesis)
-    speak(question, window.speechSynthesis)
-  });
+  // API 질문 다시 듣기 이벤트 리스너 추가
+  useReplayQuestionEventListener(addEventListener, removeEventListener, question);
+
 
   // Unity->React 사용자의 answer 보내기
   useEffect(() => {
@@ -137,14 +133,6 @@ function Service() {
       removeEventListener("SendAnswer", ReceiveAnswer);
     };
   }, [addEventListener, removeEventListener, ReceiveAnswer]);
-
-  // Unity->React API 질문 다시 듣기 호출
-  useEffect(() => {
-    addEventListener("ReplayQuestion", ReplayQuestion);
-    return () => {
-      removeEventListener("ReplayQuestion", ReplayQuestion);
-    };
-  }, [addEventListener, removeEventListener, ReplayQuestion])
 
   // Unity-> React Server 데이터 통신 요구
   useEffect(() => {
@@ -176,6 +164,11 @@ function Service() {
   // React->Unity Room Data JSON 파일 보내기
   function SendRoomData(roomData) {
     sendMessage("Server", "LoadRoomData", roomData);
+  }
+
+  // 질문 5개 끝나면 나가기 UI 출력
+  function EndInterview() {
+    sendMessage("ButtonManager", "NoticeEndInterview");
   }
 
   useEffect(() => {
@@ -219,6 +212,7 @@ function Service() {
 
   // 면접 시작 버튼 클릭 이벤트 호출 구현
   const StartInterview = useCallback(() =>{
+    console.log("면접 시작");
     axios.get('http://localhost:3001/prompt/getQuestions')
       .then(response => {
         setQuestions(response.data);
@@ -229,9 +223,8 @@ function Service() {
       .catch(error => {
         console.error('Error fetching data:', error);
       });
-    //질문 말하고 Subtitle로 전송
-    //speak(question, window.speechSynthesis);
-    //SendQuestion();
+    
+    
   });
 
 
@@ -303,6 +296,7 @@ function Service() {
         <button onClick={SendQuestion}>질문 전송</button>
         <button onClick={ListenAnswer}>답변 듣기</button>
         <button onClick={getEval}>질문 답변 평가하기</button>
+        <button onClick={EndInterview}>나가기 테스트</button>
     </div>
   );
 }
