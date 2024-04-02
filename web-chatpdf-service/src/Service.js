@@ -14,6 +14,8 @@ import Header from './components/Header'
 
 import { useUnityProvider } from "./unity-components/buildUnity.js";
 import { useReplayQuestionEventListener } from "./unity-components/replayQuestion.js";
+import { useReceiveAnswerEventListener } from "./unity-components/receiveAnswer.js";
+
 
 function Service() {
   // 질문과 답변
@@ -30,8 +32,10 @@ function Service() {
   // react-unity-package 설정
   const { unityProvider, sendMessage, addEventListener, removeEventListener } = useUnityProvider();
 
+  
   // Server 데이터 받기
   const RequestData = useCallback(() =>{
+    console.log(answer);
     console.log("데이터 요청받음!");
     // roomlist 초기화
     
@@ -42,10 +46,10 @@ function Service() {
     //sendRoomdataToServer();
 
     // ROOM DATA 보내기
-    for(let i=0; i<roomList.length; i++)
-    {
-      SendRoomData(roomList[i]);
-    }
+    // for(let i=0; i<roomList.length; i++)
+    // {
+    //   SendRoomData(roomList[i]);
+    // }
 
     // ChatPDF와의 log 데이터 보내기
 
@@ -86,53 +90,60 @@ function Service() {
   const startListening = () => SpeechRecognition.startListening({ continuous: true });
   const stopListening = () => SpeechRecognition.stopListening();
 
-  useEffect(() => {
-    if(idx < questions.length){
-      setQuestion(questions[idx]);
-      speak(questions[idx], window.speechSynthesis);
-      console.log(questions[idx]);
-      SendQuestion(questions[idx]);
+  // useEffect(() => {
+  //   if(idx < questions.length){
+  //     setQuestion(questions[idx]);
+  //     speak(questions[idx], window.speechSynthesis);
+  //     console.log(questions[idx]);
+  //     SendQuestion(questions[idx]);
       
-    } else{
-      setQuestion("질문이 없습니다.");
-      //EndInterview();
-    }
-  }, [idx]);
+  //   } else{
+  //     setQuestion("질문이 없습니다.");
+  //     EndInterview();
+  //   }
+  // }, [idx]);
 
-  // 사용자의 answer 받기
-  // send 눌렀을 때 호출 -> send 누르면 text(answer) 서버에 보냄
-  const ReceiveAnswer = useCallback((answer) => {
-    if(idx < question.length){
-      setAnswer(answer);
-      sendAnswerToServer(answer);
-      setIdx(prevIdx => prevIdx + 1);
-    }  
-  }, [answer]);
+  // // 사용자의 answer 받기
+  // // send 눌렀을 때 호출 -> send 누르면 text(answer) 서버에 보냄
+  // const ReceiveAnswer = useCallback((answer) => {
+  //   if(idx < question.length){
+  //     setAnswer(answer);
+  //     sendAnswerToServer(answer);
+  //     setIdx(prevIdx => prevIdx + 1);
+  //   }  
+  // }, [answer]);
   
   
 
-  const sendAnswerToServer = async (answer) => {
-    try {
-      const response = await axios.post('http://localhost:3001/prompt/sendAnswer', {
-        answer: answer, 
-      });
+  // const sendAnswerToServer = async (answer) => {
+  //   try {
+  //     const response = await axios.post('http://localhost:3001/prompt/sendAnswer', {
+  //       answer: answer, 
+  //     });
       
-    } catch (error) {
-      console.error('Error sending answer:', error);
-    }
-  };
+  //   } catch (error) {
+  //     console.error('Error sending answer:', error);
+  //   }
+  // };
 
   // API 질문 다시 듣기 이벤트 리스너 추가
   useReplayQuestionEventListener(addEventListener, removeEventListener, question);
 
+  try{
+    useReceiveAnswerEventListener(addEventListener, removeEventListener, answer, setAnswer, question, setQuestion, SendQuestion, questions, EndInterview);
+  }catch(error){
+    console.error('An error occurred:', error);
+  }
+  
+
 
   // Unity->React 사용자의 answer 보내기
-  useEffect(() => {
-    addEventListener("SendAnswer", ReceiveAnswer);
-    return () => {
-      removeEventListener("SendAnswer", ReceiveAnswer);
-    };
-  }, [addEventListener, removeEventListener, ReceiveAnswer]);
+  // useEffect(() => {
+  //   addEventListener("SendAnswer", ReceiveAnswer);
+  //   return () => {
+  //     removeEventListener("SendAnswer", ReceiveAnswer);
+  //   };
+  // }, [addEventListener, removeEventListener, ReceiveAnswer]);
 
   // Unity-> React Server 데이터 통신 요구
   useEffect(() => {
