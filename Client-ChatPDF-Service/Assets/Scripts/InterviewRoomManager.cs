@@ -291,6 +291,7 @@ public class InterviewRoomManager : MonoBehaviour
             if(i== id)
             {
                 roomList.Remove(roomList[i]);
+                server.RemoveInterviewRoomData(i);
             }
         }
     }

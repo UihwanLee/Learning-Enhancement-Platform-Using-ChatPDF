@@ -12,6 +12,9 @@ public class Server : MonoBehaviour
     [DllImport("__Internal")]
     private static extern void SendInterviewRoomData(string roomData);
 
+    [DllImport("__Internal")]
+    private static extern void DeleteInterviewRoomData(int roomDataID);
+
     // Server에서 관리할 객체
     private string userNickName;
     private List<string> interviewRoomDataList = new List<string>();
@@ -53,6 +56,14 @@ public class Server : MonoBehaviour
         LoadInterviewRoomData(roomData);
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
     SendInterviewRoomData(roomData);
+#endif
+    }
+
+    public void RemoveInterviewRoomData(int roomID)
+    {
+        // roomData 제거
+#if UNITY_WEBGL == true && UNITY_EDITOR == false
+    DeleteInterviewRoomData(roomID);
 #endif
     }
 

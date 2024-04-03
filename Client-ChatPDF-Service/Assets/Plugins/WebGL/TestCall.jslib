@@ -8,6 +8,9 @@ mergeInto(LibraryManager.library, {
   SendInterviewRoomData: function (roomData) {
     window.dispatchReactUnityEvent("SendRoomData", UTF8ToString(roomData));
   },
+  DeleteInterviewRoomData: function (roomID) {
+    window.dispatchReactUnityEvent("DeleteInterviewRoomData", roomID);
+  },
   SendAnswer: function (answer) {
     window.dispatchReactUnityEvent("SendAnswer", UTF8ToString(answer));
   },
