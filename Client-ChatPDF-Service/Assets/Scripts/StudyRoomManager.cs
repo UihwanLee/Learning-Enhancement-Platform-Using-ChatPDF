@@ -23,6 +23,10 @@ public class StudyRoomManager : MonoBehaviour
     private string title;
     private string titlePDF;
 
+    // InterviewRoom
+    public StudyRoom newRoom;
+    private List<string> roomDataList;
+
     // 서버 클래스
     private Server server;
 
@@ -37,8 +41,28 @@ public class StudyRoomManager : MonoBehaviour
         // Sever 초기화
         server = FindObjectOfType<Server>();
 
-        // 초기 StudyRoom 생성
-        CreateRecommendStudyRoom();
+        // 방 초기 생성
+        if (server)
+        {
+            newRoom = new StudyRoom();
+            roomDataList = server.GetInterviewRoomDataList();
+
+            if(roomDataList.Count > 0)
+            {
+                foreach (string roomData in roomDataList)
+                {
+                    InitCreateRoom(roomData);
+                }
+            }
+            else
+            {
+                // 초기 StudyRoom 생성
+                CreateRecommendStudyRoom();
+            }
+
+            // 방 정렬
+            SortRoomByID();
+        }
     }
 
     private void CreateRecommendStudyRoom()
@@ -47,6 +71,27 @@ public class StudyRoomManager : MonoBehaviour
         this.titlePDF = "Alogrithm Notes";
 
         CreateRoom();
+    }
+
+    private void InitCreateRoom(string roomData)
+    {
+        // 초기 방 생성 
+        JsonUtility.FromJsonOverwrite(roomData, newRoom);
+
+        var roomObj = Instantiate(prefab, parent.transform) as GameObject;
+
+        // Room Setting 적용
+        var room = roomObj.GetComponent<StudyRoom>();
+        room.id = roomList.Count;
+        room.title = this.title;
+        room.titlePDF = this.titlePDF;
+
+        roomList.Add(roomObj);
+
+        // UI 방 목록 생성
+        string roomTitle = "<size=36>" + room.title + "|</size> " + " <size=20>" + room.titlePDF;
+        room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
+        room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => sceneManager.LoadStudyRoom(room.titlePDF));
     }
 
     public void CreateRoom()
@@ -70,7 +115,7 @@ public class StudyRoomManager : MonoBehaviour
         // Room Data 저장
         if (server)
         {
-            //server.SaveInterviewRoomData(room);
+            server.SaveStudyRoomData(room);
         }
 
         SortRoomByID();

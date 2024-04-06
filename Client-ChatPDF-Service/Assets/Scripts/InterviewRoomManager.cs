@@ -295,4 +295,10 @@ public class InterviewRoomManager : MonoBehaviour
             }
         }
     }
+
+    public void UploadFile()
+    {
+        // 서버에 업로드 요청
+        server.UploadFile();
+    }
 }
