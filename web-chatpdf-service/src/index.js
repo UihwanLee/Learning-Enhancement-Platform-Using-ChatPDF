@@ -7,6 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router, Route, Routes, BrowserRouter } from 'react-router-dom';
 import Service from './Service';
 import MyPage from './components/MyPage'
+import Login from './login';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -15,7 +16,7 @@ root.render(
       <Routes>
         <Route path="/" element={<Service/>} />
         <Route path="/mypage" element={<MyPage/>} />
-        <Route path="/service" element={<Service/>} />
+        <Route path="/service" element={<Login/>} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>
