@@ -10,7 +10,7 @@ import Slider from './components/Slider'
 import Image from './components/Image'
 import ImgText from './components/ImgText'
 import Card from './components/Card'
-import Banner from './components/Banner'
+
 import Text from './components/Text'
 
 function App() {
@@ -22,7 +22,6 @@ function App() {
                 <Image element="section nexon" title="내가 부족한 부분 탐색" />
                 <ImgText element="section nexon gray" title="이미지 텍스트 유형" />
                 <Card element="section nexon" title="내가 부족한 부분 탐색" />
-                <Banner element="nexon" title="배너 영역" />
                 <Text element="section nexon" title="성장을 위한 발걸음" />
             </Main>
             <Footer element="nexon section gray" />

@@ -3,27 +3,27 @@ import React from 'react'
 const textInfo = [
     {
         title: "01",
-        desc: "///",
+        desc: "독서 습관",
         src: "/"
     },{
         title: "02",
-        desc: "///",
+        desc: "하루 뉴스",
         src: "/"
     },{
         title: "03",
-        desc: "///",
+        desc: "찾아보기",
         src: "/"
     },{
         title: "04",
-        desc: "///",
+        desc: "대화하기",
         src: "/"
     },{
         title: "05",
-        desc: "///",
+        desc: "공유하기",
         src: "/"
     },{
         title: "06",
-        desc: "///",
+        desc: "기록하기",
         src: "/"
     }
 ]
@@ -32,7 +32,7 @@ const Text = ( props ) => {
     return (
         <section id="textType" className={`text__wrap ${props.element}`}>
             <span>{props.title}</span>
-            <h2 className="mb70">뭐 넣을거 없나..</h2>
+            <h2 className="mb70">하루를 의미있게 보내기 위한 노력</h2>
             <div className="text__inner container">
                 {textInfo.map((text, key) => (
                     <div className={`text t${key+1}`} key={key}>

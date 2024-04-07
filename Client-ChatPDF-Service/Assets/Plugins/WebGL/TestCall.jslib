@@ -2,8 +2,17 @@ mergeInto(LibraryManager.library, {
   RequestData: function () {
     window.dispatchReactUnityEvent("RequestData");
   },
-  SendRoomData: function (roomData) {
+  StartInterview: function () {
+    window.dispatchReactUnityEvent("StartInterview");
+  },
+  SendStudyRoomData: function (roomData) {
+    window.dispatchReactUnityEvent("SendStudyRoomData", UTF8ToString(roomData));
+  },
+  SendInterviewRoomData: function (roomData) {
     window.dispatchReactUnityEvent("SendRoomData", UTF8ToString(roomData));
+  },
+  DeleteInterviewRoomData: function (roomID) {
+    window.dispatchReactUnityEvent("DeleteInterviewRoomData", roomID);
   },
   SendAnswer: function (answer) {
     window.dispatchReactUnityEvent("SendAnswer", UTF8ToString(answer));
@@ -16,5 +25,8 @@ mergeInto(LibraryManager.library, {
   },
   StopSTT: function () {
     window.dispatchReactUnityEvent("StopSTT");
+  },
+  RequestUploadFile: function () {
+    window.dispatchReactUnityEvent("RequestUploadFile");
   },
 });

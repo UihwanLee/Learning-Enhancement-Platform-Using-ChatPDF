@@ -5,38 +5,78 @@ import { Unity, useUnityContext } from "react-unity-webgl";
 import axios from "axios";
 
 import './TTS.js';
+import { populateVoiceList } from './TTS.js'
 import { speak } from './TTS.js';
 
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
 import Header from './components/Header'
 
+import { useUnityProvider } from "./unity-components/buildUnity.js";
+import { useReplayQuestionEventListener } from "./unity-components/replayQuestion.js";
+import { useReceiveAnswerEventListener } from "./unity-components/receiveAnswer.js";
+
+
 function Service() {
   // 질문과 답변
   const [question, setQuestion] = useState("Question");
   const [answer, setAnswer] = useState("Answer");
 
-  // react-unity-package 설정
-  const { unityProvider, sendMessage, addEventListener, removeEventListener } =
-    useUnityContext({
-      loaderUrl: "Build/Build.loader.js",
-      dataUrl: "Build/Build.data",
-      frameworkUrl: "Build/Build.framework.js",
-      codeUrl: "Build/Build.wasm",
-    });
+  // 리스트 형태의 roomData
+  const [roomList, setRoomList] = useState([]);
+  // 질문 배열
+  const [questions, setQuestions] = useState([]);
+  const [idx, setIdx] = useState(0);
+  
 
+  // react-unity-package 설정
+  const { unityProvider, sendMessage, addEventListener, removeEventListener } = useUnityProvider();
+
+  
   // Server 데이터 받기
   const RequestData = useCallback(() =>{
-    // USER 데이터 보내기
+    console.log(answer);
+    console.log("데이터 요청받음!");
+    // roomlist 초기화
+    
+
+    // Scene 상태 보내기
+
+    // USER Nickname 데이터 보내기
+    //sendRoomdataToServer();
 
     // ROOM DATA 보내기
+    // for(let i=0; i<roomList.length; i++)
+    // {
+    //   SendRoomData(roomList[i]);
+    // }
+
+    // ChatPDF와의 log 데이터 보내기
 
   });
+
+  // roomdata 서버로 send
+  const sendRoomdataToServer = async (roomData) => {
+    try {
+      const response = await axios.post('http://localhost:3001/room/RoomData', {
+        roomData: roomData
+      });
+      
+      console.log('Server response:', response.data);
+    } catch (error) {
+      console.error('Error sending answer:', error);
+    }
+  };
 
   // Room Data 저장
+  // 방 생성 누르면 호출
   const SaveRoomData = useCallback((roomData) =>{
     // RoomDataList에 roomData JSON 정보 저장
+    console.log(roomData);
+    sendRoomdataToServer(roomData);
   });
+
+  
  
   // TTS 기능 
   const {
@@ -50,49 +90,60 @@ function Service() {
   const startListening = () => SpeechRecognition.startListening({ continuous: true });
   const stopListening = () => SpeechRecognition.stopListening();
 
-  // 사용자의 answer 받기
-  // send 눌렀을 때 호출 -> send 누르면 text(answer) 서버에 보냄
-  const ReceiveAnswer = useCallback((answer) => {
-    setAnswer(answer);
-    sendAnswerToServer(answer);
-  }, [answer]);
+  // useEffect(() => {
+  //   if(idx < questions.length){
+  //     setQuestion(questions[idx]);
+  //     speak(questions[idx], window.speechSynthesis);
+  //     console.log(questions[idx]);
+  //     SendQuestion(questions[idx]);
+      
+  //   } else{
+  //     setQuestion("질문이 없습니다.");
+  //     EndInterview();
+  //   }
+  // }, [idx]);
 
-  const sendAnswerToServer = async (answer) => {
-    try {
-      // Axios를 사용하여 Node.js 서버로 POST 요청을 보냅니다.
-      const response = await axios.post('http://localhost:3001/api/sendAnswer', {
-        // 보낼 데이터를 객체 형태로 전달
-        answer: answer, 
-      });
+  // // 사용자의 answer 받기
+  // // send 눌렀을 때 호출 -> send 누르면 text(answer) 서버에 보냄
+  // const ReceiveAnswer = useCallback((answer) => {
+  //   if(idx < question.length){
+  //     setAnswer(answer);
+  //     sendAnswerToServer(answer);
+  //     setIdx(prevIdx => prevIdx + 1);
+  //   }  
+  // }, [answer]);
+  
+  
 
-      // 서버에서 받은 응답을 출력합니다.
-      console.log('Server response:', response.data);
-    } catch (error) {
-      console.error('Error sending answer:', error);
-    }
-  };
+  // const sendAnswerToServer = async (answer) => {
+  //   try {
+  //     const response = await axios.post('http://localhost:3001/prompt/sendAnswer', {
+  //       answer: answer, 
+  //     });
+      
+  //   } catch (error) {
+  //     console.error('Error sending answer:', error);
+  //   }
+  // };
 
+  // API 질문 다시 듣기 이벤트 리스너 추가
+  useReplayQuestionEventListener(addEventListener, removeEventListener, question);
 
-  // API 질문 다시 듣기
-  const ReplayQuestion = useCallback(() =>{
-    speak(question, window.speechSynthesis)
-  });
+  try{
+    useReceiveAnswerEventListener(addEventListener, removeEventListener, answer, setAnswer, question, setQuestion, SendQuestion, questions, EndInterview);
+  }catch(error){
+    console.error('An error occurred:', error);
+  }
+  
+
 
   // Unity->React 사용자의 answer 보내기
-  useEffect(() => {
-    addEventListener("SendAnswer", ReceiveAnswer);
-    return () => {
-      removeEventListener("SendAnswer", ReceiveAnswer);
-    };
-  }, [addEventListener, removeEventListener, ReceiveAnswer]);
-
-  // Unity->React API 질문 다시 듣기 호출
-  useEffect(() => {
-    addEventListener("ReplayQuestion", ReplayQuestion);
-    return () => {
-      removeEventListener("ReplayQuestion", ReplayQuestion);
-    };
-  }, [addEventListener, removeEventListener, ReplayQuestion])
+  // useEffect(() => {
+  //   addEventListener("SendAnswer", ReceiveAnswer);
+  //   return () => {
+  //     removeEventListener("SendAnswer", ReceiveAnswer);
+  //   };
+  // }, [addEventListener, removeEventListener, ReceiveAnswer]);
 
   // Unity-> React Server 데이터 통신 요구
   useEffect(() => {
@@ -110,44 +161,98 @@ function Service() {
     };
   }, [addEventListener, removeEventListener, SaveRoomData])
 
+
   // React->Unity API 질문 보내기
-  function SendQuestion() {
+  function SendQuestion(question) {
     sendMessage("PromptManager", "ReceiveQuestion", question);
   }
 
   // React->Unity NickName 보내기
-  function SendNickName() {
-    // sendMessage("Server", "LoadUserData", nickname);
+  function SendNickName(nickname) {
+    sendMessage("Server", "LoadUserData", nickname);
   }
 
   // React->Unity Room Data JSON 파일 보내기
-  function SendRoomData() {
-    // sendMessage("Server", "LoadRoomData", roomData);
+  function SendRoomData(roomData) {
+    sendMessage("Server", "LoadRoomData", roomData);
   }
+
+  // 질문 5개 끝나면 나가기 UI 출력
+  function EndInterview() {
+    sendMessage("ButtonManager", "NoticeEndInterview");
+  }
+
+  useEffect(() => {
+    setAnswer(transcript);
+  }, [transcript])
+
+  const StartSTT = useCallback(() =>{
+    console.log("start stt");
+    resetTranscript();
+    startListening();
+  });
+
 
   // API 질문 다시 듣기
   const StopSTT = useCallback(() =>{
-    setAnswer(transcript)
+    
+    console.log("stop stt");
+    //sendAnswerToServer(answer);
     stopListening();
+    
+    //endAnswerToServer(answer);
   });
+
 
   // Unity->React 마이크 녹음 시작 호출
   useEffect(() => {
-    addEventListener("StartSTT", startListening);
+    addEventListener("StartSTT", StartSTT);
     return () => {
-      removeEventListener("StartSTT", startListening);
+      removeEventListener("StartSTT", StartSTT);
     };
-  }, [addEventListener, removeEventListener, startListening])
+  }, [addEventListener, removeEventListener, StartSTT])
 
   // Unity->React 마이크 녹음 중지 호출
   useEffect(() => {
     addEventListener("StopSTT", StopSTT);
     return () => {
       addEventListener("StopSTT", StopSTT);
+      console.log("answer:", answer);
     };
   }, [addEventListener, removeEventListener, StopSTT])
 
+  // 면접 시작 버튼 클릭 이벤트 호출 구현
+  const StartInterview = useCallback(() =>{
+    console.log("면접 시작");
+    axios.get('http://localhost:3001/prompt/getQuestions')
+      .then(response => {
+        setQuestions(response.data);
+        console.log("questions: ", response.data);
+        setQuestion(response.data[0]);
+        speak(response.data[0], window.speechSynthesis);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+    
+    
+  });
+
+
+
+
+  // unity -> react, 면접 시작 버튼 클릭 이벤트 호출
+  useEffect(() => {
+    addEventListener("StartInterview", StartInterview);
+    return () => {
+      addEventListener("StartInterview", StartInterview);
+    };
+  }, [addEventListener, removeEventListener, StartInterview])
+
+  
+
   function ListenAnswer() {
+    const voices = populateVoiceList(window.speechSynthesis)
     speak(answer, window.speechSynthesis)
   }
 
@@ -155,13 +260,23 @@ function Service() {
   {
     // TO DO LIST
     try{
-      const createQuestion = await axios.get('http://localhost:3001/api/createQuestion');
-      setQuestion(createQuestion.data);
+      // 질문 말하고 Subtitle로 전송
       speak(question, window.speechSynthesis);
+      //SendQuestion();
     }
     catch (error) {
       console.error('Error fetching data - question:', error);
     }
+  }
+
+  function getEval(){
+    const evalData = axios.get('http://localhost:3001/prompt/eval')
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
   }
 
   return (
@@ -191,6 +306,8 @@ function Service() {
         <button onClick={RequestServer}>면접시작</button>
         <button onClick={SendQuestion}>질문 전송</button>
         <button onClick={ListenAnswer}>답변 듣기</button>
+        <button onClick={getEval}>질문 답변 평가하기</button>
+        <button onClick={EndInterview}>나가기 테스트</button>
     </div>
   );
 }
