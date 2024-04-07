@@ -10,10 +10,20 @@ public class Server : MonoBehaviour
     private static extern void RequestData();
 
     [DllImport("__Internal")]
+    private static extern void SendStudyRoomData(string roomData);
+
+    [DllImport("__Internal")]
     private static extern void SendInterviewRoomData(string roomData);
+
+    [DllImport("__Internal")]
+    private static extern void DeleteInterviewRoomData(int roomDataID);
+
+    [DllImport("__Internal")]
+    private static extern void RequestUploadFile();
 
     // Server에서 관리할 객체
     private string userNickName;
+    private List<string> studyRoomDataList = new List<string>();
     private List<string> interviewRoomDataList = new List<string>();
     private int interviewGender;
     private string pdfTitle;
@@ -46,6 +56,16 @@ public class Server : MonoBehaviour
         nicknameText.text = userNickName + "님의 학습 증진 서비스";
     }
 
+    public void SaveStudyRoomData(StudyRoom room)
+    {
+        // Room Data를 JSON 형식으로 변환하여 서버에 저장
+        string roomData = JsonUtility.ToJson(room);
+        LoadStudyRoomData(roomData);
+#if UNITY_WEBGL == true && UNITY_EDITOR == false
+    SendStudyRoomData(roomData);
+#endif
+    }
+
     public void SaveInterviewRoomData(InterviewRoom room)
     {
         // Room Data를 JSON 형식으로 변환하여 서버에 저장
@@ -53,6 +73,14 @@ public class Server : MonoBehaviour
         LoadInterviewRoomData(roomData);
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
     SendInterviewRoomData(roomData);
+#endif
+    }
+
+    public void RemoveInterviewRoomData(int roomID)
+    {
+        // roomData 제거
+#if UNITY_WEBGL == true && UNITY_EDITOR == false
+    DeleteInterviewRoomData(roomID);
 #endif
     }
 
@@ -66,6 +94,12 @@ public class Server : MonoBehaviour
     public void LoadUserData(string nickname)
     {
         userNickName = nickname;
+    }
+
+    public void LoadStudyRoomData(string roomData)
+    {
+        // roomData JSON 데이터 저장
+        studyRoomDataList.Add(roomData);
     }
 
     public void LoadInterviewRoomData(string roomData)
@@ -88,5 +122,13 @@ public class Server : MonoBehaviour
     public void SetPDFTitle(string title)
     {
         pdfTitle = title;
+    }
+
+    public void UploadFile()
+    {
+        // pdf, pptx 문서 업로드 함수 호출
+#if UNITY_WEBGL == true && UNITY_EDITOR == false
+    RequestUploadFile();
+#endif
     }
 }

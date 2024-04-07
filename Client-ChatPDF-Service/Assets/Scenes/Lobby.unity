@@ -3539,7 +3539,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Create Room
+  m_text: Add Study
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 26dba933134cc734ba8a8ee09e13663b, type: 2}
   m_sharedMaterial: {fileID: 5806688241516556720, guid: 26dba933134cc734ba8a8ee09e13663b, type: 2}
@@ -13020,7 +13020,7 @@ GameObject:
   - component: {fileID: 1646704673}
   - component: {fileID: 1646704672}
   m_Layer: 5
-  m_Name: CreateRoom
+  m_Name: AddStudy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13089,7 +13089,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1646704673}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1035116736}
+        m_TargetAssemblyTypeName: InterviewRoomManager, Assembly-CSharp
+        m_MethodName: UploadFile
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1646704673
 MonoBehaviour:
   m_ObjectHideFlags: 0

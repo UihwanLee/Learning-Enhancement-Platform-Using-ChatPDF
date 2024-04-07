@@ -8,6 +8,5 @@ export function useUnityProvider() {
       frameworkUrl: "Build/Build.framework.js",
       codeUrl: "Build/Build.wasm",
     });
-
   return { unityProvider, sendMessage, addEventListener, removeEventListener };
 }

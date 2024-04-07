@@ -291,7 +291,14 @@ public class InterviewRoomManager : MonoBehaviour
             if(i== id)
             {
                 roomList.Remove(roomList[i]);
+                server.RemoveInterviewRoomData(i);
             }
         }
+    }
+
+    public void UploadFile()
+    {
+        // 서버에 업로드 요청
+        server.UploadFile();
     }
 }
