@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using TMPro;
 using UnityEngine;
@@ -28,6 +29,13 @@ public class Server : MonoBehaviour
     private int interviewGender;
     private string pdfTitle;
 
+    // Room Setting
+    private List<List<string>> documentHashList = new List<List<string>>();
+    private List<string> category_algo = new List<string> { "algo.pdf" };
+    private List<string> category_network = new List<string> { "network.pdf" };
+    private List<string> category_operating_system = new List<string> { "operating_system.pdf" };
+    private List<string> category_web = new List<string> { "web.pdf" };
+
     private void Awake()
     {
         // 오브젝트 유지
@@ -44,6 +52,7 @@ public class Server : MonoBehaviour
         */
         userNickName = string.Empty;
         interviewGender = 1;
+        InitDocument();
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
     RequestData();
 #endif
@@ -130,5 +139,22 @@ public class Server : MonoBehaviour
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
     RequestUploadFile();
 #endif
+    }
+
+    public List<List<string>> GetDocumentHashList() { return documentHashList; }
+
+    private void InitDocument()
+    {
+        documentHashList.Add(category_algo);
+        documentHashList.Add(category_network);
+        documentHashList.Add(category_operating_system);
+        documentHashList.Add(category_web);
+    }
+
+    public void AddAlgoDocument(int category, string file)
+    {
+        if (category < 0 || category >= documentHashList.Count()) return;
+
+        documentHashList[category].Add(file);
     }
 }

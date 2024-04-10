@@ -69,8 +69,6 @@ public class InterviewRoomManager : MonoBehaviour
         // User 닉네임 초기화
         SetUserNickName();
 
-        // RoomSetting 초기화
-        InitRoomSetting();
 
         // 방 초기 생성
         if (server)
@@ -85,6 +83,9 @@ public class InterviewRoomManager : MonoBehaviour
 
             // 방 정렬
             SortRoomByID();
+
+            // RoomSetting 초기화
+            InitRoomSetting();
         }
     }
 
@@ -125,32 +126,26 @@ public class InterviewRoomManager : MonoBehaviour
     private void InitDocument()
     {
         // 서비스에서 제공되는 category 별 학습 문서 초기화
-        List<string> category_algo = new List<string> { "algo.pdf" };
-        List<string> category_network = new List<string> { "network.pdf" };
-        List<string> category_operating_system = new List<string> { "operating_system.pdf" };
-        List<string> category_web = new List<string> { "web.pdf" };
-
-        documentHashList.Add(category_algo);
-        documentHashList.Add(category_network);
-        documentHashList.Add(category_operating_system);
-        documentHashList.Add(category_web);
+        documentHashList = server.GetDocumentHashList();
     }
 
     private void ChangeDocumentList(int category)
     {
         if (documentHashList.Count < category) return;
-
-        // 현재 서버에서 가지고 있는 사용자의 학습 문서별 document 초기화
-        dropdown_document.options.Clear();
-
-        List<string> documentList = documentHashList[category];
-
-        for (int i = 0; i < documentList.Count; i++)
+        if (server)
         {
-            dropdown_document.options.Add(new TMP_Dropdown.OptionData(documentList[i], null));
-        }
+            // 현재 서버에서 가지고 있는 사용자의 학습 문서별 document 초기화
+            dropdown_document.options.Clear();
 
-        dropdown_document.RefreshShownValue();
+            List<string> documentList = documentHashList[category];
+
+            for (int i = 0; i < documentList.Count; i++)
+            {
+                dropdown_document.options.Add(new TMP_Dropdown.OptionData(documentList[i], null));
+            }
+
+            dropdown_document.RefreshShownValue();
+        }
     }
 
     public void SetTitle()
