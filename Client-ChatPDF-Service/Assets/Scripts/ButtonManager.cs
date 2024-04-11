@@ -57,6 +57,9 @@ public class ButtonManager : MonoBehaviour
         {
             buttonsClicked.Add(false);
         }
+
+        // Microphone 초기화
+        ClickButton(1);
     }
 
 
@@ -115,35 +118,47 @@ public class ButtonManager : MonoBehaviour
     public void ClickButton(int idx)
     {
         // Replay 버튼일시 제외
-        if (idx == 1) return;
+        if (idx == 2) return;
 
         if (!buttonsClicked[idx])
         {
             ChangeHighlight(idx);
             buttonsClicked[idx] = true;
 
-            // Microphone일 시 마이크 녹음 시작
-            if(idx==0) StartVoice();
+            // 마이크 녹음 시작
+            if (idx == 0)
+            {
+                ChangeBase(1);
+                buttonsClicked[1] = false;
+                StartVoice();
+            }
+
+            // 마이크 녹음 중지
+            if (idx == 1)
+            {
+                ChangeBase(0);
+                buttonsClicked[0] = false;
+                StopVoice();
+            }
 
             // Subtitle일 시 자막 띄우기
-            if (idx == 2) subtitlePannel.SetActive(true);
+            if (idx == 3) subtitlePannel.SetActive(true);
 
             // Chat Button일 시 Chat Pannel 활성화
-            if (idx==3) chatPannel.SetActive(true);
+            if (idx==4) chatPannel.SetActive(true);
         }
         else
         {
+            if (idx == 0 || idx == 1) return;
+
             ChangeBase(idx);
             buttonsClicked[idx] = false;
 
-            // Microphone일 시 마이크 녹음 중지
-            if (idx == 0) StopVoice();
-
             // Subtitle일 시 자막 지우기
-            if (idx == 2) subtitlePannel.SetActive(false);
+            if (idx == 3) subtitlePannel.SetActive(false);
 
             // Chat Button일 시 Chat Pannel 비활성화
-            if (idx == 3) chatPannel.SetActive(false);
+            if (idx == 4) chatPannel.SetActive(false);
         }
     }
 
