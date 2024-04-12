@@ -62,6 +62,11 @@ public class PromptManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        SetChatLogSize();
+    }
+
     public void StartInterviewUnity()
     {
         // 면접 시작
@@ -109,12 +114,12 @@ public class PromptManager : MonoBehaviour
                 log.SetText(answerLogList[i]);
             }
         }
-
-        ChangeChatUISize();
     }
 
     public void SetChatLogSize()
     {
+        if (logParent.transform.childCount == 0) return;
+
         for(int i=0; i< logParent.transform.childCount; i++) 
         {
             var log = logParent.transform.GetChild(i).GetComponent<ChatLog>();
@@ -130,8 +135,6 @@ public class PromptManager : MonoBehaviour
         log.SetText(message);
 
         if (server) server.AddQuestionLogData(message);
-
-        ChangeChatUISize();
     }
 
     public void AddAnswerLog(string message)
@@ -142,14 +145,5 @@ public class PromptManager : MonoBehaviour
         log.SetText(message);
 
         if(server) server.AddAnswerLogData(message);
-
-        ChangeChatUISize();
-    }
-
-    IEnumerator ChangeChatUISize()
-    {
-        yield return new WaitForSeconds(1.0f);
-
-        SetChatLogSize();
     }
 }
