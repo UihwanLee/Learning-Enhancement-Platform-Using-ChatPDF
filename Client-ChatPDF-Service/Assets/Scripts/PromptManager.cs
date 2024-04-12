@@ -4,7 +4,6 @@ using TMPro;
 using UnityEngine;
 using System.Runtime.InteropServices;
 using UnityEngine.UI;
-using UnityEditor.VersionControl;
 
 public class PromptManager : MonoBehaviour
 {
