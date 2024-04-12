@@ -60,11 +60,6 @@ public class PromptManager : MonoBehaviour
 
             InitializeLog();
         }
-        else
-        {
-            AddQuestionLog("안녕하세요저는이의환입니다반갑습니다처음뵙겠습니다.");
-            AddAnswerLog("안녕하세요. 저는 이의환입니다. 반갑습니다. 처음 뵙겠습니다. 좋은 하루 되세요! 하이요");
-        }
     }
 
     public void StartInterviewUnity()
