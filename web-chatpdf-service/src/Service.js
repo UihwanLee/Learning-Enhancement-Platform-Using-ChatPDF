@@ -15,6 +15,7 @@ import Header from './components/Header'
 import { useUnityProvider } from "./unity-components/buildUnity.js";
 import { useReplayQuestionEventListener } from "./unity-components/replayQuestion.js";
 import { useReceiveAnswerEventListener } from "./unity-components/receiveAnswer.js";
+import { useFILEUPLOADEventListener } from './unity-components/FILE_UPLOAD.js';
 
 
 function Service() {
@@ -37,21 +38,6 @@ function Service() {
   const RequestData = useCallback(() =>{
     console.log(answer);
     console.log("데이터 요청받음!");
-    // roomlist 초기화
-    
-
-    // Scene 상태 보내기
-
-    // USER Nickname 데이터 보내기
-    //sendRoomdataToServer();
-
-    // ROOM DATA 보내기
-    // for(let i=0; i<roomList.length; i++)
-    // {
-    //   SendRoomData(roomList[i]);
-    // }
-
-    // ChatPDF와의 log 데이터 보내기
 
   });
 
@@ -90,42 +76,6 @@ function Service() {
   const startListening = () => SpeechRecognition.startListening({ continuous: true });
   const stopListening = () => SpeechRecognition.stopListening();
 
-  // useEffect(() => {
-  //   if(idx < questions.length){
-  //     setQuestion(questions[idx]);
-  //     speak(questions[idx], window.speechSynthesis);
-  //     console.log(questions[idx]);
-  //     SendQuestion(questions[idx]);
-      
-  //   } else{
-  //     setQuestion("질문이 없습니다.");
-  //     EndInterview();
-  //   }
-  // }, [idx]);
-
-  // // 사용자의 answer 받기
-  // // send 눌렀을 때 호출 -> send 누르면 text(answer) 서버에 보냄
-  // const ReceiveAnswer = useCallback((answer) => {
-  //   if(idx < question.length){
-  //     setAnswer(answer);
-  //     sendAnswerToServer(answer);
-  //     setIdx(prevIdx => prevIdx + 1);
-  //   }  
-  // }, [answer]);
-  
-  
-
-  // const sendAnswerToServer = async (answer) => {
-  //   try {
-  //     const response = await axios.post('http://localhost:3001/prompt/sendAnswer', {
-  //       answer: answer, 
-  //     });
-      
-  //   } catch (error) {
-  //     console.error('Error sending answer:', error);
-  //   }
-  // };
-
   // API 질문 다시 듣기 이벤트 리스너 추가
   useReplayQuestionEventListener(addEventListener, removeEventListener, question);
 
@@ -135,15 +85,6 @@ function Service() {
     console.error('An error occurred:', error);
   }
   
-
-
-  // Unity->React 사용자의 answer 보내기
-  // useEffect(() => {
-  //   addEventListener("SendAnswer", ReceiveAnswer);
-  //   return () => {
-  //     removeEventListener("SendAnswer", ReceiveAnswer);
-  //   };
-  // }, [addEventListener, removeEventListener, ReceiveAnswer]);
 
   // Unity-> React Server 데이터 통신 요구
   useEffect(() => {
@@ -198,10 +139,35 @@ function Service() {
     
     console.log("stop stt");
     //sendAnswerToServer(answer);
+
+    console.log("stop stt2");
+
+    callstop();
+
     stopListening();
     
-    //endAnswerToServer(answer);
+    
   });
+
+  const sendAnswerToServer = async (answer) => {
+    try {
+      setAnswer()
+      console.log(answer);
+      const response = await axios.post('http://localhost:3001/prompt/sendAnswer', {
+        answer: answer, 
+      });
+      
+    } catch (error) {
+      console.error('Error sending answer:', error);
+    }
+  };
+
+
+  function callstop() {
+    console.log(transcript);
+    console.log(answer);
+    sendAnswerToServer(transcript);
+  }
 
 
   // Unity->React 마이크 녹음 시작 호출
@@ -217,7 +183,7 @@ function Service() {
     addEventListener("StopSTT", StopSTT);
     return () => {
       addEventListener("StopSTT", StopSTT);
-      console.log("answer:", answer);
+      //console.log("answer:", answer);
     };
   }, [addEventListener, removeEventListener, StopSTT])
 
@@ -279,6 +245,37 @@ function Service() {
       });
   }
 
+  // 파일 입력 요소에 대한 ref 생성
+  const fileInput = React.useRef(null);
+
+  // File upload component
+  useFILEUPLOADEventListener(addEventListener, removeEventListener, fileInput);
+
+  const handleChange = (e) => {
+    const file = e.target.files[0];
+    
+    if (!file) {
+      console.error('No file selected.');
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append('pdfFile', file);
+    
+    axios.post('http://localhost:3001/files/upload', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    })
+    .then(response => {
+      console.log('File uploaded successfully');
+    })
+    .catch(error => {
+      console.error('Error uploading file:', error);
+    });
+  };
+  
+
   return (
     <div className="App">
         <Header element="nexon" />
@@ -308,7 +305,14 @@ function Service() {
         <button onClick={ListenAnswer}>답변 듣기</button>
         <button onClick={getEval}>질문 답변 평가하기</button>
         <button onClick={EndInterview}>나가기 테스트</button>
+        <input
+          type="file"
+          ref={fileInput}
+          onChange={handleChange}
+          style={{ display: "none" }}
+        />
     </div>
+    
   );
 }
 

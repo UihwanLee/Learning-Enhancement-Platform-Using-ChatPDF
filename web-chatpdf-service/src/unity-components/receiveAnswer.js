@@ -14,7 +14,8 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
       
     } else{
       setQuestion("질문이 없습니다.");
-      EndInterview();
+      console.log("eeeeeeeeeeeeeeeeee");
+      //EndInterview();
     }
   }, [EndInterview, SendQuestion, idx, questions, setQuestion]);
 
