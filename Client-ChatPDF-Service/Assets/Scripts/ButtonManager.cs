@@ -145,7 +145,10 @@ public class ButtonManager : MonoBehaviour
             if (idx == 3) subtitlePannel.SetActive(true);
 
             // Chat Button일 시 Chat Pannel 활성화
-            if (idx==4) chatPannel.SetActive(true);
+            if (idx == 4)
+            {
+                chatPannel.SetActive(true);
+            }
         }
         else
         {
