@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using System.Runtime.InteropServices;
 using UnityEngine.UI;
+using UnityEditor.VersionControl;
 
 public class PromptManager : MonoBehaviour
 {
@@ -22,6 +23,9 @@ public class PromptManager : MonoBehaviour
     private TextMeshProUGUI promptGUI;
 
     [Header("Log")]
+    private List<string> questionLogList = new List<string>();
+    private List<string> answerLogList = new List<string>();
+
     [SerializeField]
     private GameObject logParent;
 
@@ -30,6 +34,9 @@ public class PromptManager : MonoBehaviour
 
     [SerializeField]
     private GameObject prefabAnswerLog;
+
+    // 서버 클래스
+    private Server server;
 
     [DllImport("__Internal")]
     private static extern void StartInterview();
@@ -44,8 +51,21 @@ public class PromptManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        AddQuestionLog("안녕하세요저는이의환입니다반갑습니다처음뵙겠습니다.");
-        AddAnswerLog("안녕하세요. 저는 이의환입니다. 반갑습니다. 처음 뵙겠습니다. 좋은 하루 되세요! 하이요");
+        // Sever 초기화
+        server = FindObjectOfType<Server>();
+
+        if (server)
+        {
+            questionLogList = server.GetQuestionList();
+            answerLogList = server.GetAnswerList();
+
+            InitializeLog();
+        }
+        else
+        {
+            AddQuestionLog("안녕하세요저는이의환입니다반갑습니다처음뵙겠습니다.");
+            AddAnswerLog("안녕하세요. 저는 이의환입니다. 반갑습니다. 처음 뵙겠습니다. 좋은 하루 되세요! 하이요");
+        }
     }
 
     public void StartInterviewUnity()
@@ -80,6 +100,25 @@ public class PromptManager : MonoBehaviour
 #endif
     }
 
+    private void InitializeLog()
+    {
+        for(int i=0; i<questionLogList.Count; i++) 
+        {
+            var question_log = Instantiate(prefabQuestionLog, logParent.transform) as GameObject;
+            var log = question_log.GetComponent<ChatLog>();
+            log.SetText(questionLogList[i]);
+
+            if (i<answerLogList.Count)
+            {
+                var answer_log = Instantiate(prefabAnswerLog, logParent.transform) as GameObject;
+                log = answer_log.GetComponent<ChatLog>();
+                log.SetText(answerLogList[i]);
+            }
+        }
+
+        ChangeChatUISize();
+    }
+
     public void SetChatLogSize()
     {
         for(int i=0; i< logParent.transform.childCount; i++) 
@@ -96,6 +135,8 @@ public class PromptManager : MonoBehaviour
         var log = question_log.GetComponent<ChatLog>();
         log.SetText(message);
 
+        if (server) server.AddQuestionLogData(message);
+
         ChangeChatUISize();
     }
 
@@ -105,6 +146,8 @@ public class PromptManager : MonoBehaviour
         var answer_log = Instantiate(prefabAnswerLog, logParent.transform) as GameObject;
         var log = answer_log.GetComponent<ChatLog>();
         log.SetText(message);
+
+        if(server) server.AddAnswerLogData(message);
 
         ChangeChatUISize();
     }

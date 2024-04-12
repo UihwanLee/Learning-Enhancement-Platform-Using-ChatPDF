@@ -36,6 +36,10 @@ public class Server : MonoBehaviour
     private List<string> category_operating_system = new List<string> { "operating_system.pdf" };
     private List<string> category_web = new List<string> { "web.pdf" };
 
+    // Log Data
+    private List<string> questionLogList = new List<string>();
+    private List<string> answerLogList = new List<string>();
+
     private void Awake()
     {
         // 오브젝트 유지
@@ -157,4 +161,23 @@ public class Server : MonoBehaviour
 
         documentHashList[category].Add(file);
     }
+
+    public void ClearLogData()
+    {
+        questionLogList.Clear();
+        answerLogList.Clear();
+    }
+
+    public void AddQuestionLogData(string message)
+    {
+        questionLogList.Add(message);
+    }
+
+    public void AddAnswerLogData(string message)
+    {
+        answerLogList.Add(message);
+    }
+
+    public List<string> GetQuestionList() { return questionLogList; }
+    public List<string> GetAnswerList() { return answerLogList; }
 }
