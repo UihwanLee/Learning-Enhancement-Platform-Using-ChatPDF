@@ -31,9 +31,6 @@ router.post('/upload', upload.single('pdfFile'), (req, res) => {
     return res.status(400).send('No file uploaded.');
   }
 
-  //file.filename = Buffer.from(file.filename, 'ascii').toString('utf8');
-  //file.path = Buffer.from(file.path, 'ascii').toString('utf8');
-
   console.log(file);
   res.send('File uploaded successfully.');
 });

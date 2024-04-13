@@ -258,21 +258,36 @@ function Service() {
       console.error('No file selected.');
       return;
     }
+
+    // 파일 확장자 확인
+    const fileName = e.target.files[0].name;
+    const extension = fileName.substring(fileName.lastIndexOf('.') + 1).toLowerCase();
   
     const formData = new FormData();
     formData.append('pdfFile', file);
-    
-    axios.post('http://localhost:3001/files/upload', formData, {
+
+    // 확장자가 pdf 또는 pptx가 아닌 경우
+    if (extension !== 'pdf' && extension !== 'pptx') {
+      // 오류 메시지 출력
+      alert('.pdf 또는 .pptx 파일을 업로드해주세요');
+      // 파일 입력 요소 초기화
+      e.target.value = '';
+  } else {
+      // 서버에 보내기
+      axios.post('http://localhost:3001/files/upload', formData, {
       headers: {
         'Content-Type': 'multipart/form-data'
       }
-    })
-    .then(response => {
-      console.log('File uploaded successfully');
-    })
-    .catch(error => {
-      console.error('Error uploading file:', error);
-    });
+      })
+      .then(response => {
+        console.log('File uploaded successfully');
+      })
+      .catch(error => {
+        console.error('Error uploading file:', error);
+      });
+  }
+    
+    
   };
   
 
