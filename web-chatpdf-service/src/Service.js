@@ -280,10 +280,16 @@ function Service() {
       }
       })
       .then(response => {
-        console.log('File uploaded successfully');
+        console.log(response.data);
       })
       .catch(error => {
-        console.error('Error uploading file:', error);
+        if (error.response && error.response.status === 500) {
+          console.log(error.response.data);
+          // 오류 메시지 출력
+          alert(error.response.data);
+          // 파일 입력 요소 초기화
+          e.target.value = '';
+        }
       });
   }
     
