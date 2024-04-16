@@ -80,7 +80,7 @@ function Service() {
   useReplayQuestionEventListener(addEventListener, removeEventListener, question);
 
   try{
-    useReceiveAnswerEventListener(addEventListener, removeEventListener, answer, setAnswer, question, setQuestion, SendQuestion, questions, EndInterview);
+    useReceiveAnswerEventListener(addEventListener, removeEventListener, answer, setAnswer, question, setQuestion, SendQuestion, questions, EndInterview, sendMessage);
   }catch(error){
     console.error('An error occurred:', error);
   }
@@ -127,28 +127,6 @@ function Service() {
     setAnswer(transcript);
   }, [transcript])
 
-  const StartSTT = useCallback(() =>{
-    console.log("start stt");
-    resetTranscript();
-    startListening();
-  });
-
-
-  // API 질문 다시 듣기
-  const StopSTT = useCallback(() =>{
-    
-    console.log("stop stt");
-    //sendAnswerToServer(answer);
-
-    console.log("stop stt2");
-
-    callstop();
-
-    stopListening();
-    
-    
-  });
-
   const sendAnswerToServer = async (answer) => {
     try {
       setAnswer()
@@ -162,31 +140,6 @@ function Service() {
     }
   };
 
-
-  function callstop() {
-    console.log(transcript);
-    console.log(answer);
-    sendAnswerToServer(transcript);
-  }
-
-
-  // Unity->React 마이크 녹음 시작 호출
-  useEffect(() => {
-    addEventListener("StartSTT", StartSTT);
-    return () => {
-      removeEventListener("StartSTT", StartSTT);
-    };
-  }, [addEventListener, removeEventListener, StartSTT])
-
-  // Unity->React 마이크 녹음 중지 호출
-  useEffect(() => {
-    addEventListener("StopSTT", StopSTT);
-    return () => {
-      addEventListener("StopSTT", StopSTT);
-      //console.log("answer:", answer);
-    };
-  }, [addEventListener, removeEventListener, StopSTT])
-
   // 면접 시작 버튼 클릭 이벤트 호출 구현
   const StartInterview = useCallback(() =>{
     console.log("면접 시작");
@@ -194,6 +147,7 @@ function Service() {
       .then(response => {
         setQuestions(response.data);
         console.log("questions: ", response.data);
+        sendMessage("PromptManager", "AddQuestionLog", response.data[0]);
         setQuestion(response.data[0]);
         speak(response.data[0], window.speechSynthesis);
       })
@@ -302,12 +256,6 @@ function Service() {
         <Header element="nexon" />
         <p>Microphone: {listening ? 'on' : 'off'}</p>
         <p>{transcript}</p>
-        <button
-        onTouchStart={startListening}
-        onMouseDown={startListening}
-        onTouchEnd={StopSTT}
-        onMouseUp={StopSTT}
-        >Hold to talk</button>
         <button onClick={resetTranscript}>Reset</button>
         <br/>
         <br/>
