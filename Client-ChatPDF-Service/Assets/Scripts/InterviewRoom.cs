@@ -9,7 +9,8 @@ public class InterviewRoom : MonoBehaviour
     public int id;
     public string title;
     public string category;
-    public int index;
+    public string document;
+    public string index;
 
     // Prompt Setting
     public int interviewerCount;    // 면접자 수

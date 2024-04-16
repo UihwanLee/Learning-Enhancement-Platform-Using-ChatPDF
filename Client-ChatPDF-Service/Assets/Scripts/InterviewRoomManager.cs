@@ -28,10 +28,18 @@ public class InterviewRoomManager : MonoBehaviour
     // 서버 클래스
     private Server server;
 
+    [Header("Room Setting")]
     // RoomSetting variable
     private string title;
     private string category;
-    private int index;
+    private string document;
+    private string index;
+
+    private List<List<string>> documentHashList = new List<List<string>>();
+    [SerializeField]
+    private TMP_Dropdown dropdown_document;
+    [SerializeField]
+    private TMP_Dropdown dropdown_index;
 
     // PromptSetting variable
     private int interviewerCount;
@@ -61,8 +69,9 @@ public class InterviewRoomManager : MonoBehaviour
         // User 닉네임 초기화
         SetUserNickName();
 
+
         // 방 초기 생성
-        if(server)
+        if (server)
         {
             newRoom = new InterviewRoom();
             roomDataList = server.GetInterviewRoomDataList();
@@ -74,6 +83,9 @@ public class InterviewRoomManager : MonoBehaviour
 
             // 방 정렬
             SortRoomByID();
+
+            // RoomSetting 초기화
+            InitRoomSetting();
         }
     }
 
@@ -100,10 +112,40 @@ public class InterviewRoomManager : MonoBehaviour
         uiManager.SetRecommandState();
     }
 
+    private void InitRoomSetting()
+    {
+        InitDocument();
+    }
+
     public void InitTitle()
     {
         // 방 제목 초기화
         this.titleInputField.text = "나만의 학습방(" + roomList.Count + ")";
+    }
+
+    private void InitDocument()
+    {
+        // 서비스에서 제공되는 category 별 학습 문서 초기화
+        documentHashList = server.GetDocumentHashList();
+    }
+
+    private void ChangeDocumentList(int category)
+    {
+        if (documentHashList.Count < category) return;
+        if (server)
+        {
+            // 현재 서버에서 가지고 있는 사용자의 학습 문서별 document 초기화
+            dropdown_document.options.Clear();
+
+            List<string> documentList = documentHashList[category];
+
+            for (int i = 0; i < documentList.Count; i++)
+            {
+                dropdown_document.options.Add(new TMP_Dropdown.OptionData(documentList[i], null));
+            }
+
+            dropdown_document.RefreshShownValue();
+        }
     }
 
     public void SetTitle()
@@ -119,25 +161,39 @@ public class InterviewRoomManager : MonoBehaviour
         {
             case 0:
                 this.category = "알고리즘";
+                ChangeDocumentList(0);
                 break;
             case 1:
                 this.category = "네트워크";
+                ChangeDocumentList(1);
                 break;
             case 2:
                 this.category = "운영체제";
+                ChangeDocumentList(2);
                 break;
             case 3:
                 this.category = "Web";
+                ChangeDocumentList(3);
                 break;
             default:
                 break;
         }
     }
 
+    private void ChangeDocument()
+    {
+
+    }
+
+    public void SetDocument()
+    {
+
+    }
+
     public void SetIndex()
     {
         // 학습 목차 설정
-        this.index = 0;
+        this.index = "";
     }
 
     public void SetInterviewerCount(int num)
