@@ -28,10 +28,15 @@ public class SceneManagment : MonoBehaviour
         SceneManager.LoadScene(2);
     }
 
-    public void LoadInterviewRoom(int interviewGender)
+    public void LoadInterviewRoom(InterviewRoom room)
     {
         // InterviewRoom 이동 전 성별 설정
-        if (server) server.SetInterViewGender(interviewGender);
+        if (server)
+        {
+            server.SetInterViewGender(room.interviewerGender);
+            // room Data 전달
+            server.RequestInterviewRoomDataUnity(room);
+        }
 
         // InterviewRoom 씬으로 이동
         SceneManager.LoadScene(3);
