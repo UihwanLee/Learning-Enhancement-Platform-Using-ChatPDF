@@ -41,4 +41,15 @@ public class SceneManagment : MonoBehaviour
         // InterviewRoom 씬으로 이동
         SceneManager.LoadScene(3);
     }
+
+    public void LoadEvaluateRoom(int id)
+    {
+        // roomData 불러와서 logData 세팅
+        if(server)
+        {
+
+        }
+
+        SceneManager.LoadScene(4);
+    }
 }

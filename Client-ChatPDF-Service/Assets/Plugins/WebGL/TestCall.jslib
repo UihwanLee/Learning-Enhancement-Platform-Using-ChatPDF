@@ -11,6 +11,9 @@ mergeInto(LibraryManager.library, {
   SendInterviewRoomData: function (roomData) {
     window.dispatchReactUnityEvent("SendRoomData", UTF8ToString(roomData));
   },
+  SendEvaluateRoomData: function (roomData) {
+    window.dispatchReactUnityEvent("SendEvaluateRoomData", UTF8ToString(roomData));
+  },
   DeleteInterviewRoomData: function (roomID) {
     window.dispatchReactUnityEvent("DeleteInterviewRoomData", roomID);
   },
