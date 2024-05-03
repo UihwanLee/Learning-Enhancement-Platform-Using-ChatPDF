@@ -1,16 +1,50 @@
 const express = require('express');
+const router = express();
+
 const multer = require('multer');
 const path = require('path');
-const router = express();
+const AWS = require('aws-sdk');
+const multerS3 = require('multer-s3');
+const dotenv = require('dotenv');
+dotenv.config();
+
 const { chatPDF } = require('../../utils/chatPDF');
 const { MongoClient } = require('mongodb');
 const connectDB = require('../../utils/connectDB');
 const fs = require('fs');
+const pdf = require('pdf-poppler');
+
+//* aws region 및 자격증명 설정
+AWS.config.update({
+  accessKeyId: process.env.S3_ACCESS_KEY_ID,
+  secretAccessKey: process.env.S3_SECRET_ACCESS_KEY,
+  region: 'ap-northeast-2',
+});
+
 
 // 파일을 저장할 디렉토리 설정
 const uploadDirectory = path.join(__dirname, 'uploads');
 
-// multer 설정
+//* AWS S3 multer 설정
+const S3upload = multer({
+  //* 저장공간
+  // s3에 저장
+  storage: multerS3({
+     // 저장 위치
+     s3: new AWS.S3(),
+     bucket: 'tukorea-chatpdf-bucket',
+     acl: "public-read",
+     contentType: multerS3.AUTO_CONTENT_TYPE,
+     key(req, file, cb) {
+        cb(null, `${Date.now()}_${path.basename(file.originalname)}`) // original 폴더안에다 파일을 저장
+     },
+  }),
+  //* 용량 제한
+  limits: { fileSize: 5 * 1024 * 1024 }
+});
+
+
+// 로컬 multer 설정
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, uploadDirectory);
@@ -19,6 +53,7 @@ const storage = multer.diskStorage({
     // 한글 깨짐 현상 해결
     file.originalname = Buffer.from(file.originalname, 'ascii').toString('utf8');
     cb(null, file.originalname); 
+    
   }
 });
 
@@ -53,7 +88,29 @@ router.post('/upload', upload.single('pdfFile'), async (req, res) => {
     console.log(YesOrNo);
     res.send('파일이 성공적으로 업로드되었습니다.');
   }
+
+  // Convert pdf into image
+  let PDF_FilePath = __dirname + '/uploads/test_file.pdf'
   
+  pdf.info(PDF_FilePath)
+    .then(pdfinfo => {
+        console.log(pdfinfo);
+    });
+  
+  let opts = {
+    format: 'jpeg',
+    out_dir: path.dirname(PDF_FilePath),
+    out_prefix: path.basename(PDF_FilePath, path.extname(PDF_FilePath)),
+    page: null
+  }
+   
+  pdf.convert(PDF_FilePath, opts)
+      .then(res => {
+          console.log('Successfully converted');
+      })
+      .catch(error => {
+          console.error(error);
+      })
 });
 
 module.exports = router;
