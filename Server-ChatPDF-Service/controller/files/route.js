@@ -28,8 +28,8 @@ const storage = multer.diskStorage({
         cb(null, uploadDirectory);
     },
     filename: function (req, file, cb) {
-        file.originalname = Buffer.from(file.originalname, 'utf8').toString();
-        cb(null, file.originalname);
+        file.originalname = Buffer.from(file.originalname, 'ascii').toString('utf8');
+        cb(null, file.originalname); 
     }
 });
 
