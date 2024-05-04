@@ -230,46 +230,7 @@ app.post('/api/sendAnswer', async (req, res) => {
   
 });
 
-app.get('/test', async (req, res) => {
-  
-  await db.room.aggregate([
-    {
-      $match: {
-        "_id": ObjectId("2")
-      }
-    },
-    {
-      $lookup: {
-        from: "prompt",
-        localField: "log.prompt",
-        foreignField: "_id",
-        as: "promptInfo"
-      }
-    },
-    {
-      $unwind: "$log"
-    },
-    {
-      $lookup: {
-        from: "evaluation",
-        localField: "log.evaluation",
-        foreignField: "_id",
-        as: "evaluationInfo"
-      }
-    },
-    {
-      $unwind: "$evaluationInfo"
-    },
-    {
-      $project: {
-        _id: 1,
-        title: 1,
-        promptInfo: 1,
-        evaluationInfo: 1
-      }
-    }
-  ])
-});
+
 
 
 

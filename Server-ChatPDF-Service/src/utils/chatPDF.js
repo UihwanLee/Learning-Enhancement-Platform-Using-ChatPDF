@@ -1,6 +1,6 @@
+require('dotenv').config();
 const axios = require("axios");
 const { fileUpload } = require('./fileUpload');
-require('dotenv').config();
 
 async function chatPDF(filePath, prompt){
   const sourceId = await fileUpload(filePath);
