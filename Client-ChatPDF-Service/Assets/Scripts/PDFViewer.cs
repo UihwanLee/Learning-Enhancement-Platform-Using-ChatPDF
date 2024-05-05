@@ -34,14 +34,6 @@ public class PDFViewer : MonoBehaviour
     void Start()
     {
         textures.Clear();
-
-        string url = "https://i.pinimg.com/564x/c6/3e/ff/c63effc78080418c1a4773e31d6fd1c5.jpg";
-        GetTextureFromURL(url);
-
-        string url2 = "https://i.pinimg.com/564x/c6/3e/ff/c63effc78080418c1a4773e31d6fd1c5.jpg";
-        GetTextureFromURL(url2);
-
-        Debug.Log(textures.Count);
     }
 
     private void SetPage(int page)
