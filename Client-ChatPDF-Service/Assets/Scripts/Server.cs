@@ -17,15 +17,22 @@ public class Server : MonoBehaviour
     private static extern void SendInterviewRoomData(string roomData);
 
     [DllImport("__Internal")]
+    private static extern void SendEvaluateRoomData(string roomData);
+
+    [DllImport("__Internal")]
     private static extern void DeleteInterviewRoomData(int roomDataID);
 
     [DllImport("__Internal")]
     private static extern void RequestUploadFile();
 
+    [DllImport("__Internal")]
+    private static extern void RequestInterviewRoomData(string roomData);
+
     // Server에서 관리할 객체
     private string userNickName;
     private List<string> studyRoomDataList = new List<string>();
     private List<string> interviewRoomDataList = new List<string>();
+    private List<string> evaluateRoomDataList = new List<string>();
     private int interviewGender;
     private string pdfTitle;
 
@@ -39,6 +46,7 @@ public class Server : MonoBehaviour
     // Log Data
     private List<string> questionLogList = new List<string>();
     private List<string> answerLogList = new List<string>();
+    private List<string> modelAnswerLogList = new List<string>();
 
     private void Awake()
     {
@@ -89,6 +97,16 @@ public class Server : MonoBehaviour
 #endif
     }
 
+    public void SaveEvaluateRommData(InterviewRoom room)
+    {
+        // Room Data를 JSON 형식으로 변환하여 서버에 저장
+        string roomData = JsonUtility.ToJson(room);
+        LoadInterviewRoomData(roomData);
+#if UNITY_WEBGL == true && UNITY_EDITOR == false
+    SendEvaluateRoomData(roomData);
+#endif
+    }
+
     public void RemoveInterviewRoomData(int roomID)
     {
         // roomData 제거
@@ -121,10 +139,25 @@ public class Server : MonoBehaviour
         interviewRoomDataList.Add(roomData);
     }
 
+    public void LoadEvaluateRoomData(string roomData)
+    {
+        // roomData JSON 데이터 저장
+        evaluateRoomDataList.Add(roomData);
+    }
+
     public List<string> GetInterviewRoomDataList()
     {
         // roomDataList 반환
         return interviewRoomDataList;
+    }
+
+    public void RequestInterviewRoomDataUnity(InterviewRoom room)
+    {
+        // 현재 선택한 Interview Room Data 정보를 넘김
+        string roomData = JsonUtility.ToJson(room);
+#if UNITY_WEBGL == true && UNITY_EDITOR == false
+    RequestInterviewRoomData(roomData);
+#endif
     }
 
     public string GetUserNickName() 
@@ -166,6 +199,7 @@ public class Server : MonoBehaviour
     {
         questionLogList.Clear();
         answerLogList.Clear();
+        modelAnswerLogList.Clear();
     }
 
     public void AddQuestionLogData(string message)
@@ -178,6 +212,12 @@ public class Server : MonoBehaviour
         answerLogList.Add(message);
     }
 
+    public void AddModelAnswerLogData(string message)
+    {
+        modelAnswerLogList.Add(message);
+    }
+
     public List<string> GetQuestionList() { return questionLogList; }
     public List<string> GetAnswerList() { return answerLogList; }
+    public List<string> GetModelAnswerList() { return modelAnswerLogList; }
 }
