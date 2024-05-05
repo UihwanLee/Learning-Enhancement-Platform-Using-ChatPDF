@@ -249,8 +249,9 @@ public class InterviewRoomManager : MonoBehaviour
         // UI 规 格废 积己
         string roomTitle = "<size=36>" + room.title + "|</size> " + " <size=20>" + room.category + " | " + room.index + "</size>";
         room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
-        room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => sceneManager.LoadInterviewRoom(room.interviewerGender));
-        room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() => DestroyRoom(room.id));
+        room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => StartPrevInterview(room));
+        room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() => StartBaseInterview(room));
+        room.gameObject.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(() => DestroyRoom(room.id));
     }
 
     public void CreateRoom()
@@ -268,6 +269,7 @@ public class InterviewRoomManager : MonoBehaviour
         room.category = this.category;
         room.index = this.index;
 
+        room.interviewType = 0;
         room.interviewerCount = this.interviewerCount;
         room.interviewerGender = this.interviewerGender;
         room.interviewTime = this.interviewTime;
@@ -278,8 +280,9 @@ public class InterviewRoomManager : MonoBehaviour
         // UI 规 格废 积己
         string roomTitle = "<size=36>" + room.title + "|</size> " + " <size=20>" + room.category + " | " + room.index + "</size>" ;
         room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
-        room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(()=> sceneManager.LoadInterviewRoom(room.interviewerGender));
-        room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(()=> DestroyRoom(room.id));
+        room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => StartPrevInterview(room));
+        room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(()=> StartBaseInterview(room));
+        room.gameObject.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(()=> DestroyRoom(room.id));
 
         // Room Data 历厘
         if (server)
@@ -334,6 +337,18 @@ public class InterviewRoomManager : MonoBehaviour
         {
             roomList[i].transform.SetSiblingIndex(i);
         }
+    }
+
+    public void StartPrevInterview(InterviewRoom room)
+    {
+        room.interviewType = 0;
+        sceneManager.LoadInterviewRoom(room);
+    }
+
+    public void StartBaseInterview(InterviewRoom room)
+    {
+        room.interviewType = 1;
+        sceneManager.LoadInterviewRoom(room);
     }
 
     public void DestroyRoom(int id)

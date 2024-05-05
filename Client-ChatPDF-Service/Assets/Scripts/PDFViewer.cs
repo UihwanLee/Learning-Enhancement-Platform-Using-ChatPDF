@@ -4,11 +4,14 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
 using TMPro;
+using UnityEngine.Networking;
 
 public class PDFViewer : MonoBehaviour
 {
     [SerializeField]
     private Sprite[] sampleImages;
+
+    private List<Texture> textures = new List<Texture>();
 
     [SerializeField]
     private Material pdfSlide;
@@ -30,26 +33,47 @@ public class PDFViewer : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // 현재 페이지 초기화
-        SetPage(1);
+        textures.Clear();
     }
 
     private void SetPage(int page)
     {
         // 페이지 예외 처리
-        if (page < 1 || page > sampleImages.Length) return;
+        if (page < 1 || page > textures.Count) return;
 
         this.page = page;
 
         // Button enabled 설정
         prevButton.SetActive(page > 1);
-        nextButton.SetActive(page < sampleImages.Length);
+        nextButton.SetActive(page < textures.Count);
 
         // 이미지 변환
-        pdfSlide.SetTexture("_MainTex", textureFromSprite(sampleImages[page]));
+        pdfSlide.SetTexture("_MainTex", (Texture2D)textures[page-1]);
 
         // Page 텍스트 변환
-        currentPageText.text = page + "/" + sampleImages.Length;
+        currentPageText.text = page + "/" + textures.Count;
+    }
+
+    public void GetTextureFromURL(string url)
+    {
+        StartCoroutine(GetTexture(url));
+    }
+
+    IEnumerator GetTexture(string url)
+    {
+        UnityWebRequest www = UnityWebRequestTexture.GetTexture(url);
+        yield return www.SendWebRequest();
+        if (www.result != UnityWebRequest.Result.Success)
+        {
+            Debug.Log(www.error);
+        }
+        else
+        {
+            Texture myTexture = ((DownloadHandlerTexture)www.downloadHandler).texture;
+            textures.Add((Texture2D)myTexture);
+            Debug.Log(textures.Count);
+            SetPage(1);
+        }
     }
 
     public static Texture2D textureFromSprite(Sprite sprite)
