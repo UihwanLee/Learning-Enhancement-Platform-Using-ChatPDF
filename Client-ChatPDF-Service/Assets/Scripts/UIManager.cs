@@ -66,8 +66,6 @@ public class UIManager : MonoBehaviour
 
         // settingCliked 초기화
         settingButtonCliked = new int[settingsButtons.Count];
-
-        NoticeMessage("안녕하세요!");
     }
 
     private int CheckButtonClicked(TextMeshProUGUI button)
