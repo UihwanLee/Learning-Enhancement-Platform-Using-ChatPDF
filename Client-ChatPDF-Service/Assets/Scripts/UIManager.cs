@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using UnityEngine.UIElements;
 using Image = UnityEngine.UI.Image;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
@@ -42,6 +43,10 @@ public class UIManager : MonoBehaviour
     private string baseColor = "#BFBFBF";
     private string highlightedColor = "#FFFFFF";
 
+    [Header("UI")]
+    [SerializeField]
+    private GameObject noticeUI;
+
     [Header("Manager")]
     [SerializeField]
     private StudyRoomManager studyRoomManager;
@@ -61,6 +66,8 @@ public class UIManager : MonoBehaviour
 
         // settingCliked 초기화
         settingButtonCliked = new int[settingsButtons.Count];
+
+        NoticeMessage("안녕하세요!");
     }
 
     private int CheckButtonClicked(TextMeshProUGUI button)
@@ -273,5 +280,23 @@ public class UIManager : MonoBehaviour
             default:
                 break;
         }
+    }
+
+    public void NoticeMessage(string message)
+    {
+        // 면접이 끝났다고 알리고 로비로 돌아가는 UI 생성
+
+        // Notice UI 생성
+        noticeUI.SetActive(true);
+
+        // noticeUI 설정
+        string content = "<size=24>" + message + "</size>";
+        noticeUI.gameObject.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = content;
+        noticeUI.gameObject.transform.GetChild(3).GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => Cancel());
+    }
+
+    public void Cancel()
+    {
+        noticeUI.SetActive(false);
     }
 }
