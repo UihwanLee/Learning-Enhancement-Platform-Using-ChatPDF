@@ -71,6 +71,30 @@ async function uploadToS3(filePath, originalFileName) {
     await s3.upload(uploadParams).promise();
 }
 
+const getJpgImagesFromS3 = async (bucketName, folderPath) => {
+    const params = {
+      Bucket: bucketName,
+      Prefix: folderPath
+    };
+  
+    try {
+      const data = await s3.listObjectsV2(params).promise();
+      const jpgFiles = data.Contents.filter(item => {
+        return item.Key.startsWith(`${folderPath}/`) && item.Key.endsWith('.jpg');
+      });
+      
+      return jpgFiles.map(file => {
+        return `https://${bucketName}.s3.${AWS.config.region}.amazonaws.com/${file.Key}`;
+      });
+    } catch (error) {
+      console.error('Error fetching JPG images from S3', error);
+      return [];
+    }
+  };
+  
+    
+
+
 async function handleFileUpload(req, res, next) {
     const file = req.file;
     if (!file) {
@@ -97,7 +121,7 @@ async function handleFileUpload(req, res, next) {
 }
 
 module.exports = {
+    getJpgImagesFromS3,
     upload,
     handleFileUpload
 };
-

@@ -6,6 +6,8 @@ const { MongoClient } = require('mongodb');
 require('dotenv').config();
 const connectDB = require('../../utils/connectDB');
 
+//import { authenticateToken } from "../auth/service";
+
 // 회원가입
 router.post('/register', async (req, res) => {
   try {
@@ -47,6 +49,28 @@ router.post('/login', async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 });
+
+// 사용자 정보 조회 API
+// router.get('/details', authenticateToken, (req, res) => {
+//   // 요청에서 userId 사용
+//   const userId = req.user.id; // authenticateToken 미들웨어에서 설정된 사용자 정보
+//   console.log(userId);
+//   const user = getUserDetailsFromDatabase(userId); // 데이터베이스에서 사용자 정보 가져오기
+//   if (user) {
+//       res.json(user);
+//   } else {
+//       res.status(404).send('User not found');
+//   }
+// });
+
+async function getUserDetailsFromDatabase(userId) {
+  // 데이터베이스 조회 로직 구현
+  // 이 예에서는 임시 데이터를 반환합니다.
+  const db = await connectDB();
+  const users = await db.collection("user");
+  return { userId: users.userId, username: users.username };
+}
+
 
 module.exports = router;
 

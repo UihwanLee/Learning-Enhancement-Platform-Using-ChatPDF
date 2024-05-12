@@ -1,4 +1,5 @@
 import { useCallback, useEffect } from "react";
+import axios from "axios";
 
 export function useManagerStudyRoomDataEventListener(addEventListener, removeEventListener) {
 
@@ -20,6 +21,7 @@ export function useManagerStudyRoomDataEventListener(addEventListener, removeEve
     const SaveStudyRoomData = useCallback((roomData) =>{
       // RoomDataList에 roomData JSON 정보 저장
       console.log(roomData);
+      sendRoomdataToServer(roomData);
     });
   
     useEffect(() => {

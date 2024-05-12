@@ -17,6 +17,7 @@ import { useReplayQuestionEventListener } from "./unity-components/replayQuestio
 import { useReceiveAnswerEventListener } from "./unity-components/receiveAnswer.js";
 import { useFILEUPLOADEventListener } from './unity-components/FILE_UPLOAD.js';
 import { useManagerInterviewRoomDataEventListener } from './unity-components/managerInterviewRoomData.js';
+import { useManagerStudyRoomDataEventListener } from './unity-components/managerStudyRoomData.js';
 import { useRequestDataEventListener } from './unity-components/requestData.js';
 
 
@@ -48,6 +49,8 @@ function Service() {
 
   // 인터뷰 룸 데이터 이벤트리스너
   useManagerInterviewRoomDataEventListener(addEventListener, removeEventListener);
+
+  useManagerStudyRoomDataEventListener(addEventListener, removeEventListener);
  
   // TTS 기능 
   const {
@@ -219,7 +222,7 @@ function Service() {
       .then(response => {
         if(response.data === "success"){
           console.log("response.data: ", response.data);
-          sendMessage("StudyRoomManager", "InitCreateRoom", {"id":0,"nickname":"Uihawn","title":"알고리즘","titlePDF":"algo.pdf","category":"알고리즘"}); 
+          sendMessage("StudyRoomManager", "CreateRoom", fileName); 
         } 
        
       })
