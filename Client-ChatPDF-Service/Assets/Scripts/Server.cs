@@ -30,6 +30,9 @@ public class Server : MonoBehaviour
     [DllImport("__Internal")]
     private static extern void RequestInterviewRoomData(string roomData);
 
+    [DllImport("__Internal")]
+    private static extern void RequestEvaluateRoomData(string roomData);
+
     // Server에서 관리할 객체
     private string userNickName;
     private List<string> studyRoomDataList = new List<string>();
@@ -168,6 +171,15 @@ public class Server : MonoBehaviour
         string roomData = JsonUtility.ToJson(room);
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
     RequestInterviewRoomData(roomData);
+#endif
+    }
+
+    public void RequestEvaluateRoomDataUnity(InterviewRoom room)
+    {
+        // 현재 선택한 Evaluate Room Data 정보를 넘김
+        string roomData = JsonUtility.ToJson(room);
+#if UNITY_WEBGL == true && UNITY_EDITOR == false
+    RequestEvaluateRoomData(roomData);
 #endif
     }
 
