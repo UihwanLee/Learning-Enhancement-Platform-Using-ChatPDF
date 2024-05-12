@@ -9,15 +9,15 @@ export function useManagerStudyRoomDataEventListener(addEventListener, removeEve
   
     // Room Data 저장
     // 방 생성 누르면 호출
-    const SaveRoomData = useCallback((roomData) =>{
+    const SaveStudyRoomData = useCallback((roomData) =>{
       // RoomDataList에 roomData JSON 정보 저장
       console.log(roomData);
     });
   
     useEffect(() => {
-      addEventListener("SendStudyRoomData", SaveRoomData);
+      addEventListener("SendStudyRoomData", SaveStudyRoomData);
       return () => {
-        removeEventListener("SendStudyRoomData", SaveRoomData);
+        removeEventListener("SendStudyRoomData", SaveStudyRoomData);
       };
-    }, [addEventListener, removeEventListener, SaveRoomData]);
+    }, [addEventListener, removeEventListener, SaveStudyRoomData]);
   }
