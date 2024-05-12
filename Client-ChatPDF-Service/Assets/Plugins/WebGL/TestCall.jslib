@@ -38,4 +38,7 @@ mergeInto(LibraryManager.library, {
   RequestInterviewRoomData: function (roomData) {
     window.dispatchReactUnityEvent("RequestInterviewRoomData", UTF8ToString(roomData));
   },
+  RequestEvaluateRoomData: function (roomData) {
+    window.dispatchReactUnityEvent("RequestInterviewRoomData", UTF8ToString(roomData));
+  },
 });
