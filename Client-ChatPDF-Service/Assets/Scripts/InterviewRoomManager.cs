@@ -235,7 +235,7 @@ public class InterviewRoomManager : MonoBehaviour
         // Room Setting 적용
         var room = roomObj.GetComponent<InterviewRoom>();
         room.id = newRoom.id;
-        if(server) room.user_id = server.GetUserNickName();
+        if(server) room.nickname = server.GetUserNickName();
         room.title = newRoom.title;
         room.category = newRoom.category;
         room.index = newRoom.index;
@@ -266,7 +266,7 @@ public class InterviewRoomManager : MonoBehaviour
         // Room Setting 적용
         var room = roomObj.GetComponent<InterviewRoom>();
         room.id = roomList.Count;
-        if (server) room.user_id = server.GetUserNickName();
+        if (server) room.nickname = server.GetUserNickName();
         room.title = this.title;
         room.category = this.category;
         room.index = this.index;
