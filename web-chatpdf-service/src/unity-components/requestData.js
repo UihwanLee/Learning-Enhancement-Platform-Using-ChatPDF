@@ -1,10 +1,29 @@
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
+import axios from "axios";
 
-export function useRequestDataEventListener(addEventListener, removeEventListener) {
+export function useRequestDataEventListener(addEventListener, removeEventListener, sendMessage) {
   // Server 데이터 받기
+  const [studyRooms, setStudyRooms] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const nickname = "Uihwan";
+
+  const getStudyRoomData = async (nickname) =>{
+
+    axios.get(`http://localhost:3001/room/interviewRooms/${nickname}`)
+      .then(response => {
+        setStudyRooms(response.data);
+        setLoading(false); // 데이터 로딩 완료
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        setLoading(false); // 에러 발생 시에도 로딩 상태 해제
+      });
+  }
+
   const RequestData = useCallback(() =>{
     // USER 데이터 보내기
-      
+    sendMessage("Server", "SetUserNickName", nickname);
+    sendMessage("Server", "LoadUserData", nickname);
     // ROOM DATA 보내기
 
   });

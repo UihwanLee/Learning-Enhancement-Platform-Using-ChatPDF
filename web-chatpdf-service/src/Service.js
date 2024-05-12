@@ -44,7 +44,7 @@ function Service() {
   // });
 
   // 서버로 데이터 요청
-  useRequestDataEventListener(addEventListener, removeEventListener);
+  useRequestDataEventListener(addEventListener, removeEventListener, sendMessage);
 
   // 인터뷰 룸 데이터 이벤트리스너
   useManagerInterviewRoomDataEventListener(addEventListener, removeEventListener);
