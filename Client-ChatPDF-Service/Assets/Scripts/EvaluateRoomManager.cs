@@ -81,7 +81,7 @@ public class EvaluateRoomManager : MonoBehaviour
         // UI 规 格废 积己
         string roomTitle = "<size=36> 乞啊 |" + room.title + "|</size> " + " <size=20>" + room.title;
         room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
-        room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => sceneManager.LoadEvaluateRoom(room.id));
+        room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => sceneManager.LoadEvaluateRoom(room));
     }
 
     private void CreateRoom(InterviewRoom interviewRoom)
@@ -105,7 +105,7 @@ public class EvaluateRoomManager : MonoBehaviour
         // UI 规 格废 积己
         string roomTitle = "<size=36> 乞啊 |" + room.title + "|</size> " + " <size=20>" + room.title;
         room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
-        room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => sceneManager.LoadEvaluateRoom(room.id));
+        room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => sceneManager.LoadEvaluateRoom(room));
 
         // Room Data 历厘
         if (server)

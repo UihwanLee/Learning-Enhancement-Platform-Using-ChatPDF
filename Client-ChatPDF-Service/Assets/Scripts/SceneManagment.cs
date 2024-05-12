@@ -45,12 +45,12 @@ public class SceneManagment : MonoBehaviour
         SceneManager.LoadScene(3);
     }
 
-    public void LoadEvaluateRoom(int id)
+    public void LoadEvaluateRoom(InterviewRoom room)
     {
         // roomData 불러와서 logData 세팅
         if(server)
         {
-
+            server.RequestInterviewRoomDataUnity(room);
         }
 
         SceneManager.LoadScene(4);
