@@ -6,7 +6,6 @@ export function useManagerInterviewRoomDataEventListener(addEventListener, remov
   // roomdata 서버로 send
   const sendRoomdataToServer = async (roomData) => {
     try {
-      const nickname = 'Uihwan';
       const response = await axios.post('http://localhost:3001/room/interviewRoomData', {
         roomData: roomData
       });

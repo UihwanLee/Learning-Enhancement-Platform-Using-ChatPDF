@@ -217,7 +217,11 @@ function Service() {
       }
       })
       .then(response => {
-        console.log(response.data);
+        if(response.data === "success"){
+          console.log("response.data: ", response.data);
+          sendMessage("StudyRoomManager", "InitCreateRoom", {"id":0,"nickname":"Uihawn","title":"알고리즘","titlePDF":"algo.pdf","category":"알고리즘"}); 
+        } 
+       
       })
       .catch(error => {
         if (error.response && error.response.status === 500) {

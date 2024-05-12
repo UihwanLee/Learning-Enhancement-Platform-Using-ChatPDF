@@ -47,14 +47,14 @@ router.post('/interviewRoomData', async (req, res) => {
 
 router.post('/studyRoomData', async (req, res) => {
   try {
-    // console.log("POST /studyRoomData");
+    console.log("POST /studyRoomData");
     // const jsonstudyRoomData = req.body;
     // roomData = JSON.parse(jsonstudyRoomData.roomData);
     // console.log(roomData);
 
     const db = await connectDB();
     await db.collection('studyRoom').insertOne( 
-      { id: 0, title: "algo", titlePDF: "algo.pdf", category: "알고리즘"});
+      { id: 0, nickname: "Uihwan", title: "algo", titlePDF: "algo.pdf", category: "알고리즘"});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

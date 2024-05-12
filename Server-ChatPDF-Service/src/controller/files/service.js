@@ -85,7 +85,7 @@ async function handleFileUpload(req, res, next) {
             return res.status(400).send('주제와 관련이 없는 파일입니다.');
         }
         await convertAndUpload(file.path);
-        res.send('파일 S3 업로드 성공');
+        res.send('success');
         console.log('파일 S3 업로드 성공');
     } catch (error) {
         next(error);
