@@ -7,7 +7,7 @@ public class InterviewRoom : MonoBehaviour
 {
     // Room Setting
     public int id;
-    public string user_id;
+    public string nickname;
     public string title;
     public string category;
     public string index;
