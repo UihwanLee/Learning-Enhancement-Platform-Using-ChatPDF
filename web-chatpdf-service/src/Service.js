@@ -16,6 +16,8 @@ import { useUnityProvider } from "./unity-components/buildUnity.js";
 import { useReplayQuestionEventListener } from "./unity-components/replayQuestion.js";
 import { useReceiveAnswerEventListener } from "./unity-components/receiveAnswer.js";
 import { useFILEUPLOADEventListener } from './unity-components/FILE_UPLOAD.js';
+import { useManagerInterviewRoomDataEventListener } from './unity-components/managerInterviewRoomData.js';
+import { useRequestDataEventListener } from './unity-components/requestData.js';
 
 
 function Service() {
@@ -35,34 +37,17 @@ function Service() {
 
   
   // Server 데이터 받기
-  const RequestData = useCallback(() =>{
-    console.log(answer);
-    console.log("데이터 요청받음!");
+  // const RequestData = useCallback(() =>{
+  //   console.log(answer);
+  //   console.log("데이터 요청받음!");
 
-  });
+  // });
 
-  // roomdata 서버로 send
-  const sendRoomdataToServer = async (roomData) => {
-    try {
-      const response = await axios.post('http://localhost:3001/room/RoomData', {
-        roomData: roomData
-      });
-      
-      console.log('Server response:', response.data);
-    } catch (error) {
-      console.error('Error sending answer:', error);
-    }
-  };
+  // 서버로 데이터 요청
+  useRequestDataEventListener(addEventListener, removeEventListener);
 
-  // Room Data 저장
-  // 방 생성 누르면 호출
-  const SaveRoomData = useCallback((roomData) =>{
-    // RoomDataList에 roomData JSON 정보 저장
-    console.log(roomData);
-    sendRoomdataToServer(roomData);
-  });
-
-  
+  // 인터뷰 룸 데이터 이벤트리스너
+  useManagerInterviewRoomDataEventListener(addEventListener, removeEventListener);
  
   // TTS 기능 
   const {
@@ -87,20 +72,12 @@ function Service() {
   
 
   // Unity-> React Server 데이터 통신 요구
-  useEffect(() => {
-    addEventListener("RequestData", RequestData);
-    return () => {
-      removeEventListener("RequestData", RequestData);
-    };
-  }, [addEventListener, removeEventListener, RequestData])
-
-  // Unity-> React Room Data 저장
-  useEffect(() => {
-    addEventListener("SendRoomData", SaveRoomData);
-    return () => {
-      removeEventListener("SendRoomData", SaveRoomData);
-    };
-  }, [addEventListener, removeEventListener, SaveRoomData])
+  // useEffect(() => {
+  //   addEventListener("RequestData", RequestData);
+  //   return () => {
+  //     removeEventListener("RequestData", RequestData);
+  //   };
+  // }, [addEventListener, removeEventListener, RequestData])
 
 
   // React->Unity API 질문 보내기
@@ -199,6 +176,12 @@ function Service() {
       });
   }
 
+  function SendImage(){
+    const url = "https://tukorea-chatpdf-bucket.s3.ap-northeast-2.amazonaws.com/chap00/chap00-01.jpg";
+    sendMessage("PDFViewer", "GetTextureFromURL" , url);
+  }
+
+
   // 파일 입력 요소에 대한 ref 생성
   const fileInput = React.useRef(null);
 
@@ -274,6 +257,8 @@ function Service() {
         <button onClick={ListenAnswer}>답변 듣기</button>
         <button onClick={getEval}>질문 답변 평가하기</button>
         <button onClick={EndInterview}>나가기 테스트</button>
+        <button onClick={SendImage}>이미지 테스트</button>
+        
         <input
           type="file"
           ref={fileInput}

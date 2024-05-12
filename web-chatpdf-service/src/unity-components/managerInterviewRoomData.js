@@ -1,11 +1,13 @@
 import { useCallback, useEffect } from "react";
+import axios from "axios";
 
 export function useManagerInterviewRoomDataEventListener(addEventListener, removeEventListener) {
 
   // roomdata 서버로 send
   const sendRoomdataToServer = async (roomData) => {
     try {
-      const response = await axios.post('http://localhost:3001/room/RoomData', {
+      const nickname = 'Uihwan';
+      const response = await axios.post('http://localhost:3001/room/interviewRoomData', {
         roomData: roomData
       });
       
