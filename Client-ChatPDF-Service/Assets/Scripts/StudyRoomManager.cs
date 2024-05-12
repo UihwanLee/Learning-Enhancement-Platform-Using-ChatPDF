@@ -70,11 +70,12 @@ public class StudyRoomManager : MonoBehaviour
         this.title = "알고리즘";
         this.titlePDF = "Alogrithm Notes";
 
-        CreateRoom(this.title, this.titlePDF);
+        CreateRoom(this.titlePDF);
     }
 
     private void InitCreateRoom(string roomData)
     {
+
         // 초기 방 생성 
         JsonUtility.FromJsonOverwrite(roomData, newRoom);
 
@@ -95,7 +96,7 @@ public class StudyRoomManager : MonoBehaviour
         room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => sceneManager.LoadStudyRoom(room));
     }
 
-    public void CreateRoom(string category, string pdf)
+    public void CreateRoom(string pdf)
     {
         // Room 생성
         var roomObj = Instantiate(prefab, parent.transform) as GameObject;
@@ -104,9 +105,8 @@ public class StudyRoomManager : MonoBehaviour
         var room = roomObj.GetComponent<StudyRoom>();
         room.id = roomList.Count;
         if(server) room.nickname = server.GetUserNickName();
-        room.title = category;
+        room.title = "나만의 학습방";
         room.titlePDF = pdf;
-        room.category = category;
 
         roomList.Add(roomObj);
 
