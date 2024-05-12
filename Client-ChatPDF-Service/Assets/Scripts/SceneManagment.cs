@@ -22,7 +22,10 @@ public class SceneManagment : MonoBehaviour
     public void LoadStudyRoom(string titlePDF)
     {
         // StudyRoom 이동 전 성별 설정
-        if (server) server.SetPDFTitle(titlePDF);
+        if (server)
+        {
+            server.SetPDFTitle(titlePDF);
+        }
 
         // StudyRoom 씬으로 이동
         SceneManager.LoadScene(2);
@@ -42,12 +45,12 @@ public class SceneManagment : MonoBehaviour
         SceneManager.LoadScene(3);
     }
 
-    public void LoadEvaluateRoom(int id)
+    public void LoadEvaluateRoom(InterviewRoom room)
     {
         // roomData 불러와서 logData 세팅
         if(server)
         {
-
+            server.RequestInterviewRoomDataUnity(room);
         }
 
         SceneManager.LoadScene(4);

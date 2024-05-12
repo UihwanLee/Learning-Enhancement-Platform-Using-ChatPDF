@@ -24,6 +24,8 @@ public class Server : MonoBehaviour
 
     [DllImport("__Internal")]
     private static extern void RequestUploadFile();
+    [DllImport("__Internal")]
+    private static extern void RequestStudyRoomData(string roomData);
 
     [DllImport("__Internal")]
     private static extern void RequestInterviewRoomData(string roomData);
@@ -149,6 +151,15 @@ public class Server : MonoBehaviour
     {
         // roomDataList 반환
         return interviewRoomDataList;
+    }
+
+    public void RequestStudyRoomDataUnity(StudyRoom room)
+    {
+        // 현재 선택한 Study Room Data 정보를 넘김
+        string roomData = JsonUtility.ToJson(room);
+#if UNITY_WEBGL == true && UNITY_EDITOR == false
+    RequestStudyRoomData(roomData);
+#endif
     }
 
     public void RequestInterviewRoomDataUnity(InterviewRoom room)
