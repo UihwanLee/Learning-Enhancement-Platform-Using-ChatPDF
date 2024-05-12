@@ -83,6 +83,7 @@ public class StudyRoomManager : MonoBehaviour
         // Room Setting 적용
         var room = roomObj.GetComponent<StudyRoom>();
         room.id = roomList.Count;
+        if (server) room.nickname = server.GetUserNickName();
         room.title = this.title;
         room.titlePDF = this.titlePDF;
 
@@ -102,6 +103,7 @@ public class StudyRoomManager : MonoBehaviour
         // Room Setting 적용
         var room = roomObj.GetComponent<StudyRoom>();
         room.id = roomList.Count;
+        if(server) room.nickname = server.GetUserNickName();
         room.title = category;
         room.titlePDF = pdf;
         room.category = category;

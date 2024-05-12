@@ -7,6 +7,7 @@ public class StudyRoom : MonoBehaviour
 {
     // Room Setting
     public int id;
+    public string nickname;
     public string title;
     public string titlePDF;
     public string category;
