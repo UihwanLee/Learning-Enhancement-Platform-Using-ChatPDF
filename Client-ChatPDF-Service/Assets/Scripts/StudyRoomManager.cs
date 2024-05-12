@@ -54,23 +54,10 @@ public class StudyRoomManager : MonoBehaviour
                     InitCreateRoom(roomData);
                 }
             }
-            else
-            {
-                // 초기 StudyRoom 생성
-                CreateRecommendStudyRoom();
-            }
 
             // 방 정렬
             SortRoomByID();
         }
-    }
-
-    private void CreateRecommendStudyRoom()
-    {
-        this.title = "알고리즘";
-        this.titlePDF = "Alogrithm Notes";
-
-        CreateRoom(this.titlePDF);
     }
 
     private void InitCreateRoom(string roomData)
@@ -105,7 +92,7 @@ public class StudyRoomManager : MonoBehaviour
         var room = roomObj.GetComponent<StudyRoom>();
         room.id = roomList.Count;
         if(server) room.nickname = server.GetUserNickName();
-        room.title = "나만의 학습방";
+        room.title = "나만의 학습방(" + roomList.Count + ")";
         room.titlePDF = pdf;
 
         roomList.Add(roomObj);

@@ -120,7 +120,7 @@ public class InterviewRoomManager : MonoBehaviour
     public void InitTitle()
     {
         // 방 제목 초기화
-        this.titleInputField.text = "나만의 학습방(" + roomList.Count + ")";
+        this.titleInputField.text = "나만의 면접방(" + roomList.Count + ")";
     }
 
     private void InitDocument()
