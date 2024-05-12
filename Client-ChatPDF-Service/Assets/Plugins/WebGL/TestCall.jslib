@@ -32,6 +32,9 @@ mergeInto(LibraryManager.library, {
   RequestUploadFile: function () {
     window.dispatchReactUnityEvent("RequestUploadFile");
   },
+  RequestStudyRoomData: function (roomData) {
+    window.dispatchReactUnityEvent("RequestStudyRoomData", UTF8ToString(roomData));
+  },
   RequestInterviewRoomData: function (roomData) {
     window.dispatchReactUnityEvent("RequestInterviewRoomData", UTF8ToString(roomData));
   },

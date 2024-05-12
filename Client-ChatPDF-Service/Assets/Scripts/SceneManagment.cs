@@ -22,7 +22,10 @@ public class SceneManagment : MonoBehaviour
     public void LoadStudyRoom(string titlePDF)
     {
         // StudyRoom 이동 전 성별 설정
-        if (server) server.SetPDFTitle(titlePDF);
+        if (server)
+        {
+            server.SetPDFTitle(titlePDF);
+        }
 
         // StudyRoom 씬으로 이동
         SceneManager.LoadScene(2);
