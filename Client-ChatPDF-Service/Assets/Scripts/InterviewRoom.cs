@@ -10,6 +10,7 @@ public class InterviewRoom : MonoBehaviour
     public string nickname;
     public string title;
     public string category;
+    public string doucment;
     public string index;
 
     // Prompt Setting

@@ -103,7 +103,6 @@ public class InterviewRoomManager : MonoBehaviour
         // 추천 설정으로 세팅
         InitTitle();
         SetCategory(0);
-        SetIndex();
         SetInterviewerCount(1);
         SetInterviewerGender(1);
         SetInterviewTime(60.0f);
@@ -115,6 +114,9 @@ public class InterviewRoomManager : MonoBehaviour
     private void InitRoomSetting()
     {
         InitDocument();
+
+        dropdown_index.onValueChanged.AddListener(delegate { SetIndex(dropdown_document.value); });
+        SetIndex(dropdown_document.value);
     }
 
     public void InitTitle()
@@ -144,6 +146,9 @@ public class InterviewRoomManager : MonoBehaviour
                 dropdown_document.options.Add(new TMP_Dropdown.OptionData(documentList[i], null));
             }
 
+            dropdown_document.onValueChanged.AddListener(delegate { SetDocument(dropdown_document.value); });
+            SetDocument(dropdown_document.value);
+
             dropdown_document.RefreshShownValue();
         }
     }
@@ -172,7 +177,7 @@ public class InterviewRoomManager : MonoBehaviour
                 ChangeDocumentList(2);
                 break;
             case 3:
-                this.category = "Web";
+                this.category = "Database";
                 ChangeDocumentList(3);
                 break;
             default:
@@ -180,20 +185,28 @@ public class InterviewRoomManager : MonoBehaviour
         }
     }
 
-    private void ChangeDocument()
+    public void SetDocument(int option)
     {
+        if(dropdown_document.options.Count == 0)
+        {
+            this.document = "";
+            return;
+        }
 
+        this.document = dropdown_document.options[option].text;
+        Debug.Log(dropdown_document.options[option].text);
     }
 
-    public void SetDocument()
+    public void SetIndex(int option)
     {
+        if (dropdown_index.options.Count == 0)
+        {
+            this.index = "";
+            return;
+        }
 
-    }
-
-    public void SetIndex()
-    {
         // 학습 목차 설정
-        this.index = "";
+        this.index = dropdown_index.options[option].text;
     }
 
     public void SetInterviewerCount(int num)
@@ -223,6 +236,13 @@ public class InterviewRoomManager : MonoBehaviour
     public void TryCreateRoom()
     {
         // 방 생성 전 예외처리
+        if(this.document == "")
+        {
+            uiManager.NoticeMessage("현재 면접 가능한 학습 문서가 존재하지 않습니다.");
+            return;
+        }
+
+        CreateRoom();
     }
 
     private void InitCreateRoom(string roomData)
@@ -238,6 +258,7 @@ public class InterviewRoomManager : MonoBehaviour
         if(server) room.nickname = server.GetUserNickName();
         room.title = newRoom.title;
         room.category = newRoom.category;
+        room.doucment = newRoom.doucment;
         room.index = newRoom.index;
 
         room.interviewerCount = newRoom.interviewerCount;
@@ -269,6 +290,7 @@ public class InterviewRoomManager : MonoBehaviour
         if (server) room.nickname = server.GetUserNickName();
         room.title = this.title;
         room.category = this.category;
+        room.doucment = this.document;
         room.index = this.index;
 
         room.interviewType = 0;
