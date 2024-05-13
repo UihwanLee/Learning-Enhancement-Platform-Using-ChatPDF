@@ -6713,8 +6713,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1035116736}
-        m_TargetAssemblyTypeName: RoomManager, Assembly-CSharp
-        m_MethodName: CreateRoom
+        m_TargetAssemblyTypeName: InterviewRoomManager, Assembly-CSharp
+        m_MethodName: TryCreateRoom
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -11953,10 +11953,6 @@ MonoBehaviour:
   m_Options:
     m_Options:
     - m_Text: "\uC804\uCCB4"
-      m_Image: {fileID: 0}
-    - m_Text: "01\uC7A5. \uBE45\uC624\uD45C\uAE30\uBC95"
-      m_Image: {fileID: 0}
-    - m_Text: "02\uC7A5. \uB2E4\uC774\uB098\uBBF9 \uD504\uB85C\uADF8\uB798\uBC0D"
       m_Image: {fileID: 0}
   m_OnValueChanged:
     m_PersistentCalls:

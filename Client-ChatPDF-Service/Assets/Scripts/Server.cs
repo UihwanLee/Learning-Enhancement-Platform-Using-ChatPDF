@@ -43,10 +43,10 @@ public class Server : MonoBehaviour
 
     // Room Setting
     private List<List<string>> documentHashList = new List<List<string>>();
-    private List<string> category_algo = new List<string> { "algo.pdf" };
-    private List<string> category_network = new List<string> { "network.pdf" };
-    private List<string> category_operating_system = new List<string> { "operating_system.pdf" };
-    private List<string> category_web = new List<string> { "web.pdf" };
+    private List<string> category_algo = new List<string> { };
+    private List<string> category_network = new List<string> { };
+    private List<string> category_operating_system = new List<string> {  };
+    private List<string> category_database = new List<string> { };
 
     // Log Data
     private List<string> questionLogList = new List<string>();
@@ -208,7 +208,7 @@ public class Server : MonoBehaviour
         documentHashList.Add(category_algo);
         documentHashList.Add(category_network);
         documentHashList.Add(category_operating_system);
-        documentHashList.Add(category_web);
+        documentHashList.Add(category_database);
     }
 
     public void AddAlgoDocument(int category, string file)
