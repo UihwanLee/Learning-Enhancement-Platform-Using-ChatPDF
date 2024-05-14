@@ -10,9 +10,31 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
 
   const getStudyRoomData = async (nickname) =>{
 
+    axios.get(`http://localhost:3001/room/studyRooms/${nickname}`)
+      .then(response => {
+        //setStudyRooms(response.data);
+        for (const key in response.data){
+          const roomData = JSON.stringify(response.data[key]);
+          sendMessage("Server", "LoadStudyRoomData", roomData);
+        }
+        setLoading(false); // 데이터 로딩 완료
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        setLoading(false); // 에러 발생 시에도 로딩 상태 해제
+      });
+  }
+
+  const getInterviewRoomData = async (nickname) =>{
+
     axios.get(`http://localhost:3001/room/interviewRooms/${nickname}`)
       .then(response => {
-        setStudyRooms(response.data);
+        //setStudyRooms(response.data);
+        console.log(typeof(response.data));
+        for (const key in response.data){
+          const roomData = JSON.stringify(response.data[key]);
+          sendMessage("Server", "LoadInterviewRoomData", roomData);
+        }
         setLoading(false); // 데이터 로딩 완료
       })
       .catch(error => {
@@ -26,7 +48,8 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
     sendMessage("Server", "SetUserNickName", nickname);
     sendMessage("Server", "LoadUserData", nickname);
     // ROOM DATA 보내기
-
+    getStudyRoomData(nickname);
+    getInterviewRoomData(nickname);
   });
 
   useEffect(() => {
@@ -42,7 +65,7 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
       console.log(response.data);
       setImages(response.data);
       setLoading(false);
-      //console.log(typeof(response.data));
+     
       for (const key in response.data){
         console.log(response.data[key]);
         sendMessage("PDFViewer", "GetTextureFromURL", response.data[key]);
@@ -55,6 +78,7 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
   // StudyRoomRequest 처리
   const RequestStudyRoomData = useCallback((roomData) =>{
     // id 값에 맞는 Data 보내기
+    console.log("studyRoomData string 형태: " + roomData);
     const JSONroomData = JSON.parse(roomData);
     const JSONroomDataFilePDF = JSONroomData.titlePDF;
     const file = JSONroomDataFilePDF.substring(0, JSONroomDataFilePDF.lastIndexOf('.'));

@@ -69,9 +69,39 @@ router.get('/interviewRooms/:nickname', async (req, res) => {
   const nickname = req.params.nickname;
 
   try {
-    const documents = await collection.find({ nickname: nickname }).toArray();
+    // 쿼리와 projection 설정
+    const query = { nickname: "Uihwan" };
+    const projection = { _id: 0 };
+
+    // 문서 찾기
+    const documents = await collection.find(query).project(projection).toArray();
     if (!documents.length) {
       return res.status(404).send('No interview rooms found for the given nickname');
+    }
+    res.json(documents);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  } 
+});
+
+// 라우트: nickname을 이용해 스터디 룸 정보 조회
+router.get('/studyRooms/:nickname', async (req, res) => {
+  const db = await connectDB();
+  if (!db) return res.status(500).send('Failed to connect to the database');
+
+  const collection = db.collection('studyRoom');
+  const nickname = req.params.nickname;
+
+  try {
+    // 쿼리와 projection 설정
+    const query = { nickname: "Uihwan" };
+    const projection = { _id: 0 };
+
+    // 문서 찾기
+    const documents = await collection.find(query).project(projection).toArray();
+
+    if (!documents.length) {
+      return res.status(404).send('No study rooms found for the given nickname');
     }
     res.json(documents);
   } catch (error) {
