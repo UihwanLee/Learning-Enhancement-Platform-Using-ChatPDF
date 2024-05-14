@@ -45,7 +45,7 @@ public class StudyRoomManager : MonoBehaviour
         if (server)
         {
             newRoom = new StudyRoom();
-            roomDataList = server.GetInterviewRoomDataList();
+            roomDataList = server.GetStudyRoomDataList();
 
             if(roomDataList.Count > 0)
             {
