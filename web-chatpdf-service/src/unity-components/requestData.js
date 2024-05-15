@@ -26,7 +26,6 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
   }
 
   const getInterviewRoomData = async (nickname) =>{
-
     axios.get(`http://localhost:3001/room/interviewRooms/${nickname}`)
       .then(response => {
         //setStudyRooms(response.data);
@@ -77,8 +76,8 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
 
   // StudyRoomRequest 처리
   const RequestStudyRoomData = useCallback((roomData) =>{
-    // id 값에 맞는 Data 보내기
-    console.log("studyRoomData string 형태: " + roomData);
+    // nickname 값에 맞는 Data 보내기
+    console.log("studyRoomData: " + roomData);
     const JSONroomData = JSON.parse(roomData);
     const JSONroomDataFilePDF = JSONroomData.titlePDF;
     const file = JSONroomDataFilePDF.substring(0, JSONroomDataFilePDF.lastIndexOf('.'));
@@ -90,8 +89,6 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
     console.log("images: ", images);
   });
 
-  
-
   useEffect(() => {
     addEventListener("RequestStudyRoomData", RequestStudyRoomData);
     return () => {
@@ -100,8 +97,14 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
   }, [addEventListener, removeEventListener, RequestStudyRoomData]);
 
   // InterviewRoomRequest 처리
-  const RequestInterviewRoomData = useCallback(() =>{
-    // id 값에 맞는 Data 보내기
+  const RequestInterviewRoomData = useCallback((roomData) =>{
+    // nickname 값에 맞는 Data 보내기
+    console.log("interviewRoomData: " + roomData);
+    const JSONroomData = JSON.parse(roomData);
+    const JSONroomDataNickname = JSONroomData.nickname;
+    const JSONroomDataDocument = JSONroomData.document;
+    console.log(JSONroomData);
+    //const file = JSONroomDataFilePDF.substring(0, JSONroomDataFilePDF.lastIndexOf('.'));
 
   });
 
