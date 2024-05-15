@@ -3596,7 +3596,6 @@ MonoBehaviour:
   buttons: {fileID: 749831614}
   baseSprites:
   - {fileID: 21300000, guid: 746ff105c402bdc49b5b2d82cfd9834c, type: 3}
-  - {fileID: 21300000, guid: 42563250138813d4bb0ef628ad90c89a, type: 3}
   - {fileID: 21300000, guid: 649b2342d1d233049a83a0d88d55a4cb, type: 3}
   - {fileID: 21300000, guid: 8757b95b3d6c4df4aa5673cc6e1ee58d, type: 3}
   - {fileID: 21300000, guid: 80c06356fe926374c821d9b3786356b7, type: 3}
