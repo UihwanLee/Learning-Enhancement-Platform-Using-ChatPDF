@@ -112,7 +112,7 @@ public class Server : MonoBehaviour
     {
         // Room Data를 JSON 형식으로 변환하여 서버에 저장
         string roomData = JsonUtility.ToJson(room);
-        LoadInterviewRoomData(roomData);
+        LoadEvaluateRoomData(roomData);
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
     SendEvaluateRoomData(roomData);
 #endif
