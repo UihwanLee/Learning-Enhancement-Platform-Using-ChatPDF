@@ -20,11 +20,9 @@ public class SceneManagment : MonoBehaviour
 
     public void LoadLobbyAndCreateEvaluateRoom()
     {
+        if (server) server.isCreateEvaluteRoom = true;
         // Lobby æ¿¿∏∑Œ ¿Ãµø
         SceneManager.LoadScene(1);
-
-        EvaluateRoomManager manager = FindObjectOfType<EvaluateRoomManager>();
-        manager.CreateRoom(server.GetInterviewRoom());
     }
 
     public void LoadStudyRoom(StudyRoom room)

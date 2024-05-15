@@ -57,6 +57,7 @@ public class Server : MonoBehaviour
     // roomData
     private StudyRoom currentStudyRoom;
     private InterviewRoom currentInterviewRoom;
+    public bool isCreateEvaluteRoom = false;
 
     private void Awake()
     {

@@ -274,6 +274,11 @@ public class InterviewRoomManager : MonoBehaviour
         room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => StartPrevInterview(room));
         room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() => StartBaseInterview(room));
         room.gameObject.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(() => DestroyRoom(room.id));
+
+        if(room.isPrevInterview == 1)
+        {
+            room.gameObject.transform.GetChild(1).GetComponent<GameObject>().SetActive(false);
+        }
     }
 
     public void CreateRoom()
@@ -293,6 +298,7 @@ public class InterviewRoomManager : MonoBehaviour
         room.document = this.document;
         room.index = this.index;
 
+        room.isPrevInterview = 0;
         room.interviewType = 0;
         room.interviewerCount = this.interviewerCount;
         room.interviewerGender = this.interviewerGender;
