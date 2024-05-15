@@ -42,7 +42,7 @@ public class EvaluateRoomManager : MonoBehaviour
         // 방 초기 생성
         if (server)
         {
-            roomDataList = server.GetInterviewRoomDataList();
+            roomDataList = server.GetEvaluateRoomDataList();
 
             foreach (string roomData in roomDataList)
             {
@@ -52,8 +52,11 @@ public class EvaluateRoomManager : MonoBehaviour
             // 방 정렬
             SortRoomByID();
 
-            // RoomSetting 초기화
-            //InitRoomSetting();
+            if (server.isCreateEvaluteRoom)
+            {
+                CreateRoom(server.GetInterviewRoom());
+                server.isCreateEvaluteRoom = false;
+            }
         }
     }
 

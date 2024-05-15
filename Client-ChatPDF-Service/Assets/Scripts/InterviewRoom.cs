@@ -14,6 +14,7 @@ public class InterviewRoom : MonoBehaviour
     public string index;
 
     // Prompt Setting
+    public int isPrevInterview;     // 사전조사 했는지 안했는지
     public int interviewType;       // 사전조사 or 기본면접
     public int interviewerCount;    // 면접자 수
     public int interviewerGender;   // 면접자 성별
