@@ -3969,7 +3969,7 @@ MonoBehaviour:
   buttonsClicked: 
   parentUI: {fileID: 749831614}
   noticeUI: {fileID: 5283996064310786372, guid: 0a64c06d5c4f0b14a9e03c6ab296ec0c, type: 3}
-  voiceUI: {fileID: 0}
+  voiceUI: {fileID: 580229877}
   sceneManager: {fileID: 784814298}
 --- !u!4 &1688564895
 Transform:
