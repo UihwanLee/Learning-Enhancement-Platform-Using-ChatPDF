@@ -12,11 +12,19 @@ public class SceneManagment : MonoBehaviour
         server = FindObjectOfType<Server>();
     }
 
-
     public void LoadLobby()
     {
         // Lobby 씬으로 이동
         SceneManager.LoadScene(1);
+    }
+
+    public void LoadLobbyAndCreateEvaluateRoom()
+    {
+        // Lobby 씬으로 이동
+        SceneManager.LoadScene(1);
+
+        EvaluateRoomManager manager = FindObjectOfType<EvaluateRoomManager>();
+        manager.CreateRoom(server.GetInterviewRoom());
     }
 
     public void LoadStudyRoom(StudyRoom room)
@@ -26,6 +34,7 @@ public class SceneManagment : MonoBehaviour
         {
             server.SetPDFTitle(room.titlePDF);
             server.RequestStudyRoomDataUnity(room);
+            server.SetCurrentStudyRoom(room);
         }
 
         // StudyRoom 씬으로 이동
@@ -40,6 +49,7 @@ public class SceneManagment : MonoBehaviour
             server.SetInterViewGender(room.interviewerGender);
             // room Data 전달
             server.RequestInterviewRoomDataUnity(room);
+            server.SetCurrentInterviewRoom(room);
         }
 
         // InterviewRoom 씬으로 이동
