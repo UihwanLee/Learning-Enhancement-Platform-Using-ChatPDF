@@ -54,6 +54,10 @@ public class Server : MonoBehaviour
     private List<string> answerLogList = new List<string>();
     private List<string> modelAnswerLogList = new List<string>();
 
+    // roomData
+    private StudyRoom currentStudyRoom;
+    private InterviewRoom currentInterviewRoom;
+
     private void Awake()
     {
         // 오브젝트 유지
@@ -266,6 +270,19 @@ public class Server : MonoBehaviour
     {
         modelAnswerLogList.Add(message);
     }
+
+    public void SetCurrentStudyRoom(StudyRoom room)
+    {
+        currentStudyRoom = room;
+    }
+
+    public void SetCurrentInterviewRoom(InterviewRoom room)
+    {
+        currentInterviewRoom = room;
+    }
+
+    public StudyRoom GetStudyRoom() { return  currentStudyRoom; }
+    public InterviewRoom GetInterviewRoom() {  return currentInterviewRoom; }
 
     public List<string> GetQuestionList() { return questionLogList; }
     public List<string> GetAnswerList() { return answerLogList; }

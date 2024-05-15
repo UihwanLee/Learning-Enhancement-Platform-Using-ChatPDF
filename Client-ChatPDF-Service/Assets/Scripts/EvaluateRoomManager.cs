@@ -84,7 +84,7 @@ public class EvaluateRoomManager : MonoBehaviour
         room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => sceneManager.LoadEvaluateRoom(room));
     }
 
-    private void CreateRoom(InterviewRoom interviewRoom)
+    public void CreateRoom(InterviewRoom interviewRoom)
     {
         var roomObj = Instantiate(prefab, parent.transform) as GameObject;
 
@@ -94,7 +94,9 @@ public class EvaluateRoomManager : MonoBehaviour
         room.title = interviewRoom.title;
         room.category = interviewRoom.category;
         room.index = interviewRoom.index;
+        room.document = interviewRoom.document;
 
+        room.interviewType = interviewRoom.interviewType;
         room.interviewerCount = interviewRoom.interviewerCount;
         room.interviewerGender = interviewRoom.interviewerGender;
         room.interviewTime = interviewRoom.interviewTime;
