@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const promptService = require('./service');
+const fileService = require('../files/service');
 
 // 사전 조사 질문 5개 생성
 router.get('/getQuestions', async (req, res) => {

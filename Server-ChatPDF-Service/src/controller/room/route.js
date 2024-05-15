@@ -21,25 +21,12 @@ router.post('/interviewRoomData', async (req, res) => {
     const jsoninterviewRoomData = req.body;
     roomData = JSON.parse(jsoninterviewRoomData.roomData);
     console.log(roomData);
-
-    // // Room Setting
-    // public int id;
-    // public string title;
-    // public string category;
-    // public string document;
-    // public string index;
-
-    // Prompt Setting
-    // public int interviewType;         
-    // public int interviewerCount;        
-    // public int interviewerGender;          
-    // public float interviewTime;     
-    // public int interviewStyle;     
+   
     const db = await connectDB();
     await db.collection('interviewRoom').insertOne( 
-      { nickname: "Uihwan", id: roomData.id, title: roomData.title, category: roomData.category, index: roomData.index, 
-        interviewerCount: roomData.interviewerCount, interviewerGender: roomData.interviewerGender, 
-        interviewTime: roomData.interviewTime, interviewStyle: roomData.interviewStyle});
+      { id: roomData.id, nickname: roomData.nickname, title: roomData.title, category: roomData.category, document: roomData.document,
+      index: roomData.index, interviewType: roomData.interviewType, interviewerCount: roomData.interviewerCount, 
+      interviewerGender: roomData.interviewerGender, interviewTime: roomData.interviewTime, interviewStyle: roomData.interviewStyle});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

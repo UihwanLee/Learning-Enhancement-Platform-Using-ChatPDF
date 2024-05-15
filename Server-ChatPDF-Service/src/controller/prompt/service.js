@@ -4,8 +4,12 @@ const { chatPDF } = require('../../utils/chatPDF');
 const fs = require('fs');
 const path = require('path');
 
+const { getDocumentPath } = require('../files/documentStore');
+
 async function generateQuestions(numQuestions) {
-  const filePath = path.join(__dirname, "algo.pdf");
+  //const filePath = path.join(__dirname, "algo.pdf");
+  const filePath = getDocumentPath(); 
+  console.log("filePath: ", filePath);
   const prompt = `이 pdf 파일을 참조해서 이 주제와 관련해서 나의 학습 수준을 파악하기 위한 주관식 문제 ${numQuestions}개를 직접 만들어서 내줘. 다른 말은 하지말고 문제만 말해주고 말 끝은 반드시 ! 하나를 넣어줘.`;
 
   const question = await chatPDF(filePath, prompt);

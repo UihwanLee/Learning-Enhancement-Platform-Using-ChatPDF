@@ -96,18 +96,39 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
     };
   }, [addEventListener, removeEventListener, RequestStudyRoomData]);
 
+  // 1. JSONroomDataDocument를 서버에 보내주기
+  // 2. 서버에서 JSONroomDataDocument 파일명을 가진 AWS S3에서 파일 가져오기
+  // 3. 가져온 파일로 ChatPDF API 호출
   // InterviewRoomRequest 처리
-  const RequestInterviewRoomData = useCallback((roomData) =>{
-    // nickname 값에 맞는 Data 보내기
-    console.log("interviewRoomData: " + roomData);
+  const RequestInterviewRoomData = useCallback((roomData) => {
+    // roomData를 파싱하여 필요한 값을 추출합니다
     const JSONroomData = JSON.parse(roomData);
-    const JSONroomDataNickname = JSONroomData.nickname;
-    const JSONroomDataDocument = JSONroomData.document;
-    console.log(JSONroomData);
-    //const file = JSONroomDataFilePDF.substring(0, JSONroomDataFilePDF.lastIndexOf('.'));
+    const JSONroomDataDocument = JSONroomData.document; // 면접방에서 쓰일 PDF 파일명
 
+    console.log("interviewRoomData: ", roomData);
+    console.log("JSONroomDataDocument:", JSONroomDataDocument);
+    console.log("JSONroomDataDocument Type:", typeof(JSONroomDataDocument));
+
+    // document 데이터를 서버로 보내는 함수
+    const sendDocumentData = (document) => {
+      const data = {
+        document: document
+      };
+
+      axios.post('http://localhost:3001/files/SendDocumentData', data)
+        .then(response => {
+          console.log('DocumentData sent successfully:', response.data);
+        })
+        .catch(error => {
+          console.error('Error sending data:', error);
+        });
+    };
+
+    // JSONroomDataDocument를 서버로 보냅니다
+    sendDocumentData(JSONroomDataDocument);
+    
   });
-
+  //const file = JSONroomDataFilePDF.substring(0, JSONroomDataFilePDF.lastIndexOf('.'));
   useEffect(() => {
     addEventListener("RequestInterviewRoomData", RequestInterviewRoomData);
     return () => {

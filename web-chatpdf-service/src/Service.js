@@ -22,6 +22,8 @@ import { useRequestDataEventListener } from './unity-components/requestData.js';
 
 
 function Service() {
+  // 학습할 PDF 파일
+  const [document, setDocument] = useState('');
   // 질문과 답변
   const [question, setQuestion] = useState("Question");
   const [answer, setAnswer] = useState("Answer");
@@ -134,10 +136,7 @@ function Service() {
       .catch(error => {
         console.error('Error fetching data:', error);
       });
-    
-    
   });
-
 
 
 
@@ -223,7 +222,9 @@ function Service() {
         if(response.data !== "No"){
           console.log("response.data: ", response.data);
           sendMessage("StudyRoomManager", "CreateRoom", response.data + '/' + fileName); 
-        } 
+        } else{
+          sendMessage("UIManager", "NoticeMessage", "이 문서는 학습 카테고리 범위내에 포함되어 있지 않습니다.");
+        }
        
       })
       .catch(error => {

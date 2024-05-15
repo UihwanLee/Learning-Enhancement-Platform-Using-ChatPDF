@@ -72,6 +72,7 @@ async function uploadToS3(filePath, originalFileName) {
     await s3.upload(uploadParams).promise();
 }
 
+// S3에서 이미지 객체 가져옴
 const getJpgImagesFromS3 = async (bucketName, folderPath) => {
     const params = {
       Bucket: bucketName,
@@ -92,9 +93,37 @@ const getJpgImagesFromS3 = async (bucketName, folderPath) => {
       return [];
     }
   };
-  
-    
 
+// S3에서 PDF 파일 다운로드 해옴
+const downloadFileFromS3 = async (document) => {
+    const documentName = path.parse(document).name;
+    console.log("documentName: ", documentName);
+    const params = {
+      Bucket: process.env.S3_BUCKET_NAME,
+      Key: `${documentName}/${document}`
+    };
+  
+    try {
+      const data = await s3.getObject(params).promise();
+  
+      // 저장 경로 설정
+      const dirPath = path.join(__dirname, 'S3files', documentName);
+      const S3downloadfilePath = path.join(dirPath, document);
+  
+      // 디렉토리가 존재하지 않으면 생성
+      if (!fs.existsSync(dirPath)) {
+        fs.mkdirSync(dirPath, { recursive: true });
+      }
+  
+      // 파일 저장
+      fs.writeFileSync(S3downloadfilePath, data.Body);
+      console.log(`File downloaded successfully to ${S3downloadfilePath}`);
+      return S3downloadfilePath;
+    } catch (error) {
+      console.error('Error downloading file from S3:', error);
+      throw new Error('Error downloading file from S3');
+    }
+  };
 
 async function handleFileUpload(req, res, next) {
     const file = req.file;
@@ -104,10 +133,10 @@ async function handleFileUpload(req, res, next) {
 
     try {
         const isRelated = await validateTopic(file.path);
-        if (isRelated === 'No') {
+        if (isRelated === 'No' || isRelated === 'No.') {
             fs.unlinkSync(file.path);
             console.log('카테고리 주제와 관련이 없는 파일입니다.');
-            return res.status(400).send('주제와 관련이 없는 파일입니다.');
+            return res.send('No');
         }
         await convertAndUpload(file.path);
         console.log(isRelated);
@@ -124,6 +153,7 @@ async function handleFileUpload(req, res, next) {
 
 module.exports = {
     getJpgImagesFromS3,
+    downloadFileFromS3,
     upload,
     handleFileUpload
 };
