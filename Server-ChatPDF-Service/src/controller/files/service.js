@@ -31,10 +31,11 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage }).single('pdfFile');
 
-async function validateTopic(filePath, category) {
-    const prompt = `이 파일이 ${category}와 직접적으로 관련된 주제인지 'Yes' 아니면 'No' 로 대답해줘.`;
-    const YesOrNo = await chatPDF(filePath, prompt);
-    return YesOrNo.toLowerCase().trim() === 'yes' || YesOrNo.toLowerCase().trim() === 'yes.';
+async function validateTopic(filePath) {
+    const prompt = "이 파일이 알고리즘, 네트워크, 운영체제, 데이터베이스 중 어떤 주제와 가장 연관성이 높은지 그 단어만 말해주고 어떤 주제와도 연관이 없다면 다른 말 하지말고 No로 대답해줘";
+    
+    const categoryOrNo = await chatPDF(filePath, prompt);
+    return categoryOrNo;
 }
 
 async function convertAndUpload(filePath) {
@@ -102,13 +103,14 @@ async function handleFileUpload(req, res, next) {
     }
 
     try {
-        const isRelated = await validateTopic(file.path, '알고리즘');
+        const isRelated = await validateTopic(file.path);
         if (!isRelated) {
             fs.unlinkSync(file.path);
             console.log('카테고리 주제와 관련이 없는 파일입니다.');
             return res.status(400).send('주제와 관련이 없는 파일입니다.');
         }
         await convertAndUpload(file.path);
+        console.log(isRelated);
         res.send('success');
         console.log('파일 S3 업로드 성공');
     } catch (error) {

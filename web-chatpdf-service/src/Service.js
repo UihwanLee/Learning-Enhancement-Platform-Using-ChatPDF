@@ -223,6 +223,7 @@ function Service() {
         if(response.data === "success"){
           console.log("response.data: ", response.data);
           sendMessage("StudyRoomManager", "CreateRoom", fileName); 
+          //sendMessage("Server", "AddAlgoDocument", "알고리즘", fileName);
         } 
        
       })
