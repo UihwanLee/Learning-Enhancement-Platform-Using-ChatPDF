@@ -224,28 +224,8 @@ public class Server : MonoBehaviour
         documentHashList.Add(category_database);
     }
 
-    public static void SplitString(string input, out string firstPart, out string secondPart)
+    public void AddDocument(string category, string file)
     {
-        char[] delimiter = { '/' };
-        string[] parts = input.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
-
-        if (parts.Length >= 2)
-        {
-            firstPart = parts[0];
-            secondPart = parts[1];
-        }
-        else
-        {
-            firstPart = input;
-            secondPart = string.Empty;
-        }
-    }
-
-    public void AddAlgoDocument(string data)
-    {
-        string category, file;
-        SplitString(data, out category, out file);   
-
         switch(category)
         {
             case "알고리즘":
