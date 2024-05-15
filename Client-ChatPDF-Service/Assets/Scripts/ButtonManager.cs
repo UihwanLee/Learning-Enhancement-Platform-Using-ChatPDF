@@ -50,9 +50,15 @@ public class ButtonManager : MonoBehaviour
     [DllImport("__Internal")]
     private static extern void StopSTT();
 
+    // 서버 클래스
+    private Server server;
+
     // Start is called before the first frame update
     void Start()
     {
+        // Sever 초기화
+        server = FindObjectOfType<Server>();
+
         for (int i=0; i< buttons.transform.childCount-1; i++)
         {
             buttonsClicked.Add(false);
@@ -167,6 +173,19 @@ public class ButtonManager : MonoBehaviour
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
     StopSTT();
 #endif
+    }
+
+    public void NoticeEndPrevInterview()
+    {
+        // 면접이 끝났다고 알리고 로비로 돌아가는 UI 생성
+
+        // Notice UI 생성
+        var newNoticeUI = Instantiate(noticeUI, parentUI.transform) as GameObject;
+
+        // noticeUI 설정
+        string content = "<size=24>" + "사전조사가 끝났습니다." + "</size>";
+        newNoticeUI.gameObject.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = content;
+        newNoticeUI.gameObject.transform.GetChild(3).GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => sceneManager.LoadLobbyAndCreateEvaluateRoom());
     }
 
     public void NoticeEndInterview()
