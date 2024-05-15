@@ -47,6 +47,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private GameObject noticeUI;
 
+    [SerializeField]
+    private GameObject loadingUI;
+
     [Header("Manager")]
     [SerializeField]
     private StudyRoomManager studyRoomManager;
@@ -66,6 +69,8 @@ public class UIManager : MonoBehaviour
 
         // settingCliked ÃÊ±âÈ­
         settingButtonCliked = new int[settingsButtons.Count];
+
+        SetLoadingUI(0);
     }
 
     private int CheckButtonClicked(TextMeshProUGUI button)
@@ -296,5 +301,11 @@ public class UIManager : MonoBehaviour
     public void Cancel()
     {
         noticeUI.SetActive(false);
+    }
+
+    public void SetLoadingUI(int isActive)
+    {
+        bool active = (isActive >= 1) ? true : false;
+        loadingUI.SetActive(active);
     }
 }
