@@ -52,7 +52,6 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
       setAnswer(answer);
       sendAnswerToServer(answer);
       sendMessage("PromptManager", "AddAnswerLog", answer);
-      sendMessage("InterviewManager", "SetTalking", 0);
 
       // 2초 딜레이
       await delay(2000);
@@ -61,11 +60,17 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
         const nextIdx = prevIdx + 1;
         if (nextIdx < questions.length) {
           speak(questions[nextIdx], window.speechSynthesis);
-          sendMessage("InterviewManager", "SetTalking", 1);
+          sendMessage("ButtonManager", "SetVoiceUI", 1);
           console.log("idx: ", nextIdx);
           console.log("questions[nextIdx]: ", questions[nextIdx]);
           SendQuestion(questions[nextIdx]);
+          let questionLength = (questions[nextIdx].length)*160;
           
+          // 3초 후에 실행
+          setTimeout(() => {
+            sendMessage("ButtonManager", "SetVoiceUI", 0);
+          }, questionLength); 
+
         } else {
           EndInterview(); // POST 요청 포함
         }
