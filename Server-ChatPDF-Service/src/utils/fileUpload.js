@@ -12,7 +12,7 @@ async function fileUpload(filePath) {
 
     const options = {
       headers: {
-        "x-api-key": process.env.Mon,
+        "x-api-key": "sec_wbV7QqbCwy8sey31myjMz8GI7eq1mkjN",
         ...formData.getHeaders(),
       },
     };    

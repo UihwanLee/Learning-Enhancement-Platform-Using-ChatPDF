@@ -52,14 +52,14 @@ router.post('/evaluateRoomData', async (req, res) => {
     //console.log("test: ", req.body);
     console.log("POST /evaluateRoomData");
     const jsonEvaluateRoomData = req.body;
-    roomData = JSON.parse(jsonEvaluateRoomData.roomData);
-    console.log(roomData);
+    evalRoomData = JSON.parse(jsonEvaluateRoomData.currentInterViewRoomData);
+    console.log("evalRoomData:", evalRoomData);
    
     const db = await connectDB();
     await db.collection('evaluateRoom').insertOne( 
-      { id: roomData.id, nickname: roomData.nickname, title: roomData.title, category: roomData.category, document: roomData.document,
-      index: roomData.index, isPrevInterview: roomData.isPrevInterview, interviewType: roomData.interviewType, interviewerCount: roomData.interviewerCount, 
-      interviewerGender: roomData.interviewerGender, interviewTime: roomData.interviewTime, interviewStyle: roomData.interviewStyle});
+      { id: evalRoomData.id, nickname: evalRoomData.nickname, title: evalRoomData.title, category: evalRoomData.category, document: evalRoomData.document,
+      index: evalRoomData.index, isPrevInterview: evalRoomData.isPrevInterview, interviewType: evalRoomData.interviewType, interviewerCount: evalRoomData.interviewerCount, 
+      interviewerGender: evalRoomData.interviewerGender, interviewTime: evalRoomData.interviewTime, interviewStyle: evalRoomData.interviewStyle});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

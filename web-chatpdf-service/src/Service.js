@@ -33,6 +33,8 @@ function Service() {
   // 질문 배열
   const [questions, setQuestions] = useState([]);
   const [idx, setIdx] = useState(0);
+
+  const [currentInterViewRoomData, setCurrentInterViewRoomData] = useState('');
   
 
   // react-unity-package 설정
@@ -47,7 +49,7 @@ function Service() {
   // });
 
   // 서버로 데이터 요청
-  useRequestDataEventListener(addEventListener, removeEventListener, sendMessage);
+  useRequestDataEventListener(addEventListener, removeEventListener, sendMessage, currentInterViewRoomData, setCurrentInterViewRoomData);
 
   // 인터뷰 룸 데이터 이벤트리스너
   useManagerInterviewRoomDataEventListener(addEventListener, removeEventListener);
@@ -103,7 +105,15 @@ function Service() {
   // 질문 5개 끝나면 나가기 UI 출력
   function EndInterview() {
     sendMessage("ButtonManager", "NoticeEndPrevInterview");
-    
+
+    // 여기에 POST 요청을 추가합니다.
+    axios.post('http://localhost:3001/room/evaluateRoomData', { currentInterViewRoomData: currentInterViewRoomData })
+      .then(response => {
+        console.log('currentInterViewRoomData:', response.data);
+      })
+      .catch(error => {
+        console.error('Error ending interview:', error);
+      });
   }
 
   useEffect(() => {

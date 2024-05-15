@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 
-export function useRequestDataEventListener(addEventListener, removeEventListener, sendMessage) {
+export function useRequestDataEventListener(addEventListener, removeEventListener, sendMessage, currentInterViewRoomData, setCurrentInterViewRoomData) {
   // Server 데이터 받기
   const [studyRooms, setStudyRooms] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -118,6 +118,7 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
   // 3. 가져온 파일로 ChatPDF API 호출
   // InterviewRoomRequest 처리
   const RequestInterviewRoomData = useCallback((roomData) => {
+    setCurrentInterViewRoomData(roomData);
     // roomData를 파싱하여 필요한 값을 추출합니다
     const JSONroomData = JSON.parse(roomData);
     const JSONroomDataDocument = JSONroomData.document; // 면접방에서 쓰일 PDF 파일명
@@ -144,7 +145,7 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
     // JSONroomDataDocument를 서버로 보냅니다
     sendDocumentData(JSONroomDataDocument);
     
-    sendMessage("Server", "ClearLogData");
+    //sendMessage("Server", "ClearLogData");
   });
   //const file = JSONroomDataFilePDF.substring(0, JSONroomDataFilePDF.lastIndexOf('.'));
   useEffect(() => {

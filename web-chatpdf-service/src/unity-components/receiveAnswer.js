@@ -67,7 +67,7 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
           SendQuestion(questions[nextIdx]);
           
         } else {
-          EndInterview();
+          EndInterview(); // POST 요청 포함
         }
         return nextIdx;
       });
@@ -123,6 +123,7 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
           console.log("questions[nextIdx]: ", questions[nextIdx]);
           SendQuestion(questions[nextIdx]);
         } else {
+          // 라우터 POST 요청
           EndInterview();
         }
         return nextIdx;
