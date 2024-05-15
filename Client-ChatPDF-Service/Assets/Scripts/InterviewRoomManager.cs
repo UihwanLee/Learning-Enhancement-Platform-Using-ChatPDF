@@ -258,7 +258,7 @@ public class InterviewRoomManager : MonoBehaviour
         if(server) room.nickname = server.GetUserNickName();
         room.title = newRoom.title;
         room.category = newRoom.category;
-        room.doucment = newRoom.doucment;
+        room.document = newRoom.document;
         room.index = newRoom.index;
 
         room.interviewerCount = newRoom.interviewerCount;
@@ -290,7 +290,7 @@ public class InterviewRoomManager : MonoBehaviour
         if (server) room.nickname = server.GetUserNickName();
         room.title = this.title;
         room.category = this.category;
-        room.doucment = this.document;
+        room.document = this.document;
         room.index = this.index;
 
         room.interviewType = 0;

@@ -83,6 +83,11 @@ public class StudyRoomManager : MonoBehaviour
         string roomTitle = "<size=36>" + room.title + "|</size> " + " <size=20>" + room.titlePDF;
         room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
         room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => sceneManager.LoadStudyRoom(room));
+
+        if (server)
+        {
+            server.AddDocument(room.category, room.titlePDF);
+        }
     }
 
     public static void SplitString(string input, out string firstPart, out string secondPart)
