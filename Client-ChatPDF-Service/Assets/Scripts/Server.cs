@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -150,10 +151,22 @@ public class Server : MonoBehaviour
         evaluateRoomDataList.Add(roomData);
     }
 
+    public List<string> GetStudyRoomDataList()
+    {
+        // roomDataList 반환
+        return studyRoomDataList;
+    }
+
     public List<string> GetInterviewRoomDataList()
     {
         // roomDataList 반환
         return interviewRoomDataList;
+    }
+
+    public List<string> GetEvaluateRoomDataList()
+    {
+        // roomDataList 반환
+        return evaluateRoomDataList;
     }
 
     public void RequestStudyRoomDataUnity(StudyRoom room)
@@ -211,11 +224,45 @@ public class Server : MonoBehaviour
         documentHashList.Add(category_database);
     }
 
-    public void AddAlgoDocument(int category, string file)
+    public static void SplitString(string input, out string firstPart, out string secondPart)
     {
-        if (category < 0 || category >= documentHashList.Count()) return;
+        char[] delimiter = { '/' };
+        string[] parts = input.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
 
-        documentHashList[category].Add(file);
+        if (parts.Length >= 2)
+        {
+            firstPart = parts[0];
+            secondPart = parts[1];
+        }
+        else
+        {
+            firstPart = input;
+            secondPart = string.Empty;
+        }
+    }
+
+    public void AddAlgoDocument(string data)
+    {
+        string category, file;
+        SplitString(data, out category, out file);   
+
+        switch(category)
+        {
+            case "알고리즘":
+                documentHashList[0].Add(file);
+                break;
+            case "네트워크":
+                documentHashList[1].Add(file);
+                break;
+            case "운영체제":
+                documentHashList[2].Add(file);
+                break;
+            case "데이터베이스":
+                documentHashList[3].Add(file);
+                break;
+            default:
+                break;
+        }
     }
 
     public void ClearLogData()
