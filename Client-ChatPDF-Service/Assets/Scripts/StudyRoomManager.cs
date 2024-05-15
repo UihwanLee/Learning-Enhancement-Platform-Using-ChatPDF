@@ -71,10 +71,11 @@ public class StudyRoomManager : MonoBehaviour
 
         // Room Setting Àû¿ë
         var room = roomObj.GetComponent<StudyRoom>();
-        room.id = roomList.Count;
-        if (server) room.nickname = server.GetUserNickName();
-        room.title = this.title;
-        room.titlePDF = this.titlePDF;
+        room.id = newRoom.id;
+        room.nickname = newRoom.nickname;
+        room.title = newRoom.title;
+        room.titlePDF = newRoom.titlePDF;
+        room.category = newRoom.category;
 
         roomList.Add(roomObj);
 
