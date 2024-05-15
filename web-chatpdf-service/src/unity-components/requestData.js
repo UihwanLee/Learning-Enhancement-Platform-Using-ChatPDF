@@ -42,6 +42,23 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
       });
   }
 
+  const getEvaluateRoomData = async (nickname) =>{
+    axios.get(`http://localhost:3001/room/evaluateRooms/${nickname}`)
+      .then(response => {
+        //setStudyRooms(response.data);
+        console.log(typeof(response.data));
+        for (const key in response.data){
+          const roomData = JSON.stringify(response.data[key]);
+          sendMessage("Server", "LoadEvaluateRoomData", roomData);
+        }
+        setLoading(false); // 데이터 로딩 완료
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+        setLoading(false); // 에러 발생 시에도 로딩 상태 해제
+      });
+  }
+
   const RequestData = useCallback(() =>{
     // USER 데이터 보내기
     sendMessage("Server", "SetUserNickName", nickname);

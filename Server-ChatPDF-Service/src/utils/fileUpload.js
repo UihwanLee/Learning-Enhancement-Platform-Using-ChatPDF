@@ -12,7 +12,7 @@ async function fileUpload(filePath) {
 
     const options = {
       headers: {
-        "x-api-key": process.env.CHATPDF_KEY,
+        "x-api-key": process.env.Mon,
         ...formData.getHeaders(),
       },
     };    
