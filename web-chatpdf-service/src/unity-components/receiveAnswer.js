@@ -3,7 +3,9 @@ import axios from "axios";
 import { speak } from "../TTS";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
-export function useReceiveAnswerEventListener(addEventListener, removeEventListener, answer, setAnswer, question, setQuestion, SendQuestion, questions, EndInterview, sendMessage) {
+export function useReceiveAnswerEventListener(addEventListener, removeEventListener, answer, setAnswer, question, setQuestion, SendQuestion, questions, EndInterview, sendMessage, resetTranscript2) {
+  //const questions = ["Question 1", "Question 2", "Question 3", "Question 4", "Question 5"];
+  console.log("questions: ", questions);
   const [idx, setIdx] = useState(0);
 
     // TTS 기능 
@@ -18,35 +20,59 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
   const startListening = () => SpeechRecognition.startListening({ continuous: true });
   const stopListening = () => SpeechRecognition.stopListening();
 
-  useEffect(() => {
-    if(idx < questions.length){
-      setQuestion(questions[idx]);
-      speak(questions[idx], window.speechSynthesis);
 
-      //sendMessage("PromptManager", "AddQuestionLog", questions[idx]);
-      console.log("idx: ", idx);
-      console.log("questions[idx]: ", questions[idx]);
-      SendQuestion(questions[idx]);
+  // useEffect(() => {
+  //   if(idx < questions.length){
+  //     setQuestion(questions[idx]);
+  //     speak(questions[idx], window.speechSynthesis);
+
+  //     //sendMessage("PromptManager", "AddQuestionLog", questions[idx]);
+  //     console.log("idx: ", idx);
+  //     console.log("questions[idx]: ", questions[idx]);
+  //     SendQuestion(questions[idx]);
       
-    } else{
-      setQuestion("질문이 없습니다.");
-      //EndInterview();
-    }
-  }, [EndInterview, SendQuestion, idx, questions, setQuestion]);
+  //   } else{
+  //     setQuestion("질문이 없습니다.");
+  //     //EndInterview();
+  //   }
+  // }, [EndInterview, SendQuestion, idx, questions, setQuestion]);
+
+  // 딜레이 함수
+  function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
 
   // 사용자의 answer 받기
   // send 눌렀을 때 호출 -> send 누르면 text(answer) 서버에 보냄
-  const ReceiveAnswer = useCallback((answer) => {
-    
+  const ReceiveAnswer = useCallback(async (answer) => {
     console.log("ReceiveAnswer 호출됨 - ", answer);
-    if(idx < question.length){
+
+    if (idx < questions.length) {
       sendMessage("PromptManager", "AddQuestionLog", questions[idx]);
       setAnswer(answer);
       sendAnswerToServer(answer);
       sendMessage("PromptManager", "AddAnswerLog", answer);
-      setIdx(prevIdx => prevIdx + 1);
+      sendMessage("InterviewManager", "SetTalking", 0);
+
+      // 2초 딜레이
+      await delay(2000);
+
+      setIdx(prevIdx => {
+        const nextIdx = prevIdx + 1;
+        if (nextIdx < questions.length) {
+          speak(questions[nextIdx], window.speechSynthesis);
+          sendMessage("InterviewManager", "SetTalking", 1);
+          console.log("idx: ", nextIdx);
+          console.log("questions[nextIdx]: ", questions[nextIdx]);
+          SendQuestion(questions[nextIdx]);
+          
+        } else {
+          EndInterview();
+        }
+        return nextIdx;
+      });
     }  
-  }, [idx, question.length, setAnswer, sendMessage]);
+  }, [idx, questions, setAnswer, sendMessage]);
 
   const sendAnswerToServer = async (answer) => {
     try {
@@ -69,25 +95,49 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
 
   ////////////////////////////////////////////////////////////////////////////
 
-  const StartSTT = useCallback(() =>{
+  const StartSTT = useCallback(async() =>{
     console.log("start stt");
-    resetTranscript();
-    startListening();
+    await resetTranscript2();
+    await startListening();
+    sendMessage("InterviewManager", "SetInterviewerAnimThink", 1);
   });
 
 
   // API 질문 다시 듣기
-  const StopSTT = useCallback(() =>{
-  
-    if(idx < question.length){
-      console.log("start idx: ", idx);
-      console.log("questions[idx]: ", questions[idx]);
+  const StopSTT = useCallback(async() =>{
+    sendMessage("InterviewManager", "SetInterviewerAnimThink", 0);
+    if (idx < questions.length) {
       sendMessage("PromptManager", "AddQuestionLog", questions[idx]);
-      setAnswer(transcript);
-      sendAnswerToServer(transcript);
-      sendMessage("PromptManager", "AddAnswerLog", transcript);
-      setIdx(prevIdx => prevIdx + 1);
+      setAnswer(answer);
+      sendAnswerToServer(answer);
+      sendMessage("PromptManager", "AddAnswerLog", answer);
+
+      // 2초 딜레이
+      await delay(2000);
+
+      setIdx(prevIdx => {
+        const nextIdx = prevIdx + 1;
+        if (nextIdx < questions.length) {
+          speak(questions[nextIdx], window.speechSynthesis);
+          console.log("idx: ", nextIdx);
+          console.log("questions[nextIdx]: ", questions[nextIdx]);
+          SendQuestion(questions[nextIdx]);
+        } else {
+          EndInterview();
+        }
+        return nextIdx;
+      });
     }  
+    // if(idx < question.length){
+    //   console.log("start idx: ", idx);
+    //   console.log("questions[idx]: ", questions[idx]);
+    //   sendMessage("PromptManager", "AddQuestionLog", questions[idx]);
+    //   setAnswer(transcript);
+    //   sendAnswerToServer(transcript);
+    //   sendMessage("PromptManager", "AddAnswerLog", transcript);
+    //   idx = idx + 1;
+      //setIdx(prevIdx => prevIdx + 1);
+    
     stopListening();
   });
 

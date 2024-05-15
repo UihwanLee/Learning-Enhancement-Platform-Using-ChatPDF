@@ -70,7 +70,7 @@ function Service() {
   useReplayQuestionEventListener(addEventListener, removeEventListener, question);
 
   try{
-    useReceiveAnswerEventListener(addEventListener, removeEventListener, answer, setAnswer, question, setQuestion, SendQuestion, questions, EndInterview, sendMessage);
+    useReceiveAnswerEventListener(addEventListener, removeEventListener, answer, setAnswer, question, setQuestion, SendQuestion, questions, EndInterview, sendMessage, resetTranscript);
   }catch(error){
     console.error('An error occurred:', error);
   }
@@ -102,7 +102,8 @@ function Service() {
 
   // 질문 5개 끝나면 나가기 UI 출력
   function EndInterview() {
-    sendMessage("ButtonManager", "NoticeEndInterview");
+    sendMessage("ButtonManager", "NoticeEndPrevInterview");
+    
   }
 
   useEffect(() => {
@@ -116,27 +117,27 @@ function Service() {
       const response = await axios.post('http://localhost:3001/prompt/sendAnswer', {
         answer: answer, 
       });
-      
     } catch (error) {
       console.error('Error sending answer:', error);
     }
   };
 
+  
   // 면접 시작 버튼 클릭 이벤트 호출 구현
-  const StartInterview = useCallback(() =>{
+  const StartInterview = useCallback(() => {
     console.log("면접 시작");
     axios.get('http://localhost:3001/prompt/getQuestions')
       .then(response => {
+        const firstQuestion = response.data[0];
         setQuestions(response.data);
-        console.log("questions: ", response.data);
-        sendMessage("PromptManager", "AddQuestionLog", response.data[0]);
-        setQuestion(response.data[0]);
-        speak(response.data[0], window.speechSynthesis);
+        setQuestion(firstQuestion);
+        speak(firstQuestion, window.speechSynthesis);
+        sendMessage("PromptManager", "ReceiveQuestion", firstQuestion);
       })
       .catch(error => {
         console.error('Error fetching data:', error);
       });
-  });
+  }, [setQuestions, setQuestion, speak, sendMessage]);
 
 
 

@@ -127,6 +127,7 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
     // JSONroomDataDocument를 서버로 보냅니다
     sendDocumentData(JSONroomDataDocument);
     
+    sendMessage("Server", "ClearLogData");
   });
   //const file = JSONroomDataFilePDF.substring(0, JSONroomDataFilePDF.lastIndexOf('.'));
   useEffect(() => {
