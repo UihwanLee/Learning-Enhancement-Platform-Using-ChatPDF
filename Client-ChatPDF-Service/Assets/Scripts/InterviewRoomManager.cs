@@ -194,7 +194,6 @@ public class InterviewRoomManager : MonoBehaviour
         }
 
         this.document = dropdown_document.options[option].text;
-        Debug.Log(dropdown_document.options[option].text);
     }
 
     public void SetIndex(int option)
