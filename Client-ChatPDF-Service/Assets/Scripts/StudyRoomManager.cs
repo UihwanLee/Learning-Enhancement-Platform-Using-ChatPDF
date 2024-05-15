@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -45,7 +46,7 @@ public class StudyRoomManager : MonoBehaviour
         if (server)
         {
             newRoom = new StudyRoom();
-            roomDataList = server.GetInterviewRoomDataList();
+            roomDataList = server.GetStudyRoomDataList();
 
             if(roomDataList.Count > 0)
             {
@@ -83,8 +84,28 @@ public class StudyRoomManager : MonoBehaviour
         room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => sceneManager.LoadStudyRoom(room));
     }
 
-    public void CreateRoom(string pdf)
+    public static void SplitString(string input, out string firstPart, out string secondPart)
     {
+        char[] delimiter = { '/' };
+        string[] parts = input.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
+
+        if (parts.Length >= 2)
+        {
+            firstPart = parts[0];
+            secondPart = parts[1];
+        }
+        else
+        {
+            firstPart = input;
+            secondPart = string.Empty;
+        }
+    }
+
+    public void CreateRoom(string data)
+    {
+        string category, file;
+        SplitString(data, out category, out file);
+
         // Room 생성
         var roomObj = Instantiate(prefab, parent.transform) as GameObject;
 
@@ -93,7 +114,8 @@ public class StudyRoomManager : MonoBehaviour
         room.id = roomList.Count;
         if(server) room.nickname = server.GetUserNickName();
         room.title = "나만의 학습방(" + roomList.Count + ")";
-        room.titlePDF = pdf;
+        room.category = category;
+        room.titlePDF = file;
 
         roomList.Add(roomObj);
 
@@ -106,6 +128,7 @@ public class StudyRoomManager : MonoBehaviour
         if (server)
         {
             server.SaveStudyRoomData(room);
+            server.AddDocument(category, file);
         }
 
         SortRoomByID();

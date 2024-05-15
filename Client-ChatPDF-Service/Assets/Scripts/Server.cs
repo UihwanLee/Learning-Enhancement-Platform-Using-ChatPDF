@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,10 +44,10 @@ public class Server : MonoBehaviour
 
     // Room Setting
     private List<List<string>> documentHashList = new List<List<string>>();
-    private List<string> category_algo = new List<string> { "algo.pdf" };
-    private List<string> category_network = new List<string> { "network.pdf" };
-    private List<string> category_operating_system = new List<string> { "operating_system.pdf" };
-    private List<string> category_web = new List<string> { "web.pdf" };
+    private List<string> category_algo = new List<string> { };
+    private List<string> category_network = new List<string> { };
+    private List<string> category_operating_system = new List<string> {  };
+    private List<string> category_database = new List<string> { };
 
     // Log Data
     private List<string> questionLogList = new List<string>();
@@ -150,10 +151,22 @@ public class Server : MonoBehaviour
         evaluateRoomDataList.Add(roomData);
     }
 
+    public List<string> GetStudyRoomDataList()
+    {
+        // roomDataList 반환
+        return studyRoomDataList;
+    }
+
     public List<string> GetInterviewRoomDataList()
     {
         // roomDataList 반환
         return interviewRoomDataList;
+    }
+
+    public List<string> GetEvaluateRoomDataList()
+    {
+        // roomDataList 반환
+        return evaluateRoomDataList;
     }
 
     public void RequestStudyRoomDataUnity(StudyRoom room)
@@ -208,14 +221,28 @@ public class Server : MonoBehaviour
         documentHashList.Add(category_algo);
         documentHashList.Add(category_network);
         documentHashList.Add(category_operating_system);
-        documentHashList.Add(category_web);
+        documentHashList.Add(category_database);
     }
 
-    public void AddAlgoDocument(int category, string file)
+    public void AddDocument(string category, string file)
     {
-        if (category < 0 || category >= documentHashList.Count()) return;
-
-        documentHashList[category].Add(file);
+        switch(category)
+        {
+            case "알고리즘":
+                documentHashList[0].Add(file);
+                break;
+            case "네트워크":
+                documentHashList[1].Add(file);
+                break;
+            case "운영체제":
+                documentHashList[2].Add(file);
+                break;
+            case "데이터베이스":
+                documentHashList[3].Add(file);
+                break;
+            default:
+                break;
+        }
     }
 
     public void ClearLogData()
