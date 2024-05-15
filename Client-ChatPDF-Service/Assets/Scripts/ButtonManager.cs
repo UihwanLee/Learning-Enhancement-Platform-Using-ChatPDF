@@ -39,6 +39,9 @@ public class ButtonManager : MonoBehaviour
     [SerializeField]
     private GameObject noticeUI;
 
+    [SerializeField]
+    private GameObject voiceUI;
+
     [Header("Manager")]
     // 씬 매니저 클래스
     [SerializeField]
@@ -66,6 +69,8 @@ public class ButtonManager : MonoBehaviour
 
         // Microphone 초기화
         ClickButton(1);
+
+        SetVoiceUI(0);
     }
 
 
@@ -199,5 +204,11 @@ public class ButtonManager : MonoBehaviour
         string content = "<size=24>" + "면접이 끝났습니다." + "</size>";
         newNoticeUI.gameObject.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = content;
         newNoticeUI.gameObject.transform.GetChild(3).GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => sceneManager.LoadLobby());
+    }
+
+    public void SetVoiceUI(int isActive)
+    {
+        bool active = (isActive >= 1) ? true : false;
+        voiceUI.SetActive(active);
     }
 }
