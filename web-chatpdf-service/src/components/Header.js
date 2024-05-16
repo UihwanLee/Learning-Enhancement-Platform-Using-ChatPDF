@@ -7,7 +7,7 @@ const Header = ( props ) => {
         <header id="headerType" className={`header__wrap ${props.element}`}>
             <div className="header__inner">
                 <div className="header__logo">
-                    <a href="/">web <em>site</em></a>
+                    <a href="/">TUK STUDY <em>chat pdf</em></a>
                 </div>
                 <nav className="header__menu">
                     <ul>
