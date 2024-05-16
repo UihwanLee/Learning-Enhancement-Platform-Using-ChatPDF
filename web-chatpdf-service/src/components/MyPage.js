@@ -27,6 +27,10 @@ const data = [
       name: "질문5",
       score: 65,
   },
+  {
+    name: "질문6",
+    score: 10,
+},
 ];
 
 const evaluateCategoryData = [
@@ -124,4 +128,6 @@ const MyPage = () => {
     </div>
   );
 };
+
+export default MyPage
 
