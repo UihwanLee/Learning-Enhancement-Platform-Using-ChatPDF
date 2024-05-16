@@ -12,9 +12,9 @@ const ImgText = ( props ) => {
                     <ul className="list">
                         <li><a href="/">학교 홈페이지</a></li>
                         <li><a href="/">논문</a></li>
-                        <li><a href="/">어쩌구</a></li>
-                        <li><a href="/">저쩌구</a></li>
-                        <li><a href="/">다운로드 사이트</a></li>
+                        <li><a href="/">논문</a></li>
+                        <li><a href="/">논문</a></li>
+                        <li><a href="/">깃허브 사이트</a></li>
                         <li><a href="/">Youtube 사이트</a></li>
                     </ul>
                 </div>

@@ -8,17 +8,17 @@ const cardInfo = [
     {
         img: cardBg01,
         title: "내 학습 진단율 판단",
-        desc: "어쩌구"
+        desc: "확인하고 나아가기"
     },
     {
         img: cardBg02,
         title: "게시판 활용",
-        desc: "저쩌구"
+        desc: "여러 질문을 통한 해결"
     },
     {
         img: cardBg03,
         title: "면접테스트",
-        desc: "무야호"
+        desc: "1:1 또는 1:3"
     }
 ]
 
@@ -27,8 +27,7 @@ const Card = ( props ) => {
         <section id="cardType" className={`card__wrap ${props.element}`}>
             <h2>{props.title}</h2>
             <p>
-                논문이나 뉴스 자료?!<br />
-                훔냐  
+               성장을 위한 한걸음 <br />  
             </p>
             <div className="card__inner container">
                 {cardInfo.map((card, key) => (
