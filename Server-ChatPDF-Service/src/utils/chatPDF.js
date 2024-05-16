@@ -9,7 +9,7 @@ async function chatPDF(filePath, prompt){
 
   const config = {
     headers: {
-      "x-api-key": "sec_wbV7QqbCwy8sey31myjMz8GI7eq1mkjN",
+      "x-api-key": process.env.CHATPDF_KEY,
       "Content-Type": "application/json",
     },
   };

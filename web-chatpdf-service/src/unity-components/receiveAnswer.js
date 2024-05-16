@@ -123,10 +123,17 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
       setIdx(prevIdx => {
         const nextIdx = prevIdx + 1;
         if (nextIdx < questions.length) {
+          sendMessage("ButtonManager", "SetVoiceUI", 1);
           speak(questions[nextIdx], window.speechSynthesis);
           console.log("idx: ", nextIdx);
           console.log("questions[nextIdx]: ", questions[nextIdx]);
           SendQuestion(questions[nextIdx]);
+          let questionLength = (questions[nextIdx].length)*160;
+          
+          // 3초 후에 실행
+          setTimeout(() => {
+            sendMessage("ButtonManager", "SetVoiceUI", 0);
+          }, questionLength); 
         } else {
           // 라우터 POST 요청
           EndInterview();
