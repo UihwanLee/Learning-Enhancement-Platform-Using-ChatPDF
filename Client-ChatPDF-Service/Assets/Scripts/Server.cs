@@ -282,6 +282,11 @@ public class Server : MonoBehaviour
         currentInterviewRoom = room;
     }
 
+    public string GetCurrentInterviewRoomByJSON() {
+        string roomData = JsonUtility.ToJson(currentInterviewRoom);
+        return roomData; 
+    }
+
     public StudyRoom GetStudyRoom() { return  currentStudyRoom; }
     public InterviewRoom GetInterviewRoom() {  return currentInterviewRoom; }
 

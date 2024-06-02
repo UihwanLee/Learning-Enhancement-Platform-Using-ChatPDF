@@ -38,7 +38,7 @@ public class PromptManager : MonoBehaviour
     private Server server;
 
     [DllImport("__Internal")]
-    private static extern void StartInterview();
+    private static extern void StartInterview(string roomData);
 
     [DllImport("__Internal")]
     private static extern void SendAnswer(string answer);
@@ -70,8 +70,9 @@ public class PromptManager : MonoBehaviour
     public void StartInterviewUnity()
     {
         // 면접 시작
+        string roomData = JsonUtility.ToJson(server.GetCurrentInterviewRoomByJSON());
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
-    StartInterview();
+    StartInterview(roomData);
 #endif
     }
 

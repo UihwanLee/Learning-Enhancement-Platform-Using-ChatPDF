@@ -2,8 +2,8 @@ mergeInto(LibraryManager.library, {
   RequestData: function () {
     window.dispatchReactUnityEvent("RequestData");
   },
-  StartInterview: function () {
-    window.dispatchReactUnityEvent("StartInterview");
+  StartInterview: function (roomData) {
+    window.dispatchReactUnityEvent("StartInterview", UTF8ToString(roomData));
   },
   SendStudyRoomData: function (roomData) {
     window.dispatchReactUnityEvent("SendStudyRoomData", UTF8ToString(roomData));
@@ -39,6 +39,6 @@ mergeInto(LibraryManager.library, {
     window.dispatchReactUnityEvent("RequestInterviewRoomData", UTF8ToString(roomData));
   },
   RequestEvaluateRoomData: function (roomData) {
-    window.dispatchReactUnityEvent("RequestInterviewRoomData", UTF8ToString(roomData));
+    window.dispatchReactUnityEvent("RequestEvaluateRoomData", UTF8ToString(roomData));
   },
 });
