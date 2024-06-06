@@ -3,9 +3,9 @@ const path = require('path');
 const fs = require('fs');
 const AWS = require('aws-sdk');
 const pdf = require('pdf-poppler');
-const dotenv = require('dotenv');
 const { chatPDF } = require('../../utils/chatPDF');  // chatPDF 구현 필요
 
+const dotenv = require('dotenv');
 dotenv.config();
 
 // AWS SDK 설정
@@ -96,6 +96,7 @@ const getJpgImagesFromS3 = async (bucketName, folderPath) => {
 
 // S3에서 PDF 파일 다운로드 해옴
 const downloadFileFromS3 = async (document) => {
+    console.log("document: ", document);
     const documentName = path.parse(document).name;
     console.log("documentName: ", documentName);
     const params = {

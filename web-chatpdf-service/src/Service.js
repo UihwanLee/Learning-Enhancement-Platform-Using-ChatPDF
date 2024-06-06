@@ -35,6 +35,8 @@ function Service() {
   const [idx, setIdx] = useState(0);
 
   const [currentInterViewRoomData, setCurrentInterViewRoomData] = useState('');
+
+  let interviewType = 0;
   
 
   // react-unity-package 설정
@@ -49,7 +51,7 @@ function Service() {
   // });
 
   // 서버로 데이터 요청
-  useRequestDataEventListener(addEventListener, removeEventListener, sendMessage, currentInterViewRoomData, setCurrentInterViewRoomData);
+  useRequestDataEventListener(addEventListener, removeEventListener, sendMessage, currentInterViewRoomData, setCurrentInterViewRoomData, interviewType);
 
   // 인터뷰 룸 데이터 이벤트리스너
   useManagerInterviewRoomDataEventListener(addEventListener, removeEventListener);
@@ -134,19 +136,58 @@ function Service() {
 
   
   // 면접 시작 버튼 클릭 이벤트 호출 구현
-  const StartInterview = useCallback(() => {
-    console.log("면접 시작");
-    axios.get('http://localhost:3001/prompt/getQuestions')
+  const StartInterview = useCallback((roomData) => {
+
+    // roomData를 파싱하여 필요한 값을 추출합니다
+    const JSONroomData = JSON.parse(roomData);
+    const JSONinterviewType = JSONroomData.interviewType;
+
+    console.log("면접 시작(인터뷰 타입):", JSONinterviewType);
+    sendMessage("ButtonManager", "SetVoiceUI", 1);
+    
+    // 사전 조사
+    if (JSONinterviewType === 0){
+      axios.get('http://localhost:3001/prompt/getQuestions')
       .then(response => {
         const firstQuestion = response.data[0];
         setQuestions(response.data);
         setQuestion(firstQuestion);
         speak(firstQuestion, window.speechSynthesis);
         sendMessage("PromptManager", "ReceiveQuestion", firstQuestion);
+
+        // 3초 후에 실행
+        setTimeout(() => {
+          sendMessage("ButtonManager", "SetVoiceUI", 0);
+        }, 3000);
+
+        
       })
       .catch(error => {
         console.error('Error fetching data:', error);
       });
+    }
+    // 진행 
+    else {
+      axios.get('http://localhost:3001/prompt/startInterview')
+      .then(response => {
+        const firstQuestion = response.data[0];
+        setQuestions(response.data);
+        setQuestion(firstQuestion);
+        speak(firstQuestion, window.speechSynthesis);
+        sendMessage("PromptManager", "ReceiveQuestion", firstQuestion);
+
+        // 3초 후에 실행
+        setTimeout(() => {
+          sendMessage("ButtonManager", "SetVoiceUI", 0);
+        }, 3000);
+
+        
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+    }
+    
   }, [setQuestions, setQuestion, speak, sendMessage]);
 
 

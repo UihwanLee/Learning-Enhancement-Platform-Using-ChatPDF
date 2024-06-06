@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 
-export function useRequestDataEventListener(addEventListener, removeEventListener, sendMessage, currentInterViewRoomData, setCurrentInterViewRoomData) {
+export function useRequestDataEventListener(addEventListener, removeEventListener, sendMessage, currentInterViewRoomData, setCurrentInterViewRoomData, interviewType) {
   // Server 데이터 받기
   const [studyRooms, setStudyRooms] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -119,9 +119,15 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
   // InterviewRoomRequest 처리
   const RequestInterviewRoomData = useCallback((roomData) => {
     setCurrentInterViewRoomData(roomData);
+    
     // roomData를 파싱하여 필요한 값을 추출합니다
     const JSONroomData = JSON.parse(roomData);
     const JSONroomDataDocument = JSONroomData.document; // 면접방에서 쓰일 PDF 파일명
+
+    const JSONinterviewType = JSONroomData.interviewType;
+    
+    interviewType = JSONinterviewType;
+    console.log("현재 인터뷰타입:", interviewType);
 
     console.log("interviewRoomData: ", roomData);
     console.log("JSONroomDataDocument:", JSONroomDataDocument);

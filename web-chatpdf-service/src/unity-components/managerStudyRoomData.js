@@ -15,6 +15,17 @@ export function useManagerStudyRoomDataEventListener(addEventListener, removeEve
         console.error('Error sending answer:', error);
       }
     };
+
+    // 목차 5개 생성 요청
+    const sendPostIndexes = async () => {
+      try {
+        const indexes = await axios.post('http://localhost:3001/prompt/createIndex');
+        
+        console.log('Server response:', indexes.data);
+      } catch (error) {
+        console.error('Error sending answer:', error);
+      }
+    };
   
     // Room Data 저장
     // 방 생성 누르면 호출
@@ -22,6 +33,7 @@ export function useManagerStudyRoomDataEventListener(addEventListener, removeEve
       // RoomDataList에 roomData JSON 정보 저장
       console.log(roomData);
       sendRoomdataToServer(roomData);
+      sendPostIndexes();
     });
   
     useEffect(() => {
@@ -30,4 +42,6 @@ export function useManagerStudyRoomDataEventListener(addEventListener, removeEve
         removeEventListener("SendStudyRoomData", SaveStudyRoomData);
       };
     }, [addEventListener, removeEventListener, SaveStudyRoomData]);
+
+    
   }
