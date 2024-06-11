@@ -8,52 +8,55 @@ const Footer = ( props ) => {
             <div className="footer__inner container">
                 <div className="footer__menu">
                     <div>
-                        <h3>사이트</h3>
+                        <h3>관련 사이트</h3>
                         <ul>
-                            <li><a href="/">논문 사이트</a></li>
-                            <li><a href="/">학교 사이트</a></li>
-                            <li><a href="/">깃허브 사이트</a></li>
-                            <li><a href="/">뉴스 사이트</a></li>
+                            <li><a href="/">한국공학대학교</a></li>
+                            <li><a href="/">학술연구정보서비스</a></li>
+                            <li><a href="/">GitHub</a></li>
+                            <li><a href="/">GPT</a></li>
                         </ul>
                     </div>
                     <div>
-                        <h3>헤더 유형</h3>
+                        <h3>카테고리</h3>
                         <ul>
-                            <li><a href="/">헤더 유형01</a></li>
-                            <li><a href="/">헤더 유형02</a></li>
+                            <li><a href="/">HOME</a></li>
+                            <li><a href="/">SERVICE</a></li>
+                            <li><a href="/">List</a></li>
+                            <li><a href="/">Bulletin Board</a></li>
+                            <li><a href="/">MyPage</a></li>
                         </ul>
                     </div>
                     <div>
-                        <h3>슬라이드 유형</h3>
+                        <h3>개발환경</h3>
                         <ul>
-                            <li><a href="/">슬라이드 유형01</a></li>
-                            <li><a href="/">슬라이드 유형01</a></li>
+                            <li><a href="/">React</a></li>
+                            <li><a href="/">Unity</a></li>
+                            <li><a href="/">WebGL</a></li>
+                            <li><a href="/">Node.js</a></li>
                         </ul>
                     </div>
                     <div>
-                        <h3>이미지 유형</h3>
+                        <h3>Subject</h3>
                         <ul>
-                            <li><a href="/">이미지 유형01</a></li>
-                            <li><a href="/">이미지 유형02</a></li>
-                            <li><a href="/">이미지/텍스트 유형01</a></li>
-                            <li><a href="/">이미지/텍스트 유형01</a></li>
-                            <li><a href="/">텍스트 유형01</a></li>
+                            <li><a href="/">알고리즘</a></li>
+                            <li><a href="/">네트워크</a></li>
+                            <li><a href="/">운영체제</a></li>
+                            <li><a href="/">데이터베이스</a></li>
                         </ul>
                     </div>
                     <div>
-                        <h3>카드 유형</h3>
+                        <h3>My Page</h3>
                         <ul>
-                            <li><a href="/">카드 유형01</a></li>
-                            <li><a href="/">카드 유형02</a></li>
-                            <li><a href="/">카드 유형03</a></li>
+                            <li><a href="/">전체 지표</a></li>
+                            <li><a href="/">학습 문서 별 지표</a></li>
                         </ul>
                     </div>
                     <div>
-                        <h3>푸터 유형</h3>
+                        <h3>개발 정보</h3>
                         <ul>
-                            <li><a href="/">푸터 메뉴 유형01</a></li>
-                            <li><a href="/">푸터 컨택트 유형02</a></li>
-                            <li><a href="/">푸터 이메일 유형03</a></li>
+                            <li><a href="/">Server</a></li>
+                            <li><a href="/">Client</a></li>
+                            <li><a href="/">Frontend</a></li>
                         </ul>
                     </div>
                 </div>

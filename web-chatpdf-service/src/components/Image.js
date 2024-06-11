@@ -21,7 +21,7 @@ const Image = (props) => {
             <p>본인이 필요한 영역의 파일을 선택하거나 가지고 옵니다.</p>
             <div className="image__inner container">
                 <article className="image img1">
-                    <h3 className="image__title">WEB</h3>
+                    <h3 className="image__title">DataBase</h3>
                     <p className="image__desc">자세한 인터넷 공간</p>
                     <a className="image__btn yellow" href="/">자세히 보기</a>
                 </article>
@@ -31,7 +31,7 @@ const Image = (props) => {
                     <a className="image__btn yellow" href="/">자세히 보기</a>
                 </article>
                 <article className="image img3">
-                    <h3 className="image__title">Computer Network</h3>
+                    <h3 className="image__title">Network</h3>
                     <p className="image__desc">자세한 관계</p>
                     <a className="image__btn yellow" href="/">자세히 보기</a>
                 </article>

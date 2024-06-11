@@ -1,10 +1,11 @@
 import React from 'react';
-import Header from './Header'
+import Header from './Header';
 import RechartsEvaluate from './RechartEvaluate';
 import RechartsDay from './RechartsDay';
 import RechartsDocument from './RechartsDocument';
 import RechartsMyData from './RechartMyData';
 import RechartsCategory from './RechartCategory';
+import './MyPage.css'; // CSS 파일을 import
 
 const data = [
   {
@@ -12,68 +13,22 @@ const data = [
     score: 70,
   },  
   {
-      name: "질문2",
-      score: 20,
+    name: "질문2",
+    score: 20,
   },
   {
-      name: "질문3",
-      score: 100,
+    name: "질문3",
+    score: 100,
   },
   {
-      name: "질문4",
-      score: 40,
+    name: "질문4",
+    score: 40,
   },
   {
-      name: "질문5",
-      score: 65,
+    name: "질문5",
+    score: 65,
   },
 ];
-
-const evaluateCategoryData = [
-  {
-    "subject": "알고리즘",
-    "value": 70,
-    "fullMark": 100
-  },
-  {
-      "subject": "네트워크",
-      "value": 20,
-      "fullMark": 100
-  },
-  {
-    "subject": "운영체제",
-    "value": 55,
-    "fullMark": 100
-  },
-  {
-      "subject": "데이터베이스",
-      "value": 40,
-      "fullMark": 100
-    },
-]
-
-const evaluateCategoryCountData = [
-  {
-    "subject": "알고리즘",
-    "value": 5,
-    "fullMark": 100
-  },
-  {
-      "subject": "네트워크",
-      "value": 2,
-      "fullMark": 100
-  },
-  {
-    "subject": "운영체제",
-    "value": 10,
-    "fullMark": 100
-  },
-  {
-      "subject": "데이터베이스",
-      "value": 4,
-      "fullMark": 100
-    },
-]
 
 const user_id = "Uihwan";
 const document1 = "algo.pdf";
@@ -84,43 +39,56 @@ const color2 = "#AB0F21";
 
 const MyPage = () => {
   return (
-    <div>
+    <div className="mypage-container">
       <Header element="nexon" />
-      <h1>My Page</h1>
-      <div style={{display: 'flex'}}>
-        <div>
+      <div className="mypage-section">
+        <h1 className="mypage-section-title">My Page</h1>
+        <div className="mypage-user-info">
           <h2>USER ID: {user_id}</h2>
           <h2>학습 통계량: 50%</h2>
         </div>
-        <div>
-          <br/>
+      </div>
+      <div className="mypage-section">
+        <RechartsCategory />
+        <RechartsMyData />
+      </div>
+      <div className="mypage-section">
+        <h1 className="mypage-section-title">전체 지표</h1>
+        <div className="mypage-chart-container">
+          <RechartsEvaluate />
+          <RechartsDay />
         </div>
-        <RechartsCategory></RechartsCategory>
-        <RechartsMyData></RechartsMyData>
       </div>
-      <h1>전체 지표</h1>
-      <div style={{display: 'flex'}}>
-        <RechartsEvaluate></RechartsEvaluate>
-        <RechartsDay></RechartsDay>
+      <div className="mypage-section">
+        <h1 className="mypage-section-title">학습 문서 별 지표</h1>
+        <div className="mypage-document-section">
+          <div className="mypage-subject-box">
+            <h2 className="mypage-subject-title">알고리즘</h2>
+            <div className="mypage-document-container">
+              <RechartsDocument document={document1} data={data} color={color1} />
+              <RechartsDocument document={document2} data={data} color={color1} />
+            </div>
+          </div>
+          <div className="mypage-subject-box">
+            <h2 className="mypage-subject-title">네트워크</h2>
+            <div className="mypage-document-container">
+              <RechartsDocument document="Empty Chart" data={[]} color="#000000" />
+            </div>
+          </div>
+          <div className="mypage-subject-box">
+            <h2 className="mypage-subject-title">운영체제</h2>
+            <div className="mypage-document-container">
+              <RechartsDocument document={document3} data={data} color={color2} />
+            </div>
+          </div>
+          <div className="mypage-subject-box">
+            <h2 className="mypage-subject-title">데이터베이스</h2>
+            <div className="mypage-document-container">
+              <RechartsDocument document="Empty Chart" data={[]} color="#000000" />
+            </div>
+          </div>
+        </div>
       </div>
-      <br/>
-      <h1>학습 문서 별 지표</h1>
-      <br/>
-      <h2>알고리즘</h2>
-      <div style={{display: 'flex'}}>
-        <RechartsDocument document={document1} data={data} color={color1}></RechartsDocument>
-        <RechartsDocument document={document2} data={data} color={color1}></RechartsDocument>
-      </div>
-      <br/>
-      <h2>네트워크</h2>
-      <br/>
-      <h2>운영체제</h2>
-      <div style={{display: 'flex'}}>
-        <RechartsDocument document={document3} data={data} color={color2}></RechartsDocument>
-      </div>
-      <br/>
-      <h2>데이터베이스</h2>
-      <p>This is the content of My Page.</p>
     </div>
   );
 };

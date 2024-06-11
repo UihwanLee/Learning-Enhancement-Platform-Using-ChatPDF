@@ -1,0 +1,104 @@
+/* MyPage.css */
+.mypage-container {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .mypage-section-title {
+    font-size: 40px; /* 크기 조정 */
+    font-weight: bold; /* 굵게 설정 */
+  }
+  
+  .mypage-subject-title {
+    font-weight: bold;
+  }
+  
+  .mypage-section {
+    width: 100%;
+    padding: 20px 0;
+    border-bottom: 2px solid #ccc; /* 구분선 스타일 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .mypage-section:nth-child(odd) {
+    background-color: #ffffff; /* 홀수 섹션 배경색 */
+  }
+  
+  .mypage-section:nth-child(even) {
+    background-color: #f5f5f5c4; /* 짝수 섹션 배경색 */
+  }
+  
+  .mypage-section:last-child {
+    border-bottom: none; /* 마지막 섹션에는 구분선을 제거 */
+  }
+  
+  .mypage-section-title {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .mypage-subject-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 40px;
+  }
+  
+  .mypage-subject-box {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px 20px;
+    margin: 0 10px 20px;
+  }
+  
+  .mypage-subject-name {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .mypage-user-info {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+  
+  .mypage-chart-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 60px;
+    width: 100%;
+  }
+  
+  .mypage-document-section {
+    margin-bottom: 60px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .mypage-document-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 40px;
+    width: 100%;
+  }
+  
+  .mypage-document-container > * {
+    margin: 0 20px;
+  }
+  
+  .mypage h1, .mypage h2 {
+    text-align: center;
+  }
+  
+  .mypage h1 {
+    margin-bottom: 40px;
+  }
+  
+  .mypage h2 {
+    margin: 20px 0;
+  }
+  
