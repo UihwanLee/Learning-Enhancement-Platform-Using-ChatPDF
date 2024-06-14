@@ -53,6 +53,7 @@ public class Server : MonoBehaviour
     private List<string> questionLogList = new List<string>();
     private List<string> answerLogList = new List<string>();
     private List<string> modelAnswerLogList = new List<string>();
+    private List<string> comprehensiveEvaluationList = new List<string>();
 
     // roomData
     private StudyRoom currentStudyRoom;
@@ -273,6 +274,7 @@ public class Server : MonoBehaviour
         questionLogList.Clear();
         answerLogList.Clear();
         modelAnswerLogList.Clear();
+        comprehensiveEvaluationList.Clear();
     }
 
     public void AddQuestionLogData(string message)
@@ -288,6 +290,11 @@ public class Server : MonoBehaviour
     public void AddModelAnswerLogData(string message)
     {
         modelAnswerLogList.Add(message);
+    }
+
+    public void AddComprehensiveEvaluationLogData(string message)
+    {
+        comprehensiveEvaluationList.Add(message);
     }
 
     public void SetCurrentStudyRoom(StudyRoom room)
