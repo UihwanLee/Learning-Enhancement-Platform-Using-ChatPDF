@@ -275,7 +275,7 @@ function Service() {
         if(response.data !== "No"){
           console.log("response.data: ", response.data);
           sendMessage("UIManager", "SetLoadingUI", 0);
-          sendMessage("StudyRoomManager", "CreateRoom", response.data + '/' + fileName); 
+          sendMessage("StudyRoomManager", "CreateRoom", response.data + '/' + fileName + '/' + '목차1' + '/' + '목차2'+ '/' + '목차3'+ '/' + '목차4'+ '/' + '목차5'); 
         } else{
           sendMessage("UIManager", "SetLoadingUI", 0);
           sendMessage("UIManager", "NoticeMessage", "이 문서는 학습 카테고리 범위내에 포함되어 있지 않습니다.");

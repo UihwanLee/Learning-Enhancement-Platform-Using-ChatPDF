@@ -36,15 +36,11 @@ router.post('/interviewRoomData', async (req, res) => {
 
 router.post('/studyRoomData', async (req, res) => {
   try {
+    const db = await connectDB();
     console.log("POST /studyRoomData");
     const jsonstudyRoomData = req.body;
     roomData = JSON.parse(jsonstudyRoomData.roomData);
     console.log("studyRoomData:", roomData);
-
-    const db = await connectDB();
-    await db.collection('studyRoom').insertOne( 
-      { id: roomData.id, nickname: roomData.nickname, title: roomData.title, titlePDF: roomData.titlePDF, category: roomData.category});
-    
 
     // fileInfo 컬렉션 추가
     const documentName = path.parse(roomData.titlePDF).name;
@@ -106,6 +102,23 @@ router.post('/studyRoomData', async (req, res) => {
 
           console.log(`Updated ${result.modifiedCount} documents for filename: ${titlePDF}`);
       }
+
+      // studyRoomData의 indexes을 fileInfo에서 가져온 값으로 변경
+      // fileInfo 컬렉션에서 titlePDF와 filename이 일치하는 문서를 찾습니다
+      const fileInfo = await db.collection('fileInfo').findOne(
+        { filename: roomData.titlePDF },
+        { projection: { indexes: 1, _id: 0 } } // indexes 필드만 가져옵니다
+      );
+
+      if (fileInfo) {
+          roomData.indexes = fileInfo.indexes;
+          console.log('Updated studyRoomData:', roomData);
+      } else {
+          console.log(`No document found with filename "${roomData.titlePDF}"`);
+      }
+
+      await db.collection('studyRoom').insertOne( 
+        { id: roomData.id, nickname: roomData.nickname, title: roomData.title, titlePDF: roomData.titlePDF, category: roomData.category, indexes: roomData.indexes});
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
