@@ -76,6 +76,7 @@ public class StudyRoomManager : MonoBehaviour
         room.title = newRoom.title;
         room.titlePDF = newRoom.titlePDF;
         room.category = newRoom.category;
+        room.indexes = newRoom.indexes;
 
         roomList.Add(roomObj);
 
@@ -90,7 +91,7 @@ public class StudyRoomManager : MonoBehaviour
         }
     }
 
-    public static void SplitString(string input, out string firstPart, out string secondPart)
+    public static void SplitString(string input, out string firstPart, out string secondPart, out string thirdPart, out string FourPart, out string FithPart, out string SixPart, out string SevenPart)
     {
         char[] delimiter = { '/' };
         string[] parts = input.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
@@ -99,18 +100,28 @@ public class StudyRoomManager : MonoBehaviour
         {
             firstPart = parts[0];
             secondPart = parts[1];
+            thirdPart = parts[2];
+            FourPart = parts[3];
+            FithPart = parts[4];
+            SixPart = parts[5];
+            SevenPart = parts[6];
         }
         else
         {
             firstPart = input;
             secondPart = string.Empty;
+            thirdPart = string.Empty;
+            FourPart = string.Empty;
+            FithPart = string.Empty;
+            SixPart = string.Empty;
+            SevenPart = string.Empty;
         }
     }
 
     public void CreateRoom(string data)
     {
-        string category, file;
-        SplitString(data, out category, out file);
+        string category, file, index1, index2, index3, index4, index5;
+        SplitString(data, out category, out file, out index1, out index2, out index3, out index4, out index5);
 
         // Room 생성
         var roomObj = Instantiate(prefab, parent.transform) as GameObject;
@@ -122,6 +133,11 @@ public class StudyRoomManager : MonoBehaviour
         room.title = "나만의 학습방(" + roomList.Count + ")";
         room.category = category;
         room.titlePDF = file;
+        room.indexes[0] = index1;
+        room.indexes[1] = index2;
+        room.indexes[2] = index3;
+        room.indexes[3] = index4;
+        room.indexes[4] = index5;
 
         roomList.Add(roomObj);
 
