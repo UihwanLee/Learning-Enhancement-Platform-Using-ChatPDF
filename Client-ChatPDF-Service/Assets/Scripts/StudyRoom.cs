@@ -11,5 +11,5 @@ public class StudyRoom : MonoBehaviour
     public string title;
     public string titlePDF;
     public string category;
-    public string[] indexes;
+    public string[] indexes = new string[5];
 }
