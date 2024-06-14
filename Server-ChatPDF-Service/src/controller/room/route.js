@@ -83,13 +83,28 @@ router.post('/studyRoomData', async (req, res) => {
         }
       };
 
-      // 문서 업데이트
+      // fileInfo indexes 업데이트
       const result = await db.collection('fileInfo').updateOne(query, update);
 
       if (result.matchedCount > 0) {
         console.log('Indexes field added/updated successfully');
       } else {
         console.log('No document found with the given filename');
+      }
+
+      // fileInfo category 업데이트
+      const studyRooms = await db.collection('studyRoom').find().toArray();
+
+      for (const studyRoom of studyRooms) {
+          const { titlePDF, category } = studyRoom;
+
+          // titlePDF와 filename이 같은 fileInfo 문서 업데이트
+          const result = await db.collection('fileInfo').updateMany(
+              { filename: titlePDF },
+              { $set: { category: category } }
+          );
+
+          console.log(`Updated ${result.modifiedCount} documents for filename: ${titlePDF}`);
       }
     }
   } catch (error) {
