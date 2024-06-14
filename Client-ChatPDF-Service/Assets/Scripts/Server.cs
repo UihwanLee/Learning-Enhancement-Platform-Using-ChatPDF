@@ -250,6 +250,24 @@ public class Server : MonoBehaviour
         }
     }
 
+    public string[] SetIndexByDocument(string document)
+    {
+        // 문서에 따라 목차 설정
+        for(int i=0; i<studyRoomDataList.Count; i++)
+        {
+            StudyRoom newRoom = new StudyRoom();
+            JsonUtility.FromJsonOverwrite(studyRoomDataList[i], newRoom);
+
+            if (document == newRoom.titlePDF)
+            {
+                return newRoom.indexes;
+            }
+        }
+
+        string[] empty = new string[0];
+        return empty;
+    }
+
     public void ClearLogData()
     {
         questionLogList.Clear();

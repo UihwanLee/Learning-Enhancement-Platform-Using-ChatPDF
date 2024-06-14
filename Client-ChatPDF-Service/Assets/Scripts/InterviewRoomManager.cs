@@ -153,6 +153,27 @@ public class InterviewRoomManager : MonoBehaviour
         }
     }
 
+    public void ChangeIndexList(string document)
+    {
+        if(server)
+        {
+            // 현재 서버에서 가지고 있는 사용자의 학습 문서별 index 초기화
+            dropdown_index.options.Clear();
+
+           string[] indexList = server.SetIndexByDocument(document);
+
+            for(int i=0; i<indexList.Length; i++)
+            {
+                dropdown_index.options.Add(new TMP_Dropdown.OptionData(indexList[i], null));
+            }
+
+            dropdown_index.onValueChanged.AddListener(delegate { SetIndex(dropdown_index.value); });
+            SetIndex(dropdown_index.value);
+
+            dropdown_index.RefreshShownValue();
+        }
+    }
+
     public void SetTitle()
     {
         // 입력 받은 제목 설정
@@ -194,6 +215,7 @@ public class InterviewRoomManager : MonoBehaviour
         }
 
         this.document = dropdown_document.options[option].text;
+        ChangeIndexList(this.document);
     }
 
     public void SetIndex(int option)
