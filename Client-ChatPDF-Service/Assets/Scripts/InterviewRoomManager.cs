@@ -160,9 +160,9 @@ public class InterviewRoomManager : MonoBehaviour
             // 현재 서버에서 가지고 있는 사용자의 학습 문서별 index 초기화
             dropdown_index.options.Clear();
 
-            List<string> indexList = server.SetIndexByDocument(document);
+           string[] indexList = server.SetIndexByDocument(document);
 
-            for(int i=0; i<indexList.Count; i++)
+            for(int i=0; i<indexList.Length; i++)
             {
                 dropdown_index.options.Add(new TMP_Dropdown.OptionData(indexList[i], null));
             }

@@ -250,7 +250,7 @@ public class Server : MonoBehaviour
         }
     }
 
-    public List<string> SetIndexByDocument(string document)
+    public string[] SetIndexByDocument(string document)
     {
         // 문서에 따라 목차 설정
         for(int i=0; i<studyRoomDataList.Count; i++)
@@ -264,7 +264,7 @@ public class Server : MonoBehaviour
             }
         }
 
-        List<string> empty =  new List<string>();
+        string[] empty = new string[0];
         return empty;
     }
 
