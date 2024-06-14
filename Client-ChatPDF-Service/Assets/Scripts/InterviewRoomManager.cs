@@ -150,6 +150,15 @@ public class InterviewRoomManager : MonoBehaviour
             SetDocument(dropdown_document.value);
 
             dropdown_document.RefreshShownValue();
+
+
+            // 학습 문서가 설정됨에 따라 목차도 설정
+            dropdown_index.options.Clear();
+            if(documentList.Count > 0)
+            {
+                this.document = dropdown_document.options[0].text;
+                ChangeIndexList(this.document);
+            }
         }
     }
 
