@@ -8,17 +8,25 @@ const { getDocumentPath } = require('../files/documentStore');
 
 
 async function generateQuestions(numQuestions) {
-  //const filePath = path.join(__dirname, "algo.pdf");
+  const db = await connectDB();
   const filePath = getDocumentPath(); 
-  console.log("filePath: ", filePath);
-  const prompt = `이 pdf 파일을 참조해서 이 주제와 관련해서 나의 학습 수준을 파악하기 위한 주관식 문제 ${numQuestions}개를 직접 만들어서 내줘. 오직 5개의 문제만 대답하고 앞에 번호는 생략해줘. 말 끝은 반드시 ! 하나를 넣어줘.`;
+  const filename = path.basename(filePath);
+
+  const fileInfo = await db.collection('fileInfo').findOne(
+    { filename: filename },
+    { projection: { indexes: 1, _id: 0 } } // indexes 필드만 가져오기
+  );
+
+  const prompt = `이 파일과 관련된 지식 수준을 파악할 수 있는 문제를 ${numQuestions}개 내줘. 
+  문제는 ${fileInfo.indexes[0]}, ${fileInfo.indexes[1]}, ${fileInfo.indexes[2]}, 
+  ${fileInfo.indexes[3]}, ${fileInfo.indexes[4]}, 이 5가지 주제에서 하나씩 그 주제와 관련된 문제를 내줘. 
+  오직 문제만 대답하고 문제 앞의 설명은 생략해. 그리고 말 끝은 반드시 ! 하나를 넣어줘.`;
 
   const question = await chatPDF(filePath, prompt);
   const split_questions = question.split('!');
   split_questions.pop();
   const questions = split_questions.map(item => item.trim());
 
-  const db = await connectDB();
   for (let i = 0; i < questions.length; i++) {
     await db.collection('prompt').insertOne({ user: null, question: questions[i], answer: null, score: null, General_opinion: null, Model_answer: null});
   }
