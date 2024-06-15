@@ -82,7 +82,7 @@ public class EvaluateRoomManager : MonoBehaviour
         roomList.Add(roomObj);
 
         // UI 방 목록 생성
-        string roomTitle = "<size=36> 평가 |" + room.title + "|</size> " + " <size=20>" + room.title;
+        string roomTitle = "<size=20> 평가 |" + room.title + "|</size> " + " <size=20>" + room.title;
         room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
         room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => sceneManager.LoadEvaluateRoom(room));
     }
@@ -108,7 +108,7 @@ public class EvaluateRoomManager : MonoBehaviour
         roomList.Add(roomObj);
 
         // UI 방 목록 생성
-        string roomTitle = "<size=36> 평가 |" + room.category + "|</size> " + " <size=20>" + room.document;
+        string roomTitle = "<size=20> 평가 |" + room.category + "|</size> " + " <size=20>" + room.document;
         room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
         room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => sceneManager.LoadEvaluateRoom(room));
 

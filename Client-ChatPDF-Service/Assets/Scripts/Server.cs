@@ -319,4 +319,5 @@ public class Server : MonoBehaviour
     public List<string> GetQuestionList() { return questionLogList; }
     public List<string> GetAnswerList() { return answerLogList; }
     public List<string> GetModelAnswerList() { return modelAnswerLogList; }
+    public List<string> GetComprehensiveEvaluationList() { return comprehensiveEvaluationList; }
 }
