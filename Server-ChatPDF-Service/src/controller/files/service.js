@@ -32,10 +32,16 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage }).single('pdfFile');
 
 async function validateTopic(filePath) {
-    const prompt = "이 파일이 알고리즘, 네트워크, 운영체제, 데이터베이스 중 어떤 주제와 가장 연관성이 높은지 그 단어만 말해주고 어떤 주제와도 연관이 없다면 다른 말 하지말고 No로 대답해줘";
-    
-    const categoryOrNo = await chatPDF(filePath, prompt);
-    return categoryOrNo;
+    // 카테고리와 목차5개 뽑아달라고 수정 6/15
+    //const prompt = "이 파일이 알고리즘, 네트워크, 운영체제, 데이터베이스 중 어떤 주제와 가장 연관성이 높은지 그 단어만 말해주고 어떤 주제와도 연관이 없다면 다른 말 하지말고 No로 대답해줘";
+    const prompt = `이 파일이 알고리즘, 네트워크, 운영체제, 데이터베이스 중 어떤 주제와 가장 연관성이 높은지 그 단어만 말해주고 
+    어떤 주제와도 연관이 없다면 다른 말 하지말고 No로 대답해줘, 만약 알고리즘, 네트워크, 운영체제, 데이터베이스 중 하나로 대답했다면, 
+    그 뒤에 '/'를 넣어주고, 이 파일을 주제별로 5개의 목차로만 나눠주고, 각 목차 사이에도 '/' 를 넣어줘. 
+    예를 들면 파일 주제가 알고리즘인 경우, "알고리즘/목차 1/목차 2/목차 3/목차 4/목차 5" 이렇게 주제 뒤에 5개의 목차로만 대답하고, 
+    주제가 알고리즘, 네트워크, 운영체제, 데이터베이스 와 관련이 없으면 "No"로 대답하면 돼.`
+
+    const categoryAndIndexesOrNo = await chatPDF(filePath, prompt);
+    return categoryAndIndexesOrNo;
 }
 
 async function convertAndUpload(filePath) {
@@ -96,7 +102,6 @@ const getJpgImagesFromS3 = async (bucketName, folderPath) => {
 
 // S3에서 PDF 파일 다운로드 해옴
 const downloadFileFromS3 = async (document) => {
-    console.log("document: ", document);
     const documentName = path.parse(document).name;
     console.log("documentName: ", documentName);
     const params = {
@@ -133,15 +138,18 @@ async function handleFileUpload(req, res, next) {
     }
 
     try {
-        const isRelated = await validateTopic(file.path);
-        if (isRelated === 'No' || isRelated === 'No.') {
+        const categoryAndIndexesOrNo = await validateTopic(file.path);
+        if (categoryAndIndexesOrNo === 'No' || categoryAndIndexesOrNo === 'No.') {
             fs.unlinkSync(file.path);
             console.log('카테고리 주제와 관련이 없는 파일입니다.');
             return res.send('No');
         }
         await convertAndUpload(file.path);
-        console.log(isRelated);
-        res.send(isRelated);
+        
+        const categoryAndIndexes = categoryAndIndexesOrNo.split('/');
+        console.log("categoryAndIndexes: ", categoryAndIndexes);
+        res.send(categoryAndIndexes);
+        
         console.log('파일 S3 업로드 성공');
     } catch (error) {
         next(error);

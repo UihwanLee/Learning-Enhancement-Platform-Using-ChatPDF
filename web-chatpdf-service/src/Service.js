@@ -242,7 +242,7 @@ function Service() {
   // File upload component
   useFILEUPLOADEventListener(addEventListener, removeEventListener, fileInput);
 
-  const handleChange = (e) => {
+  const handleChange = async (e) => {
     const file = e.target.files[0];
     
     if (!file) {
@@ -264,36 +264,34 @@ function Service() {
       // 파일 입력 요소 초기화
       e.target.value = '';
   } else {
-      sendMessage("UIManager", "SetLoadingUI", 1);
-      // 서버에 보내기
-      axios.post('http://localhost:3001/files/upload', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data'
-      }
-      })
-      .then(response => {
-        if(response.data !== "No"){
-          console.log("response.data: ", response.data);
+      try{
+        sendMessage("UIManager", "SetLoadingUI", 1);
+        // Uploadresponse.data가 0번엔 카테고리, 1~5번엔 목차 있는 배열
+        const Uploadresponse = await axios.post('http://localhost:3001/files/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+        })
+        
+        if(Uploadresponse.data !== "No"){
+          console.log("Uploadresponse:", Uploadresponse.data);
           sendMessage("UIManager", "SetLoadingUI", 0);
-          sendMessage("StudyRoomManager", "CreateRoom", response.data + '/' + fileName + '/' + '목차1' + '/' + '목차2'+ '/' + '목차3'+ '/' + '목차4'+ '/' + '목차5'); 
+          sendMessage("StudyRoomManager", "CreateRoom", Uploadresponse.data[0] + '/' + fileName + '/' + Uploadresponse.data[1] + '/' + Uploadresponse.data[2] + '/' + Uploadresponse.data[3] + '/' + Uploadresponse.data[4] + '/' + Uploadresponse.data[5]); 
         } else{
           sendMessage("UIManager", "SetLoadingUI", 0);
           sendMessage("UIManager", "NoticeMessage", "이 문서는 학습 카테고리 범위내에 포함되어 있지 않습니다.");
         }
-       
-      })
-      .catch(error => {
+      } catch (error) {
+        console.error('Error during file upload or fetching indexes:', error);
         if (error.response && error.response.status === 500) {
-          console.log(error.response.data);
-          // 오류 메시지 출력
-          alert(error.response.data);
-          // 파일 입력 요소 초기화
-          e.target.value = '';
+            // 오류 메시지 출력
+            alert(error.response.data);
+            // 파일 입력 요소 초기화
+            e.target.value = '';
         }
-      });
-  }
-    
-    
+        sendMessage("UIManager", "SetLoadingUI", 0);
+     }
+    } 
   };
   
 
