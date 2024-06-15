@@ -175,10 +175,10 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
     for (let i = 0; i < 5; i++) {
       // [사전 조사] 평가방 5번 반복
       console.log("Test!!:,", preQNAData.evaluation[i][1]);
-      sendMessage("PromptManager", "AddQuestionLog", preQNAData.questions[i]);
-      sendMessage("PromptManager", "AddAnswerLogData", preQNAData.answers[i]);
-      sendMessage("PromptManager", "AddModelAnswerLogData", preQNAData.evaluation[i][1]);
-      sendMessage("PromptManager", "AddComprehensiveEvaluationLogData", preQNAData.evaluation[i][2]);
+      sendMessage("Server", "AddQuestionLog", preQNAData.questions[i]);
+      sendMessage("Server", "AddAnswerLogData", preQNAData.answers[i]);
+      sendMessage("Server", "AddModelAnswerLogData", preQNAData.evaluation[i][1]);
+      sendMessage("Server", "AddComprehensiveEvaluationLogData", preQNAData.evaluation[i][2]);
     }
     
   });

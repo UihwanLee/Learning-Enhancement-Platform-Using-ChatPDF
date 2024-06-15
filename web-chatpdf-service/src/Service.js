@@ -106,10 +106,12 @@ function Service() {
 
   // 질문 5개 끝나면 나가기 UI 출력
   async function EndInterview() {
+    console.log("EndInterview 호출됨");
     sendMessage("ButtonManager", "NoticeEndPrevInterview");
 
     // [사전조사] QNA 5개 각각 평가
     try {
+      console.log("[사전조사] QNA 5개 각각 평가 호출됨");
       const evalData = await axios.get('http://localhost:3001/prompt/eval');
       console.log('evalData:', evalData.data);
     } catch (error) {
@@ -124,11 +126,6 @@ function Service() {
       console.error('Error sending answer:', error);
     }
 
-    // [사전 조사] 평가방 5번 반복
-    sendMessage("PromptManager", "AddQuestionLog", "질문");
-    sendMessage("PromptManager", "AddAnswerLogData", );
-    sendMessage("PromptManager", "AddModelAnswerLogData", );
-    sendMessage("PromptManager", "AddComprehensiveEvaluationLogData", );
   }
 
   useEffect(() => {
