@@ -34,7 +34,6 @@ router.get('/startInterview', async (req, res) => {
 router.post('/sendAnswer', async (req, res) => {
   try {
     const result = await promptService.updateAnswer(req.body.answer);
-    console.log("Answer 보냄 - ", result);
   } catch (error) {
     console.error('POST /sendAnswer error', error);
     res.status(500).json({ 'error': error.message });
@@ -44,12 +43,30 @@ router.post('/sendAnswer', async (req, res) => {
 
 router.get('/eval', async (req, res) => {
   try {
+    console.log('/eval 호출됨');
     const evalResult = await promptService.preEvaluate();
     console.log("평가 완료", evalResult);
     res.json(evalResult);
   } catch (error) {
     console.error('GET /eval error', error);
     res.status(500).json({ 'error': error.message });
+  }
+});
+
+router.get('/preQNA/:filename', async (req, res) => {
+  console.log('/preQNA/:filename 호출됨');
+  const filename = req.params.filename;
+
+  try {
+      const preQNAData = await promptService.getPreQNAData(filename);
+
+      if (preQNAData) {
+          res.json(preQNAData);
+      } else {
+          res.status(404).send('Document not found');
+      }
+  } catch (error) {
+      res.status(500).send('Server error');
   }
 });
 

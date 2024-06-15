@@ -123,6 +123,12 @@ function Service() {
     } catch (error) {
       console.error('Error sending answer:', error);
     }
+
+    // [사전 조사] 평가방 5번 반복
+    sendMessage("PromptManager", "AddQuestionLog", "질문");
+    sendMessage("PromptManager", "AddAnswerLogData", );
+    sendMessage("PromptManager", "AddModelAnswerLogData", );
+    sendMessage("PromptManager", "AddComprehensiveEvaluationLogData", );
   }
 
   useEffect(() => {
@@ -313,7 +319,6 @@ function Service() {
         <button onClick={RequestServer}>면접시작</button>
         <button onClick={SendQuestion}>질문 전송</button>
         <button onClick={ListenAnswer}>답변 듣기</button>
-        <button onClick={EndInterview}>나가기 테스트</button>
         <button onClick={SendImage}>이미지 테스트</button>
         
         <input

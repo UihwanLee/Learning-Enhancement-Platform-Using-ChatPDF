@@ -162,11 +162,28 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
   }, [addEventListener, removeEventListener, RequestInterviewRoomData]);
 
   // EvaluateRoomRequest 처리
-  const RequestEvaluateRoomData = useCallback(() =>{
-    // id 값에 맞는 Data 보내기
+  const RequestEvaluateRoomData = useCallback(async (roomData) =>{
+    console.log("RequestEvaluateRoomData 호출됨.");
+    // roomData를 파싱하여 필요한 값을 추출합니다
+    const JSONroomData = JSON.parse(roomData);
+    const JSONroomDataDocument = JSONroomData.document; // 평가방에서 쓰일 파일명
+    sendMessage("Server", "ClearLogData");
 
+    // preQNA 데이터 가져오기
+    const preQNAData = await axios.get(`http://localhost:3001/preQNA/${JSONroomDataDocument}`);
+    
+    for (let i = 0; i < 5; i++) {
+      // [사전 조사] 평가방 5번 반복
+      console.log("Test!!:,", preQNAData.evaluation[i][1]);
+      sendMessage("PromptManager", "AddQuestionLog", preQNAData.questions[i]);
+      sendMessage("PromptManager", "AddAnswerLogData", preQNAData.answers[i]);
+      sendMessage("PromptManager", "AddModelAnswerLogData", preQNAData.evaluation[i][1]);
+      sendMessage("PromptManager", "AddComprehensiveEvaluationLogData", preQNAData.evaluation[i][2]);
+    }
+    
   });
 
+  // 평가방을 들어갔을 때 호출
   useEffect(() => {
     addEventListener("RequestEvaluateRoomData", RequestEvaluateRoomData);
     return () => {

@@ -53,6 +53,7 @@ async function generateDetailQuestions(numQuestions, category) {
 }
 
 const answers = [];
+const result = {};
 async function updateAnswer(answer) {
   const db = await connectDB();
   const filePath = getDocumentPath(); 
@@ -78,8 +79,7 @@ async function updateAnswer(answer) {
 
     // 업데이트 후 answers 배열 초기화
     answers.length = 0;
-}
-
+  }
   return result;
 }
 
@@ -141,9 +141,23 @@ async function preEvaluate() {
   return evalResult;
 }
 
+// [사전 조사] filename에 따라 questions, answers, evaluation 반환
+async function getPreQNAData(filename) {
+  const db = await connectDB();
+  preQNACollection = db.collection('preQNA');
+
+  const preQNAData = await preQNACollection.findOne(
+    { filename: filename },
+    { projection: { questions: 1, answers: 1, evaluation: 1, _id: 0 } }
+  );
+
+  return preQNAData;
+}
+
 module.exports = {
   generateQuestions,
   generateDetailQuestions,
   updateAnswer,
-  preEvaluate
+  preEvaluate,
+  getPreQNAData
 };
