@@ -8,6 +8,7 @@ public class EvaluateLogManager : MonoBehaviour
     private List<string> questionLogList = new List<string>();
     private List<string> answerLogList = new List<string>();
     private List<string> modelAnswerLogList = new List<string>();
+    private List<string> comprehensiveEvaluationList = new List<string>();
 
     [SerializeField]
     private GameObject logParent;
@@ -65,6 +66,13 @@ public class EvaluateLogManager : MonoBehaviour
                 var model_log = Instantiate(prefabModelLog, logParent.transform) as GameObject;
                 log = model_log.GetComponent<ChatLog>();
                 log.SetText(modelAnswerLogList[i]);
+            }
+
+            if(i < comprehensiveEvaluationList.Count)
+            {
+                var evaluate_log = Instantiate(prefabQuestionLog, logParent.transform) as GameObject;
+                log = evaluate_log.GetComponent<ChatLog>();
+                log.SetText(comprehensiveEvaluationList[i]);
             }
         }
     }

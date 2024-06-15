@@ -308,4 +308,18 @@ public class UIManager : MonoBehaviour
         bool active = (isActive >= 1) ? true : false;
         loadingUI.SetActive(active);
     }
+
+    public void SetBaseColor(TextMeshProUGUI text)
+    {
+        // 텍스트 비활성화
+        ColorUtility.TryParseHtmlString(baseColor, out changeColor);
+        text.color = changeColor;
+    }
+
+    public void SetHighLightColor(TextMeshProUGUI text)
+    {
+        // 텍스트 활성화
+        ColorUtility.TryParseHtmlString(highlightedColor, out changeColor);
+        text.color = changeColor;
+    }
 }

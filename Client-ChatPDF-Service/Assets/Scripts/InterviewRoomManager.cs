@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 
 public class InterviewRoomManager : MonoBehaviour
 {
@@ -12,6 +13,9 @@ public class InterviewRoomManager : MonoBehaviour
     [SerializeField]
     private GameObject parent;
 
+    [SerializeField]
+    private GameObject parent_pre;
+
     // InterviewRoom 프리팹
     [SerializeField]
     private GameObject prefab;
@@ -19,6 +23,8 @@ public class InterviewRoomManager : MonoBehaviour
     // InterviewRoom 전체를 관리할 RoomList
     [SerializeField]
     private List<GameObject> roomList = new List<GameObject>();
+
+    private List<GameObject> preRoomList = new List<GameObject>();
 
     [Header("UI")]
     // Title InputField
@@ -150,6 +156,15 @@ public class InterviewRoomManager : MonoBehaviour
             SetDocument(dropdown_document.value);
 
             dropdown_document.RefreshShownValue();
+
+
+            // 학습 문서가 설정됨에 따라 목차도 설정
+            dropdown_index.options.Clear();
+            if(documentList.Count > 0)
+            {
+                this.document = dropdown_document.options[0].text;
+                ChangeIndexList(this.document);
+            }
         }
     }
 
@@ -342,6 +357,69 @@ public class InterviewRoomManager : MonoBehaviour
         }
 
         SortRoomByID();
+    }
+
+    public string[] SplitString(string input)
+    {
+        char[] delimiter = { '/' };
+        string[] parts = input.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
+
+        return parts;
+    }
+
+    public void CreatePrevInterviewRoom(string score)
+    {
+        // 현재 사전조사가 끝난 roomData 정보 가져오기
+        List<string> indexes = new List<string>();
+        if (server)
+        {
+            string roomJSON = server.GetCurrentInterviewRoom();
+            InterviewRoom newRoom = new InterviewRoom();
+            JsonUtility.FromJsonOverwrite(roomJSON, newRoom);
+            indexes = server.SetIndexByDocument(newRoom.title);
+        }
+
+        // 점수 분할
+        string[] scoreList = SplitString(score);
+
+        for(int i=0; i< indexes.Count; i++)
+        {
+            // 30점 이하의 카테고리에 대해서 방 생성
+            if (int.Parse(scoreList[i]) <= 30)
+            {
+                var roomObj = Instantiate(prefab, parent_pre.transform) as GameObject;
+
+                // Room Setting 적용
+                var room = roomObj.GetComponent<InterviewRoom>();
+                room.id = newRoom.id;
+                if (server) room.nickname = server.GetUserNickName();
+                room.title = newRoom.title;
+                room.category = newRoom.category;
+                room.document = newRoom.document;
+                room.index = newRoom.index;
+
+                room.interviewerCount = newRoom.interviewerCount;
+                room.interviewerGender = newRoom.interviewerGender;
+                room.interviewTime = newRoom.interviewTime;
+                room.interviewStyle = newRoom.interviewStyle;
+
+                roomList.Add(roomObj);
+
+                // UI 방 목록 생성
+                string roomTitle = "<size=36>" + room.title + "|</size> " + " <size=20>" + room.category + " | " + room.index + "</size>";
+                room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
+                room.gameObject.transform.GetChild(1).GetComponent<GameObject>().SetActive(false);
+                room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() => StartBaseInterview(room));
+                room.gameObject.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(() => DestroyRoom(room.id));
+
+                preRoomList.Add(roomObj);
+
+                if (room.isPrevInterview == 1)
+                {
+                    room.gameObject.transform.GetChild(1).GetComponent<GameObject>().SetActive(false);
+                }
+            }
+        }
     }
 
     public void SortRoomByID()
