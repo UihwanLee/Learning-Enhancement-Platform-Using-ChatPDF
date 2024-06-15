@@ -305,7 +305,7 @@ public class InterviewRoomManager : MonoBehaviour
         roomList.Add(roomObj);
 
         // UI 规 格废 积己
-        string roomTitle = "<size=36>" + room.title + "|</size> " + " <size=20>" + room.category + " | " + room.index + "</size>";
+        string roomTitle = "<size=20>" + room.title + "|</size> " + " <size=20>" + room.category + " | " + room.index + "</size>";
         room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
         room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => StartPrevInterview(room));
         room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() => StartBaseInterview(room));
@@ -344,7 +344,7 @@ public class InterviewRoomManager : MonoBehaviour
         roomList.Add(roomObj);
 
         // UI 规 格废 积己
-        string roomTitle = "<size=36>" + room.title + "|</size> " + " <size=20>" + room.category + " | " + room.index + "</size>" ;
+        string roomTitle = "<size=20>" + room.title + "|</size> " + " <size=20>" + room.category + " | " + room.index + "</size>" ;
         room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
         room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => StartPrevInterview(room));
         room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(()=> StartBaseInterview(room));
@@ -406,7 +406,7 @@ public class InterviewRoomManager : MonoBehaviour
                 roomList.Add(roomObj);
 
                 // UI 规 格废 积己
-                string roomTitle = "<size=36>" + room.title + "|</size> " + " <size=20>" + room.category + " | " + room.index + "</size>";
+                string roomTitle = "<size=20>" + "胶纳临傅" + "|</size> " + " <size=20>" + room.category + " | " + room.index + "</size>";
                 room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
                 room.gameObject.transform.GetChild(1).GetComponent<GameObject>().SetActive(false);
                 room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() => StartBaseInterview(room));

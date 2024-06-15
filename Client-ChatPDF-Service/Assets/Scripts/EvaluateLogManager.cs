@@ -36,6 +36,7 @@ public class EvaluateLogManager : MonoBehaviour
             questionLogList = server.GetQuestionList();
             answerLogList = server.GetAnswerList();
             modelAnswerLogList = server.GetModelAnswerList();
+            comprehensiveEvaluationList = server.GetComprehensiveEvaluationList();
 
             InitializeLog();
         }
