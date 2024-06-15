@@ -13,8 +13,7 @@ async function generateQuestions(numQuestions) {
   const filename = path.basename(filePath);
 
   const fileInfo = await db.collection('fileInfo').findOne(
-    { filename: filename },
-    { projection: { indexes: 1, _id: 0 } } // indexes 필드만 가져오기
+    { filename: filename }
   );
 
   const prompt = `이 파일과 관련된 지식 수준을 파악할 수 있는 문제를 ${numQuestions}개 내줘. 
@@ -22,14 +21,14 @@ async function generateQuestions(numQuestions) {
   ${fileInfo.indexes[3]}, ${fileInfo.indexes[4]}, 이 5가지 주제에서 하나씩 그 주제와 관련된 문제를 내줘. 
   오직 문제만 대답하고 문제 앞의 설명은 생략해. 그리고 말 끝은 반드시 ! 하나를 넣어줘.`;
 
+  // 크기가 5인 questions 배열 데이터 생성
   const question = await chatPDF(filePath, prompt);
   const split_questions = question.split('!');
   split_questions.pop();
   const questions = split_questions.map(item => item.trim());
 
-  for (let i = 0; i < questions.length; i++) {
-    await db.collection('prompt').insertOne({ user: null, question: questions[i], answer: null, score: null, General_opinion: null, Model_answer: null});
-  }
+  await db.collection('preQNA').insertOne({ filename: filename, questions: questions, answers: null });
+  
 
   return questions;
 }
@@ -53,12 +52,35 @@ async function generateDetailQuestions(numQuestions, category) {
   return questions;
 }
 
+const answers = [];
 async function updateAnswer(answer) {
   const db = await connectDB();
-  return db.collection('prompt').updateOne(
-    { answer: null },
-    { $set: { answer: answer } }
-  );
+  const filePath = getDocumentPath(); 
+  const filename = path.basename(filePath);
+
+  // answers 배열에 새로운 answer 추가
+  answers.push(answer);
+
+  // answers 배열의 크기가 5가 되면 업데이트 수행
+  if (answers.length === 5) {
+    const newAnswerArray = answers.slice(); // answers 배열 복사
+
+    const result = await db.collection('preQNA').updateMany(
+        { filename: filename },
+        { $set: { answers: newAnswerArray } }
+    );
+
+    if (result.modifiedCount > 0) {
+        console.log(`preQNA 컬렉션의 ${result.modifiedCount}개의 문서가 성공적으로 업데이트되었습니다.`);
+    } else {
+        console.log('업데이트된 문서가 없습니다.');
+    }
+
+    // 업데이트 후 answers 배열 초기화
+    answers.length = 0;
+}
+
+  return result;
 }
 
 async function evaluateAnswers() {
@@ -87,6 +109,7 @@ async function evaluateAnswers() {
 
 module.exports = {
   generateQuestions,
+  generateDetailQuestions,
   updateAnswer,
   evaluateAnswers
 };

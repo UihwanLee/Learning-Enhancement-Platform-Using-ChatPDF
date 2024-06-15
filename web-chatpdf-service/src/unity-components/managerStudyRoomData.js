@@ -6,6 +6,7 @@ export function useManagerStudyRoomDataEventListener(addEventListener, removeEve
     // roomdata 서버로 send
     const sendRoomdataToServer = async (roomData) => {
       try {
+        console.log("sendRoomdataToServer: " + roomData);
         const response = await axios.post('http://localhost:3001/room/studyRoomData', {
           roomData: roomData
         });
