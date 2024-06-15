@@ -133,6 +133,7 @@ public class StudyRoomManager : MonoBehaviour
         room.title = "나만의 학습방(" + roomList.Count + ")";
         room.category = category;
         room.titlePDF = file;
+        room.indexes.Add("전체");
         room.indexes.Add(index1);
         room.indexes.Add(index2);
         room.indexes.Add(index3);
