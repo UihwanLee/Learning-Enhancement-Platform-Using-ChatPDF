@@ -36,6 +36,7 @@ public class EvaluateLogManager : MonoBehaviour
             questionLogList = server.GetQuestionList();
             answerLogList = server.GetAnswerList();
             modelAnswerLogList = server.GetModelAnswerList();
+            comprehensiveEvaluationList = server.GetComprehensiveEvaluationList();
 
             InitializeLog();
         }
@@ -112,5 +113,15 @@ public class EvaluateLogManager : MonoBehaviour
         log.SetText(message);
 
         if (server) server.AddModelAnswerLogData(message);
+    }
+
+    public void AddComprehensiveEvaluationLog(string message)
+    {
+        // 모범답안 Log 추가
+        var answer_log = Instantiate(prefabQuestionLog, logParent.transform) as GameObject;
+        var log = answer_log.GetComponent<ChatLog>();
+        log.SetText(message);
+
+        if (server) server.AddComprehensiveEvaluationLogData(message);
     }
 }

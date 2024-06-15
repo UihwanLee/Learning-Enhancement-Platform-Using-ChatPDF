@@ -81,7 +81,7 @@ public class StudyRoomManager : MonoBehaviour
         roomList.Add(roomObj);
 
         // UI 规 格废 积己
-        string roomTitle = "<size=36>" + room.title + "|</size> " + " <size=20>" + room.titlePDF;
+        string roomTitle = "<size=20>" + room.title + "|</size> " + " <size=20>" + room.titlePDF;
         room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
         room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => sceneManager.LoadStudyRoom(room));
 
@@ -143,7 +143,7 @@ public class StudyRoomManager : MonoBehaviour
         roomList.Add(roomObj);
 
         // UI 规 格废 积己
-        string roomTitle = "<size=36>" + room.title + "|</size> " + " <size=20>" + room.titlePDF;
+        string roomTitle = "<size=20>" + room.title + "|</size> " + " <size=20>" + room.titlePDF;
         room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
         room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => sceneManager.LoadStudyRoom(room));
 
