@@ -83,33 +83,67 @@ async function updateAnswer(answer) {
   return result;
 }
 
-async function evaluateAnswers() {
+// [사전 조사] 5개의 QNA 평가
+async function preEvaluate() {
   const db = await connectDB();
-  let documents = await db.collection('prompt').find().toArray();
-  if (!documents || documents.length === 0) {
-    throw new Error('No documents found');
+  preQNACollection = db.collection('preQNA');
+  const filePath = getDocumentPath(); 
+  const filename = path.basename(filePath);
+
+  const preQNA = await preQNACollection.findOne(
+    { filename: filename },
+    { projection: { questions: 1, answers: 1, _id: 0 } }
+  );
+
+  if (preQNA) {
+    console.log('questions:', preQNA.questions);
+    console.log('answers:', preQNA.answers);
+  } else {
+      console.log('해당 filename을 가진 문서를 찾을 수 없습니다.');
+  }
+  
+  // '/' 로 점수, 모범답변, 종합의견 구분, '#' 로 각각의 평가 구분
+  const evalPrompt = `다음은 이 파일과 관련된 질문과 답변입니다. 
+  각각의 질문과 답변은 5개의 요소로 이루어져 있습니다. 아래의 질문과 답변에 대해 5개 각각의 평가를 해주세요. 
+  평가는 점수, 모범답변, 종합의견 3가지로 해주세요. (점수는 0~100점, 모범답변은 질문에 대한 정답, 종합의견은 답변에 대한 평가) 
+  오직 점수, 모범답변, 종합의견 3가지만 대답해주고 각각 사이에 '/'를 넣어주세요. 그리고 각각의 평가 5개들 사이에는 '#'를 넣어주세요. 
+  예를 들면 "80/정확한 답변입니다/더 구체적이면 좋을거 같습니다#50/답은 파리입니다/수도에 대해 더 공부해보세요#/40/모범답변/종합의견#20/
+  모범답변/종합의견#100/모범답변/종합의견" 이렇게 대답하면 됩니다.
+  1. 질문: ${preQNA.questions[0]} 답변: ${preQNA.answers[0]}
+  2. 질문: ${preQNA.questions[1]} 답변: ${preQNA.answers[1]}
+  3. 질문: ${preQNA.questions[2]} 답변: ${preQNA.answers[2]}
+  4. 질문: ${preQNA.questions[3]} 답변: ${preQNA.answers[3]}
+  5. 질문: ${preQNA.questions[4]} 답변: ${preQNA.answers[4]}`;
+
+  const evalResponse = await chatPDF(filePath, evalPrompt);
+
+  // '#'로 구분된 섹션을 분리
+  const sections = evalResponse.split('#');
+  const evalResult = {};
+
+  // 각 섹션을 '/'로 나누어 result 객체에 저장
+  sections.forEach((section, index) => {
+      evalResult[index] = section.split('/');
+  });
+
+  // preQNA에 filename을 기준으로 evaluation 필드 추가
+  const updateResult = await preQNACollection.updateMany(
+    { filename: filename },
+    { $set: { evaluation: evalResult } }
+  );
+
+  if (updateResult.modifiedCount > 0) {
+      console.log(`${updateResult.modifiedCount}개의 문서가 성공적으로 업데이트되었습니다.`);
+  } else {
+      console.log('업데이트된 문서가 없습니다.');
   }
 
-  const evaluations = [];
-
-  for (const doc of documents) {
-    const { question, answer } = doc;
-    const evalPrompt = `"${question}" 라는 질문에 "${answer}" 라는 답변을 했을 때 평가를 해주는데 평가를 3가지로 나눠서 해줘. 점수, 종합의견, 모범답변으로 나눠서 각각 !로 끝내줘.`;
-    const evalResponse = await chatPDF(__dirname + "/algo.pdf", evalPrompt);
-
-    const split_result = evalResponse.split('!');
-    if (split_result.length >= 3) {
-      const [score, General_opinion, Model_answer] = split_result.map(item => item.trim());
-      evaluations.push({ question, answer, score, General_opinion, Model_answer });
-    }
-  }
-
-  return evaluations;
+  return evalResult;
 }
 
 module.exports = {
   generateQuestions,
   generateDetailQuestions,
   updateAnswer,
-  evaluateAnswers
+  preEvaluate
 };

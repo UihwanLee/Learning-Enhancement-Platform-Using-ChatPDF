@@ -44,9 +44,9 @@ router.post('/sendAnswer', async (req, res) => {
 
 router.get('/eval', async (req, res) => {
   try {
-    const evaluations = await promptService.evaluateAnswers();
-    console.log("평가 완료", evaluations);
-    res.json(evaluations);
+    const evalResult = await promptService.preEvaluate();
+    console.log("평가 완료", evalResult);
+    res.json(evalResult);
   } catch (error) {
     console.error('GET /eval error', error);
     res.status(500).json({ 'error': error.message });
