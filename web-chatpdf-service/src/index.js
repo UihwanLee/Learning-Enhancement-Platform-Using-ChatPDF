@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Route, Routes, BrowserRouter } from 'react-rou
 import Service from './Service';
 import MyPage from './components/MyPage'
 import Login from './login';
+import TestPage from './components/TestPage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -15,7 +16,7 @@ root.render(
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App/>} />
-        <Route path="/mypage" element={<MyPage/>} />
+        <Route path="/mypage" element={<TestPage/>} />
         <Route path="/service" element={<Service/>} />
       </Routes>
     </BrowserRouter>
