@@ -20,7 +20,11 @@ public class SceneManagment : MonoBehaviour
 
     public void LoadLobbyAndCreateEvaluateRoom()
     {
-        if (server) server.isCreateEvaluteRoom = true;
+        if (server)
+        {
+            server.isCreateEvaluteRoom = true;
+            server.EndInterview();
+        }
         // Lobby æ¿¿∏∑Œ ¿Ãµø
         SceneManager.LoadScene(1);
     }
