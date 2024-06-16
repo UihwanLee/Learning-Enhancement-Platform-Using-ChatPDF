@@ -106,12 +106,10 @@ function Service() {
 
   // 질문 5개 끝나면 나가기 UI 출력
   async function EndInterview() {
-    console.log("EndInterview 호출됨");
     sendMessage("ButtonManager", "NoticeEndPrevInterview");
 
     // [사전조사] QNA 5개 각각 평가
     try {
-      console.log("[사전조사] QNA 5개 각각 평가 호출됨");
       const evalData = await axios.get('http://localhost:3001/prompt/eval');
       console.log('evalData:', evalData.data);
     } catch (error) {
@@ -125,7 +123,6 @@ function Service() {
     } catch (error) {
       console.error('Error sending answer:', error);
     }
-
   }
 
   useEffect(() => {
@@ -230,16 +227,6 @@ function Service() {
     }
   }
 
-  function getEval(){
-    const evalData = axios.get('http://localhost:3001/prompt/eval')
-      .then(response => {
-        console.log(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching data:', error);
-      });
-  }
-
   function SendImage(){
     const url = "https://tukorea-chatpdf-bucket.s3.ap-northeast-2.amazonaws.com/chap00/chap00-01.jpg";
     sendMessage("PDFViewer", "GetTextureFromURL" , url);
@@ -326,6 +313,7 @@ function Service() {
         <button onClick={RequestServer}>면접시작</button>
         <button onClick={SendQuestion}>질문 전송</button>
         <button onClick={ListenAnswer}>답변 듣기</button>
+        <button onClick={EndInterview}>나가기 테스트</button>
         <button onClick={SendImage}>이미지 테스트</button>
         
         <input
