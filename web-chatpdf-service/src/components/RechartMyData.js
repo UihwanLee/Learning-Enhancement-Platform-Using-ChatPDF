@@ -1,12 +1,32 @@
 import { PieChart, Pie, Legend, Sector, Cell, ResponsiveContainer } from 'recharts';
  
  
-const RechartsMyData = () => {
- 
-    const data = [
-        { name: 'Bad', value: 3 },
-        { name: 'Not Bad', value: 4 },
-        { name: 'Good', value: 2 },
+const RechartsMyData = (props) => {
+
+
+    // 초기 카운터 객체
+    const initialCount = { Bad: 0, 'Not Bad': 0, Good: 0 };
+
+    // 각 카테고리별로 평가 데이터를 순회하여 개수를 세기
+    const evaluationCounts = props.data.reduce((acc, item) => {
+        Object.values(item.evaluation).forEach(evaluation => {
+        const score = parseInt(evaluation[0], 10);
+        if (score <= 30) {
+            acc.Bad += 1;
+        } else if (score > 30 && score <= 70) {
+            acc['Not Bad'] += 1;
+        } else if (score > 70) {
+            acc.Good += 1;
+        }
+        });
+        return acc;
+    }, initialCount);
+
+    // 결과 데이터 배열 생성
+    const evaluationData = [
+        { name: 'Bad', value: evaluationCounts.Bad },
+        { name: 'Not Bad', value: evaluationCounts['Not Bad'] },
+        { name: 'Good', value: evaluationCounts.Good },
     ];
  
     const COLORS = ['#FF8042', '#00C49F', '#0088FE', '#FF8042'];
@@ -35,7 +55,7 @@ const RechartsMyData = () => {
                             <PieChart width={700} height={700}>
                                 <Legend layout="vertical" verticalAlign="top" align="top" />
                                 <Pie
-                                    data={data}
+                                    data={evaluationData}
                                     cx="50%"
                                     cy="50%"
                                     labelLine={false}
@@ -44,7 +64,7 @@ const RechartsMyData = () => {
                                     fill="#8884d8"
                                     dataKey="value"
                                 >
-                                    {data.map((entry, index) => (
+                                    {evaluationData.map((entry, index) => (
                                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                     ))}
                                 </Pie>

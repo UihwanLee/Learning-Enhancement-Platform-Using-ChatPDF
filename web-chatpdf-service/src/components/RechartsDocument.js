@@ -8,29 +8,6 @@ import {
     Legend,
   } from "recharts";
 
-  const data = [
-    {
-      name: "질문1",
-      score: 70,
-    },  
-    {
-        name: "질문2",
-        score: 20,
-    },
-    {
-        name: "질문3",
-        score: 100,
-    },
-    {
-        name: "질문4",
-        score: 40,
-    },
-    {
-        name: "질문5",
-        score: 65,
-    },
-  ];
-  
   const RechartsDocument = (props) => {
 
     // props.evaluation 객체를 필요한 형식으로 변환
