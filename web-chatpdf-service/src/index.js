@@ -8,19 +8,19 @@ import { BrowserRouter as Router, Route, Routes, BrowserRouter } from 'react-rou
 import Service from './Service';
 import MyPage from './components/MyPage';
 import Login from './login';
-import Register from './register';
+import TestPage from './components/TestPage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<App/>} />
-      <Route path="/mypage" element={<MyPage/>} />
-      <Route path="/service" element={<Service/>} />
-      <Route path="/register" element={<Register/>} />
-      <Route path="/login" element={<Login/>} />
-    </Routes>
-  </BrowserRouter>
+  <React.StrictMode>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<App/>} />
+        <Route path="/mypage" element={<TestPage/>} />
+        <Route path="/service" element={<Service/>} />
+      </Routes>
+    </BrowserRouter>
+  </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function

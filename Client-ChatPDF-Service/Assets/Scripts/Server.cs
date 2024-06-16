@@ -34,6 +34,9 @@ public class Server : MonoBehaviour
     [DllImport("__Internal")]
     private static extern void RequestEvaluateRoomData(string roomData);
 
+    [DllImport("__Internal")]
+    private static extern void RequestEndInterviewData();
+
     // Server에서 관리할 객체
     private string userNickName;
     private List<string> studyRoomDataList = new List<string>();
@@ -217,6 +220,14 @@ public class Server : MonoBehaviour
         // pdf, pptx 문서 업로드 함수 호출
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
     RequestUploadFile();
+#endif
+    }
+
+    public void EndInterview()
+    {
+        // 면접이 끝났다는 것을 알림
+#if UNITY_WEBGL == true && UNITY_EDITOR == false
+    RequestEndInterviewData();
 #endif
     }
 

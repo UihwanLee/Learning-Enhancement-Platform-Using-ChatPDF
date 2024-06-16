@@ -87,6 +87,9 @@ const color1 = "#0CD3FF";
 const color2 = "#AB0F21";
 
 const MyPage = () => {
+
+  // ddddd
+
   return (
     <div>
       <Header element="nexon" />
@@ -104,7 +107,7 @@ const MyPage = () => {
       </div>
       <h1>전체 지표</h1>
       <div style={{display: 'flex'}}>
-        <RechartsEvaluate></RechartsEvaluate>
+        <RechartsEvaluate data={data}></RechartsEvaluate>
         <RechartsDay></RechartsDay>
       </div>
       <br/>
