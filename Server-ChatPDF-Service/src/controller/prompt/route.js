@@ -2,6 +2,9 @@ const express = require('express');
 const router = express.Router();
 const promptService = require('./service');
 const fileService = require('../files/service');
+const cors = require('cors')
+
+router.use(cors());
 
 // 질문 생성
 // interviewType이 0 이면 사전 조사, 1 이면 면접 진행
@@ -34,7 +37,6 @@ router.get('/startInterview', async (req, res) => {
 router.post('/sendAnswer', async (req, res) => {
   try {
     const result = await promptService.updateAnswer(req.body.answer);
-    console.log("Answer 보냄 - ", result);
   } catch (error) {
     console.error('POST /sendAnswer error', error);
     res.status(500).json({ 'error': error.message });
@@ -42,14 +44,32 @@ router.post('/sendAnswer', async (req, res) => {
 });
 
 
-router.get('/eval', async (req, res) => {
+router.get('/preEval', async (req, res) => {
   try {
+    console.log('/preEval 호출됨');
     const evalResult = await promptService.preEvaluate();
     console.log("평가 완료", evalResult);
     res.json(evalResult);
   } catch (error) {
-    console.error('GET /eval error', error);
+    console.error('GET /preEval error', error);
     res.status(500).json({ 'error': error.message });
+  }
+});
+
+router.get('/preQNA/:filename', async (req, res) => {
+  console.log('/preQNA/:filename 호출됨');
+  const filename = req.params.filename;
+
+  try {
+      const preQNAData = await promptService.getPreQNAData(filename);
+
+      if (preQNAData) {
+          res.json(preQNAData);
+      } else {
+          res.status(404).send('Document not found');
+      }
+  } catch (error) {
+      res.status(500).send('Server error');
   }
 });
 

@@ -6,8 +6,12 @@ const path = require('path');
 
 const { getDocumentPath } = require('../files/documentStore');
 
+let answers = [];
+let result = {};
+
 // [사전 조사] 초기 질문 5개 생성
 async function generateQuestions(numQuestions) {
+  answers.length = 0; // answers 초기화
   const db = await connectDB();
   const filePath = getDocumentPath(); 
   const filename = path.basename(filePath);
@@ -52,7 +56,7 @@ async function generateDetailQuestions(numQuestions, category) {
   return questions;
 }
 
-const answers = [];
+
 async function updateAnswer(answer) {
   const db = await connectDB();
   const filePath = getDocumentPath(); 
@@ -60,6 +64,7 @@ async function updateAnswer(answer) {
 
   // answers 배열에 새로운 answer 추가
   answers.push(answer);
+  console.log("updateAnswer answer: ", answer);
 
   // answers 배열의 크기가 5가 되면 업데이트 수행
   if (answers.length === 5) {
@@ -78,8 +83,7 @@ async function updateAnswer(answer) {
 
     // 업데이트 후 answers 배열 초기화
     answers.length = 0;
-}
-
+  }
   return result;
 }
 
@@ -103,12 +107,12 @@ async function preEvaluate() {
   }
   
   // '/' 로 점수, 모범답변, 종합의견 구분, '#' 로 각각의 평가 구분
-  const evalPrompt = `다음은 이 파일과 관련된 질문과 답변입니다. 
+  const evalPrompt = `다음은 이 파일과 관련된 질문과 답변들입니다. 
   각각의 질문과 답변은 5개의 요소로 이루어져 있습니다. 아래의 질문과 답변에 대해 5개 각각의 평가를 해주세요. 
   평가는 점수, 모범답변, 종합의견 3가지로 해주세요. (점수는 0~100점, 모범답변은 질문에 대한 정답, 종합의견은 답변에 대한 평가) 
   오직 점수, 모범답변, 종합의견 3가지만 대답해주고 각각 사이에 '/'를 넣어주세요. 그리고 각각의 평가 5개들 사이에는 '#'를 넣어주세요. 
   예를 들면 "80/정확한 답변입니다/더 구체적이면 좋을거 같습니다#50/답은 파리입니다/수도에 대해 더 공부해보세요#/40/모범답변/종합의견#20/
-  모범답변/종합의견#100/모범답변/종합의견" 이렇게 대답하면 됩니다.
+  모범답변/종합의견#100/모범답변/종합의견" 이렇게 대답하면 됩니다. 
   1. 질문: ${preQNA.questions[0]} 답변: ${preQNA.answers[0]}
   2. 질문: ${preQNA.questions[1]} 답변: ${preQNA.answers[1]}
   3. 질문: ${preQNA.questions[2]} 답변: ${preQNA.answers[2]}
@@ -116,6 +120,7 @@ async function preEvaluate() {
   5. 질문: ${preQNA.questions[4]} 답변: ${preQNA.answers[4]}`;
 
   const evalResponse = await chatPDF(filePath, evalPrompt);
+  console.log("chatpdf의 평가: ", evalResponse);
 
   // '#'로 구분된 섹션을 분리
   const sections = evalResponse.split('#');
@@ -141,9 +146,23 @@ async function preEvaluate() {
   return evalResult;
 }
 
+// [사전 조사] filename에 따라 questions, answers, evaluation 반환
+async function getPreQNAData(filename) {
+  const db = await connectDB();
+  preQNACollection = db.collection('preQNA');
+
+  const preQNAData = await preQNACollection.findOne(
+    { filename: filename },
+    { projection: { questions: 1, answers: 1, evaluation: 1, _id: 0 } }
+  );
+
+  return preQNAData;
+}
+
 module.exports = {
   generateQuestions,
   generateDetailQuestions,
   updateAnswer,
-  preEvaluate
+  preEvaluate,
+  getPreQNAData
 };
