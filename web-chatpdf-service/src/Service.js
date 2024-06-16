@@ -230,6 +230,16 @@ function Service() {
     }
   }
 
+  function getEval(){
+    const evalData = axios.get('http://localhost:3001/prompt/eval')
+      .then(response => {
+        console.log(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching data:', error);
+      });
+  }
+
   function SendImage(){
     const url = "https://tukorea-chatpdf-bucket.s3.ap-northeast-2.amazonaws.com/chap00/chap00-01.jpg";
     sendMessage("PDFViewer", "GetTextureFromURL" , url);
