@@ -56,7 +56,7 @@ import {
     };
 
     // 카테고리별 평가 데이터를 순회하여 개수를 세기
-  const evaluationCounts = data.reduce((acc, item) => {
+  const evaluationCounts = props.data.reduce((acc, item) => {
     const { category, evaluation } = item;
     if (evaluation) {
       Object.values(evaluation).forEach(evaluation => {

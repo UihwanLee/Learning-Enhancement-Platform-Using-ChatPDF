@@ -309,7 +309,7 @@ public class InterviewRoomManager : MonoBehaviour
         room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
         room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => StartPrevInterview(room));
         room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() => StartBaseInterview(room));
-        room.gameObject.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(() => DestroyRoom(room.id));
+        room.gameObject.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(() => EvluateRoom(room));
 
         if(room.isPrevInterview == 1)
         {
@@ -348,7 +348,7 @@ public class InterviewRoomManager : MonoBehaviour
         room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
         room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => StartPrevInterview(room));
         room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(()=> StartBaseInterview(room));
-        room.gameObject.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(()=> DestroyRoom(room.id));
+        room.gameObject.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(()=> EvluateRoom(room));
 
         // Room Data 저장
         if (server)
@@ -410,7 +410,7 @@ public class InterviewRoomManager : MonoBehaviour
                 room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
                 room.gameObject.transform.GetChild(1).GetComponent<GameObject>().SetActive(false);
                 room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() => StartBaseInterview(room));
-                room.gameObject.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(() => DestroyRoom(room.id));
+                room.gameObject.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(() => EvluateRoom(room));
 
                 preRoomList.Add(roomObj);
 
@@ -480,19 +480,12 @@ public class InterviewRoomManager : MonoBehaviour
         sceneManager.LoadInterviewRoom(room);
     }
 
-    public void DestroyRoom(int id)
+    public void EvluateRoom(InterviewRoom room)
     {
-        // prefab 오브젝트 삭제
-        Destroy(roomList[id]);
-
-        // 리스트에서 삭제
-        for (int i = roomList.Count - 1; i >= 0; i--)
+        // 평가
+        if (server)
         {
-            if(i== id)
-            {
-                roomList.Remove(roomList[i]);
-                server.RemoveInterviewRoomData(i);
-            }
+            server.RequestEvaluateUnity(room);
         }
     }
 
