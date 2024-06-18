@@ -41,49 +41,16 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
   function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
   }
-
-  const preInterview = async () => {
-    if (idx < questions.length) {
-      sendMessage("PromptManager", "AddQuestionLog", questions[idx]);
-      setAnswer(answer);
-      sendAnswerToServer(answer);
-      sendMessage("PromptManager", "AddAnswerLog", answer);
-
-      // 2초 딜레이
-      await delay(2000);
-
-      setIdx(prevIdx => {
-        const nextIdx = prevIdx + 1;
-        if (nextIdx < questions.length) {
-          speak(questions[nextIdx], window.speechSynthesis);
-          sendMessage("ButtonManager", "SetVoiceUI", 1);
-          console.log("idx: ", nextIdx);
-          console.log("questions[nextIdx]: ", questions[nextIdx]);
-          SendQuestion(questions[nextIdx]);
-          let questionLength = (questions[nextIdx].length)*160;
-          
-          // 3초 후에 실행
-          setTimeout(() => {
-            sendMessage("ButtonManager", "SetVoiceUI", 0);
-          }, questionLength); 
-
-        } else {
-          EndInterview(); // POST 요청 포함
-        }
-        return nextIdx;
-      });
-    }  
-  }
-
+   
   // 사용자의 answer 받기
   // send 눌렀을 때 호출 -> send 누르면 text(answer) 서버에 보냄
-  const ReceiveAnswer = useCallback(async (answer) => {
-    console.log("ReceiveAnswer 호출됨 - ", answer);
+  const ReceiveAnswerPre = useCallback(async (answer) => {
+    console.log("ReceiveAnswerPre 호출됨 - ", answer);
     // preInterview();
     if (idx < questions.length) {
       sendMessage("PromptManager", "AddQuestionLog", questions[idx]);
       setAnswer(answer);
-      sendAnswerToServer(answer);
+      sendAnswerToServerPre(answer);
       sendMessage("PromptManager", "AddAnswerLog", answer);
 
       // 2초 딜레이
@@ -112,7 +79,7 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
     }  
   }, [idx, questions, setAnswer, sendMessage]);
 
-  const sendAnswerToServer = async (answer) => {
+  const sendAnswerToServerPre = async (answer) => {
     try {
       const response = await axios.post('http://localhost:3001/prompt/sendAnswer', {
         answer: answer, 
@@ -124,6 +91,59 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
   };
 
   // Unity->React 사용자의 answer 보내기
+  useEffect(() => {
+    addEventListener("SendAnswerPre", ReceiveAnswerPre);
+    return () => {
+      removeEventListener("SendAnswerPre", ReceiveAnswerPre);
+    };
+  }, [addEventListener, removeEventListener, ReceiveAnswerPre]);
+
+  const ReceiveAnswer = useCallback(async (answer) => {
+    console.log("ReceiveAnswer 호출됨 - ", answer);
+    // preInterview();
+    // if (idx < questions.length) {
+    //   sendMessage("PromptManager", "AddQuestionLog", questions[idx]);
+    //   setAnswer(answer);
+    //   sendAnswerToServer(answer);
+    //   sendMessage("PromptManager", "AddAnswerLog", answer);
+
+    //   // 2초 딜레이
+    //   await delay(2000);
+
+    //   setIdx(prevIdx => {
+    //     const nextIdx = prevIdx + 1;
+    //     if (nextIdx < questions.length) {
+    //       speak(questions[nextIdx], window.speechSynthesis);
+    //       sendMessage("ButtonManager", "SetVoiceUI", 1);
+    //       console.log("idx: ", nextIdx);
+    //       console.log("questions[nextIdx]: ", questions[nextIdx]);
+    //       SendQuestion(questions[nextIdx]);
+    //       let questionLength = (questions[nextIdx].length)*160;
+          
+    //       // 3초 후에 실행
+    //       setTimeout(() => {
+    //         sendMessage("ButtonManager", "SetVoiceUI", 0);
+    //       }, questionLength); 
+
+    //     } else {
+    //       EndInterview(); // POST 요청 포함
+    //     }
+    //     return nextIdx;
+    //   });
+    // }  
+  }, [idx, questions, setAnswer, sendMessage]);
+
+  const sendAnswerToServer = async (answer) => {
+    try {
+      const response = await axios.post('http://localhost:3001/prompt/sendAnswer', {
+        answer: answer, 
+      });
+      
+    } catch (error) {
+      console.error('Error sending answer:', error);
+    }
+  };
+
   useEffect(() => {
     addEventListener("SendAnswer", ReceiveAnswer);
     return () => {
