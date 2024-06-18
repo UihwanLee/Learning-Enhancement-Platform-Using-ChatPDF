@@ -131,7 +131,9 @@ function Service() {
 
     // roomData를 파싱하여 필요한 값을 추출합니다
     const JSONroomData = JSON.parse(roomData);
+    console.log("JSONroomData: ", JSONroomData);
     const JSONinterviewType = JSONroomData.interviewType;
+    const JSONindex = JSONroomData.index;
 
     console.log("면접 시작(인터뷰 타입):", JSONinterviewType);
     sendMessage("ButtonManager", "SetVoiceUI", 1);
@@ -159,7 +161,8 @@ function Service() {
     }
     // 진행 
     else {
-      axios.get('http://localhost:3001/prompt/startInterview')
+      console.log("JSONindex: ", JSONindex);
+      axios.post('http://localhost:3001/prompt/startInterview', { JSONindex : JSONindex })
       .then(response => {
         const firstQuestion = response.data[0];
         setQuestions(response.data);
@@ -277,24 +280,7 @@ function Service() {
 
   // 질문 5개 끝나면 나가기 UI 출력
   async function EndInterview() {
-    console.log("EndInterview 실행됨");
     sendMessage("ButtonManager", "NoticeEndPrevInterview");
-
-    // [사전조사] QNA 5개 각각 평가
-    axios.get('http://localhost:3001/prompt/preEval')
-    .then(evalData => {
-      console.log('evalData:', evalData.data);
-      // 첫 번째 요청 후, 두 번째 POST 요청 실행
-      return axios.post('http://localhost:3001/room/evaluateRoomData', {
-        currentInterViewRoomData: currentInterViewRoomData
-      });
-    })
-    .then(evalRoomData => {
-      console.log('evalRoomData:', evalRoomData.data);
-    })
-    .catch(error => {
-      console.error('Error sending answer:', error);
-    });
   }
   
 

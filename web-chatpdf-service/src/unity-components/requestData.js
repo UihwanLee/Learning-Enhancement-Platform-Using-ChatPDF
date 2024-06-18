@@ -167,19 +167,19 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
     // roomData를 파싱하여 필요한 값을 추출합니다
     const JSONroomData = JSON.parse(roomData);
     const JSONroomDataDocument = JSONroomData.document; // 평가방에서 쓰일 파일명
-    //sendMessage("Server", "ClearLogData");
+    sendMessage("Server", "ClearLogData");
 
-    // preQNA 데이터 가져오기
-    //const preQNAData = await axios.get(`http://localhost:3001/preQNA/${JSONroomDataDocument}`);
+    //preQNA 데이터 가져오기
+    const preQNAData = await axios.get(`http://localhost:3001/preQNA/${JSONroomDataDocument}`);
     
-    // for (let i = 0; i < 5; i++) {
-    //   // [사전 조사] 평가방 5번 반복
-    //   console.log("Test!!:,", preQNAData.evaluation[i][1]);
-    //   sendMessage("PromptManager", "AddQuestionLog", preQNAData.questions[i]);
-    //   sendMessage("PromptManager", "AddAnswerLogData", preQNAData.answers[i]);
-    //   sendMessage("PromptManager", "AddModelAnswerLogData", preQNAData.evaluation[i][1]);
-    //   sendMessage("PromptManager", "AddComprehensiveEvaluationLogData", preQNAData.evaluation[i][2]);
-    // }
+    for (let i = 0; i < 5; i++) {
+      // [사전 조사] 평가방 5번 반복
+      console.log("Test!!:,", preQNAData.evaluation[i][1]);
+      sendMessage("PromptManager", "AddQuestionLog", preQNAData.questions[i]);
+      sendMessage("PromptManager", "AddAnswerLogData", preQNAData.answers[i]);
+      sendMessage("PromptManager", "AddModelAnswerLogData", preQNAData.evaluation[i][1]);
+      sendMessage("PromptManager", "AddComprehensiveEvaluationLogData", preQNAData.evaluation[i][2]);
+    }
     
   });
 
@@ -190,4 +190,40 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
       removeEventListener("RequestEvaluateRoomData", RequestEvaluateRoomData);
     };
   }, [addEventListener, removeEventListener, RequestEvaluateRoomData]);
+
+  const RequestEndInterviewData = useCallback(() =>{
+    console.log("돌아가기 누름");
+    
+    const sendPreEval = () => {
+      axios.post('http://localhost:3001/prompt/preEval')
+        .then(response => {
+          console.log('POST /preEval Success:', response);
+        })
+        .catch(error => {
+          console.error('POST /preEval Error sending:', error);
+        });
+    };
+
+    const sendEvaluateRoomData = () => {
+      console.log("currentInterViewRoomData: ", currentInterViewRoomData);
+      axios.post('http://localhost:3001/room/evaluateRoomData', { currentInterViewRoomData: currentInterViewRoomData })
+        .then(response => {
+          console.log('POST /room/evaluateRoomData Success:', response);
+        })
+        .catch(error => {
+          console.error('POST /room/evaluateRoomData Error:', error);
+        });
+    };      
+
+    sendPreEval();
+    sendEvaluateRoomData(currentInterViewRoomData);
+
+  });
+  
+  useEffect(() => {
+    addEventListener("RequestEndInterviewData", RequestEndInterviewData);
+    return () => {
+      removeEventListener("RequestEndInterviewData", RequestEndInterviewData);
+    };
+  }, [addEventListener, removeEventListener, RequestEndInterviewData]);
 }

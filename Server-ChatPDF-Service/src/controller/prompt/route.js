@@ -8,10 +8,11 @@ router.use(cors());
 
 // 질문 생성
 // interviewType이 0 이면 사전 조사, 1 이면 면접 진행
+// interviewType이 0인 경우
 router.get('/getQuestions', async (req, res) => {
   try {
-    const questions = await promptService.generateQuestions(5);
     console.log("/getQuestions 호출");
+    const questions = await promptService.generateQuestions(5);
     console.log(questions)
     res.json(questions);
   } catch (error) {
@@ -20,11 +21,15 @@ router.get('/getQuestions', async (req, res) => {
   }
 });
 
+// interviewType이 1인 경우
 // [면접 진행] 목차에 관한 3가지 질문 생성
-router.get('/startInterview', async (req, res) => {
+router.post('/startInterview', async (req, res) => {
   try {
-    const startInterviewQuestions = await promptService.generateQuestions(3);
     console.log("/startInterview 호출");
+    console.log("목차 값이 나와야함: ", req.body);
+    const { JSONindex } = req.body;
+
+    const startInterviewQuestions = await promptService.generateDetailQuestions(3, JSONindex);
     console.log(startInterviewQuestions);
     res.json(startInterviewQuestions);
   } catch (error) {
@@ -33,23 +38,33 @@ router.get('/startInterview', async (req, res) => {
   }
 });
 
-// answer db 저장
+// [사전 조사] answer db 저장
 router.post('/sendAnswer', async (req, res) => {
   try {
-    const result = await promptService.updateAnswer(req.body.answer);
+    const response = await promptService.updateAnswer(req.body.answer);
   } catch (error) {
     console.error('POST /sendAnswer error', error);
     res.status(500).json({ 'error': error.message });
   }
 });
 
-
-router.get('/preEval', async (req, res) => {
+// [면접 진행] 꼬리 질문
+router.post('/tailQuestion', async (req, res) => {
+  console.log("/tailQuestion 호출");
   try {
-    console.log('/preEval 호출됨');
+    const response = await promptService.generateTailQuestions(category, answer)
+  } catch (error) {
+    console.error('POST /tailQuestion error', error);
+    res.status(500).json({ 'error': error.message });
+  }
+  
+});
+
+router.post('/preEval', async (req, res) => {
+  try {
+    console.log('POST /preEval 호출됨');
     const evalResult = await promptService.preEvaluate();
     console.log("평가 완료", evalResult);
-    res.json(evalResult);
   } catch (error) {
     console.error('GET /preEval error', error);
     res.status(500).json({ 'error': error.message });

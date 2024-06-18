@@ -39,7 +39,9 @@ async function generateQuestions(numQuestions) {
 
 // [면접 진행] index에 따라 질문 3개 생성
 async function generateDetailQuestions(numQuestions, category) {
+  const db = await connectDB();
   const filePath = getDocumentPath(); 
+  const filename = path.basename(filePath);
   const prompt = `이 pdf 파일을 참조해서 ${category}와 관련된 지식 수준을 파악하기 위한 주관식 문제 ${numQuestions}개를 직접 만들어서 내줘. 
   다른 말은 하지말고 문제만 말해주고 말 끝은 반드시 ! 하나를 넣어줘.`;
 
@@ -48,10 +50,7 @@ async function generateDetailQuestions(numQuestions, category) {
   split_questions.pop();
   const questions = split_questions.map(item => item.trim());
 
-  // const db = await connectDB();
-  // for (let i = 0; i < questions.length; i++) {
-  //   await db.collection('prompt').insertOne({ user: null, question: questions[i], answer: null, score: null, General_opinion: null, Model_answer: null});
-  // }
+  await db.collection('QNA').insertOne({ filename: filename, questions: questions, answers: null });
 
   return questions;
 }
@@ -87,8 +86,97 @@ async function updateAnswer(answer) {
   return result;
 }
 
+// [면접 진행] {시간복잡도} 목차에 관해서 {시간복잡도를 표기하는 데 사용되는 
+// Big-O 표기법이란 무엇인가요?}에 대한 답으로 {잘 모르겠습니다}라고 
+// 대답을 했는데 잘 답변한거야? 다른 말 하지말고 Yes/No 중에 대답해줘
+async function generateTailQuestions(category, answer, iteration = 0) {
+  const db = await connectDB();
+  const QNACollection = db.collection('QNA');
+  const filePath = getDocumentPath(); 
+  const filename = path.basename(filePath);
+
+  const document = await QNACollection.findOne(
+    { filename: filename },
+    { projection: { questions: 1, _id: 0 } }
+  );
+
+  const questions = document.questions;
+
+  async function handleNoCase() {
+    // answers 배열에 새로운 answer 추가
+    answers.push(answer);
+    console.log("updateAnswer answer: ", answer);
+
+    // answers 배열의 크기가 5가 되면 업데이트 수행
+    if (answers.length === 5) {
+      const newAnswerArray = answers.slice(); // answers 배열 복사
+
+      const result = await db.collection('QNA').updateMany(
+        { filename: filename },
+        { $set: { answers: newAnswerArray } }
+      );
+
+      if (result.modifiedCount > 0) {
+        console.log(`QNA 컬렉션의 ${result.modifiedCount}개의 문서가 성공적으로 업데이트되었습니다.`);
+      } else {
+        console.log('업데이트된 문서가 없습니다.');
+      }
+
+      // 업데이트 후 answers 배열 초기화
+      answers.length = 0;
+    }
+  }
+
+  if (iteration < 3) {
+    const prompt = `${category} 목차에 관해서 ${questions[iteration]}
+    에 대한 답으로 ${answer} 라고 대답을 했는데 잘 답변한거야?
+    다른 말 하지말고 Yes/No 중에 대답해줘`;
+
+    const YesOrNo = await chatPDF(filePath, prompt);
+    console.log("YesOrNo: ", YesOrNo);
+
+    if (YesOrNo === "Yes") {
+      generateTailQuestions(category, answer, iteration + 1); // 재귀 호출
+    } else {
+      handleNoCase(); // "No" 케이스 처리
+    }
+  }
+}
+
+
+// fileInfo에 categoty 필드 추가
+async function updateFileInfoWithCategory() {
+  try {
+    const db = await connectDB();
+
+    const studyRoomCollection = db.collection('studyRoom');
+    const fileInfoCollection = db.collection('fileInfo');
+
+    const filePath = getDocumentPath(); 
+    const filename = path.basename(filePath);
+
+    // studyRoom 컬렉션에서 titlePDF가 filename과 같은 문서 찾기
+    const studyRoom = await studyRoomCollection.findOne({ titlePDF: filename });
+
+    if (studyRoom) {
+      const { category } = studyRoom;
+
+      // fileInfo 컬렉션에서 filename이 일치하는 문서 업데이트
+      const updateResult = await fileInfoCollection.updateMany(
+        { filename: filename },
+        { $set: { category: category } }
+      );
+
+      console.log(`${filename}의 category 업데이트 결과:`, updateResult.modifiedCount);
+    }
+  } catch (error) {
+    console.error('MongoDB 작업 중 오류 발생:', error);
+  } 
+}
+
 // [사전 조사] 5개의 QNA 평가
 async function preEvaluate() {
+  updateFileInfoWithCategory();
   const db = await connectDB();
   preQNACollection = db.collection('preQNA');
   const filePath = getDocumentPath(); 
@@ -108,11 +196,10 @@ async function preEvaluate() {
   
   // '/' 로 점수, 모범답변, 종합의견 구분, '#' 로 각각의 평가 구분
   const evalPrompt = `다음은 이 파일과 관련된 질문과 답변들입니다. 
-  각각의 질문과 답변은 5개의 요소로 이루어져 있습니다. 아래의 질문과 답변에 대해 5개 각각의 평가를 해주세요. 
-  평가는 점수, 모범답변, 종합의견 3가지로 해주세요. (점수는 0~100점, 모범답변은 질문에 대한 정답, 종합의견은 답변에 대한 평가) 
-  오직 점수, 모범답변, 종합의견 3가지만 대답해주고 각각 사이에 '/'를 넣어주세요. 그리고 각각의 평가 5개들 사이에는 '#'를 넣어주세요. 
-  예를 들면 "80/정확한 답변입니다/더 구체적이면 좋을거 같습니다#50/답은 파리입니다/수도에 대해 더 공부해보세요#/40/모범답변/종합의견#20/
-  모범답변/종합의견#100/모범답변/종합의견" 이렇게 대답하면 됩니다. 
+  각각의 질문과 답변은 5개의 요소로 이루어져 있습니다. 아래 5개의 질문과 답변에 대해 각각 평가를 해주세요. 
+  평가는 점수, 모범답변, 종합의견 3가지로 해주세요. (점수는 0~100점, 모범답변은 질문에 대한 올바른 답변, 종합의견은 답변에 대한 평가) 
+  오직 점수, 모범답변, 종합의견 3가지만 대답해주고 각각 사이에 '/'를 넣어주세요. 그리고 각각의 평가 5개들 사이에는 '#'를 넣어주세요.
+  한 질문과 답변에 대해 점수/모범답변/종합의견# 포맷으로 대답해줘. 
   1. 질문: ${preQNA.questions[0]} 답변: ${preQNA.answers[0]}
   2. 질문: ${preQNA.questions[1]} 답변: ${preQNA.answers[1]}
   3. 질문: ${preQNA.questions[2]} 답변: ${preQNA.answers[2]}
@@ -124,7 +211,7 @@ async function preEvaluate() {
 
   // '#'로 구분된 섹션을 분리
   const sections = evalResponse.split('#');
-  const evalResult = {};
+  let evalResult = {};
 
   // 각 섹션을 '/'로 나누어 result 객체에 저장
   sections.forEach((section, index) => {
@@ -164,5 +251,6 @@ module.exports = {
   generateDetailQuestions,
   updateAnswer,
   preEvaluate,
-  getPreQNAData
+  getPreQNAData,
+  generateTailQuestions
 };
