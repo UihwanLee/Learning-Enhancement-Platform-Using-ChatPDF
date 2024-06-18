@@ -82,7 +82,7 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
   const sendAnswerToServerPre = async (answer) => {
     try {
       const response = await axios.post('http://localhost:3001/prompt/sendAnswer', {
-        answer: answer, 
+        answer: answer
       });
       
     } catch (error) {
@@ -100,49 +100,58 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
 
   const ReceiveAnswer = useCallback(async (answer) => {
     console.log("ReceiveAnswer 호출됨 - ", answer);
-    // preInterview();
-    // if (idx < questions.length) {
-    //   sendMessage("PromptManager", "AddQuestionLog", questions[idx]);
-    //   setAnswer(answer);
-    //   sendAnswerToServer(answer);
-    //   sendMessage("PromptManager", "AddAnswerLog", answer);
+    if (idx < questions.length) {
+      sendMessage("PromptManager", "AddQuestionLog", questions[idx]);
+      setAnswer(answer);
+      sendMessage("PromptManager", "AddAnswerLog", answer);
 
-    //   // 2초 딜레이
-    //   await delay(2000);
-
-    //   setIdx(prevIdx => {
-    //     const nextIdx = prevIdx + 1;
-    //     if (nextIdx < questions.length) {
-    //       speak(questions[nextIdx], window.speechSynthesis);
-    //       sendMessage("ButtonManager", "SetVoiceUI", 1);
-    //       console.log("idx: ", nextIdx);
-    //       console.log("questions[nextIdx]: ", questions[nextIdx]);
-    //       SendQuestion(questions[nextIdx]);
-    //       let questionLength = (questions[nextIdx].length)*160;
-          
-    //       // 3초 후에 실행
-    //       setTimeout(() => {
-    //         sendMessage("ButtonManager", "SetVoiceUI", 0);
-    //       }, questionLength); 
-
-    //     } else {
-    //       EndInterview(); // POST 요청 포함
-    //     }
-    //     return nextIdx;
-    //   });
-    // }  
-  }, [idx, questions, setAnswer, sendMessage]);
-
-  const sendAnswerToServer = async (answer) => {
-    try {
-      const response = await axios.post('http://localhost:3001/prompt/sendAnswer', {
-        answer: answer, 
-      });
+      // 2초 딜레이
+      await delay(2000);
       
-    } catch (error) {
-      console.error('Error sending answer:', error);
-    }
-  };
+      const YesOrNo = await axios.post('http://localhost:3001/prompt/YesOrNo', {
+        question: questions[idx],
+        answer: answer
+      });
+      console.log("YesOrNo: ", YesOrNo);
+      // sendAnswerToServer 값이 "Yes" 인 경우
+      if(YesOrNo.data === "Yes"){
+        console.log("Yes임");
+        const TailQuestion = await axios.post('http://localhost:3001/prompt/generateTailQuestion', {
+          question: questions[idx],
+          answer: answer
+        });
+        console.log("TailQuestion: ", TailQuestion);
+        speak(TailQuestion, window.speechSynthesis);
+        sendMessage("ButtonManager", "SetVoiceUI", 1);
+        SendQuestion(TailQuestion);
+      } 
+      else {
+        // sendAnswerToServer 값이 "No" 인 경우
+        console.log("No임");
+        setIdx(prevIdx => {
+          const nextIdx = prevIdx + 1;
+          if (nextIdx < questions.length) {
+            speak(questions[nextIdx], window.speechSynthesis);
+            sendMessage("ButtonManager", "SetVoiceUI", 1);
+            console.log("idx: ", nextIdx);
+            console.log("questions[nextIdx]: ", questions[nextIdx]);
+            SendQuestion(questions[nextIdx]);
+            let questionLength = (questions[nextIdx].length)*160;
+            
+            // 3초 후에 실행
+            setTimeout(() => {
+              sendMessage("ButtonManager", "SetVoiceUI", 0);
+            }, questionLength); 
+
+          } else {
+            EndInterview(); // POST 요청 포함
+          }
+          return nextIdx;
+        });
+      } 
+      
+    }  
+  }, [idx, questions, setAnswer, sendMessage]);
 
   useEffect(() => {
     addEventListener("SendAnswer", ReceiveAnswer);
@@ -167,7 +176,7 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
     if (idx < questions.length) {
       sendMessage("PromptManager", "AddQuestionLog", questions[idx]);
       setAnswer(answer);
-      sendAnswerToServer(answer);
+      //sendAnswerToServer(answer);
       sendMessage("PromptManager", "AddAnswerLog", answer);
 
       // 2초 딜레이

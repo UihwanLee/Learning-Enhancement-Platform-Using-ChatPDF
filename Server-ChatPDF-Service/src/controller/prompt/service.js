@@ -86,61 +86,32 @@ async function updateAnswer(answer) {
   return result;
 }
 
-// [면접 진행] {시간복잡도} 목차에 관해서 {시간복잡도를 표기하는 데 사용되는 
-// Big-O 표기법이란 무엇인가요?}에 대한 답으로 {잘 모르겠습니다}라고 
-// 대답을 했는데 잘 답변한거야? 다른 말 하지말고 Yes/No 중에 대답해줘
-async function generateTailQuestions(category, answer, iteration = 0) {
+// [면접 진행] 꼬리 질문을 생성해야할지 판단하는 라우터, YesOrNo
+async function checkTailQuestion(question, answer) {
   const db = await connectDB();
-  const QNACollection = db.collection('QNA');
   const filePath = getDocumentPath(); 
   const filename = path.basename(filePath);
 
-  const document = await QNACollection.findOne(
-    { filename: filename },
-    { projection: { questions: 1, _id: 0 } }
-  );
+  const prompt = `${question} 에 대한 답으로 ${answer} 라고 대답을 했는데 어느 정도 정답에 가까운 거 같아? 
+  다른 말 하지말고 Yes/No 중에 대답해줘`;
+  console.log(prompt);
+  const YesOrNo = await chatPDF(filePath, prompt);
+  console.log("YesOrNo: ", YesOrNo);
+  return YesOrNo;
+}
 
-  const questions = document.questions;
-
-  async function handleNoCase() {
-    // answers 배열에 새로운 answer 추가
-    answers.push(answer);
-    console.log("updateAnswer answer: ", answer);
-
-    // answers 배열의 크기가 5가 되면 업데이트 수행
-    if (answers.length === 5) {
-      const newAnswerArray = answers.slice(); // answers 배열 복사
-
-      const result = await db.collection('QNA').updateMany(
-        { filename: filename },
-        { $set: { answers: newAnswerArray } }
-      );
-
-      if (result.modifiedCount > 0) {
-        console.log(`QNA 컬렉션의 ${result.modifiedCount}개의 문서가 성공적으로 업데이트되었습니다.`);
-      } else {
-        console.log('업데이트된 문서가 없습니다.');
-      }
-
-      // 업데이트 후 answers 배열 초기화
-      answers.length = 0;
-    }
-  }
-
-  if (iteration < 3) {
-    const prompt = `${category} 목차에 관해서 ${questions[iteration]}
-    에 대한 답으로 ${answer} 라고 대답을 했는데 잘 답변한거야?
-    다른 말 하지말고 Yes/No 중에 대답해줘`;
-
-    const YesOrNo = await chatPDF(filePath, prompt);
-    console.log("YesOrNo: ", YesOrNo);
-
-    if (YesOrNo === "Yes") {
-      generateTailQuestions(category, answer, iteration + 1); // 재귀 호출
-    } else {
-      handleNoCase(); // "No" 케이스 처리
-    }
-  }
+// 꼬리질문 생성하는 함수
+async function generateTailQuestion(question, answer) {
+  const db = await connectDB();
+  const filePath = getDocumentPath(); 
+  const filename = path.basename(filePath);
+  
+  const prompt = `${question}에 대한 답으로 ${answer}라고 대답을 했는데 이 대답에 대해 면접에서 추가적으로 물어 볼만한 질문을 하나 뽑아줘. 
+  다른 말 하지말고 질문만 말해주고 말투는 질문하는 듯이 해줘`;
+  console.log(prompt);
+  const TailQuestion = await chatPDF(filePath, prompt);
+  console.log("TailQuestion: ", TailQuestion);
+  return TailQuestion;
 }
 
 
@@ -252,5 +223,6 @@ module.exports = {
   updateAnswer,
   preEvaluate,
   getPreQNAData,
-  generateTailQuestions
+  checkTailQuestion,
+  generateTailQuestion
 };

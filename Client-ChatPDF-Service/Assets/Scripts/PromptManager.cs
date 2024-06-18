@@ -34,7 +34,7 @@ public class PromptManager : MonoBehaviour
     [SerializeField]
     private GameObject prefabAnswerLog;
 
-    // ¼­¹ö Å¬·¡½º
+    // ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
     private Server server;
 
     [DllImport("__Internal")]
@@ -52,7 +52,7 @@ public class PromptManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Sever ÃÊ±âÈ­
+        // Sever ï¿½Ê±ï¿½È­
         server = FindObjectOfType<Server>();
 
         if (server)
@@ -71,7 +71,7 @@ public class PromptManager : MonoBehaviour
 
     public void StartInterviewUnity()
     {
-        // ¸éÁ¢ ½ÃÀÛ
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         string roomData = server.GetCurrentInterviewRoom();
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
     StartInterview(roomData);
@@ -80,7 +80,7 @@ public class PromptManager : MonoBehaviour
 
     public void ListenAgain()
     {
-        // Áú¹® ´Ù½Ãµè±â
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½Ù½Ãµï¿½ï¿½
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
     ReplayQuestion();
 #endif
@@ -88,16 +88,16 @@ public class PromptManager : MonoBehaviour
 
     public void ReceiveQuestion(string _question)
     {
-        // Áú¹® ¹Þ±â
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½Þ±ï¿½
         question = _question;
         promptGUI.text = question;
     }
 
     public void SendAnswerUnity()
     {
-        // ´äº¯ º¸³»±â
-        // »çÀü¸éÁ¢ -> SendAnserPre È£Ãâ
-        // ¸éÁ¢ -> SendAnser È£Ãâ
+        // ï¿½äº¯ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ -> SendAnserPre È£ï¿½ï¿½
+        // ï¿½ï¿½ï¿½ï¿½ -> SendAnser È£ï¿½ï¿½
         if(server)
         {
             InterviewRoom room = server.GetInterviewRoom();
@@ -158,7 +158,7 @@ public class PromptManager : MonoBehaviour
 
     public void AddQuestionLog(string message)
     {
-        // Question Log Ãß°¡
+        // Question Log ï¿½ß°ï¿½
         var question_log = Instantiate(prefabQuestionLog, logParent.transform) as GameObject;
         var log = question_log.GetComponent<ChatLog>();
         log.SetText(message);
@@ -168,7 +168,7 @@ public class PromptManager : MonoBehaviour
 
     public void AddAnswerLog(string message)
     {
-        // Answer Log Ãß°¡
+        // Answer Log ï¿½ß°ï¿½
         var answer_log = Instantiate(prefabAnswerLog, logParent.transform) as GameObject;
         var log = answer_log.GetComponent<ChatLog>();
         log.SetText(message);

@@ -119,6 +119,7 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
   // InterviewRoomRequest 처리
   const RequestInterviewRoomData = useCallback((roomData) => {
     setCurrentInterViewRoomData(roomData);
+    sendMessage("Server", "ClearLogData");
     
     // roomData를 파싱하여 필요한 값을 추출합니다
     const JSONroomData = JSON.parse(roomData);
@@ -226,4 +227,20 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
       removeEventListener("RequestEndInterviewData", RequestEndInterviewData);
     };
   }, [addEventListener, removeEventListener, RequestEndInterviewData]);
+  
+  // 평가 버튼 눌렀을 때 실행
+  const RequestEvaluate = useCallback((roomData) =>{
+    console.log("RequestEvaluate 호출됨");
+    
+    
+    
+
+  });
+
+  useEffect(() => {
+    addEventListener("RequestEvaluate", RequestEvaluate);
+    return () => {
+      removeEventListener("RequestEvaluate", RequestEvaluate);
+    };
+  }, [addEventListener, removeEventListener, RequestEvaluate]);
 }

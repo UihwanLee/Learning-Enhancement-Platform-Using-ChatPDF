@@ -48,17 +48,30 @@ router.post('/sendAnswer', async (req, res) => {
   }
 });
 
-// [면접 진행] 꼬리 질문
-router.post('/tailQuestion', async (req, res) => {
-  console.log("/tailQuestion 호출");
+// [면접 진행] 꼬리 질문일지 아닐지
+router.post('/YesOrNo', async (req, res) => {
+  console.log("/YesOrNo 호출");
   try {
-    const response = await promptService.generateTailQuestions(category, answer)
+    const YesOrNo = await promptService.checkTailQuestion(req.body.question, req.body.answer);
+    res.send(YesOrNo);
   } catch (error) {
-    console.error('POST /tailQuestion error', error);
+    console.error('POST /YesOrNo error', error);
     res.status(500).json({ 'error': error.message });
   }
-  
 });
+
+// [면접 진행] 꼬리 질문 생성
+router.post('/generateTailQuestion', async (req, res) => {
+  console.log("/generateTailQuestion 호출");
+  try {
+    const TailQuestion = await promptService.generateTailQuestion(req.body.question, req.body.answer);
+    res.send(TailQuestion);
+  } catch (error) {
+    console.error('POST /generateTailQuestio error', error);
+    res.status(500).json({ 'error': error.message });
+  }
+});
+
 
 router.post('/preEval', async (req, res) => {
   try {
