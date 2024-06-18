@@ -116,7 +116,7 @@ public class PromptManager : MonoBehaviour
     {
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
     answer = inputField.text;
-    SendAnswer(answer);
+    SendAnswerPre(answer);
 #endif
     }
 
