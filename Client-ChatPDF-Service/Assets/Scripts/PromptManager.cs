@@ -42,6 +42,8 @@ public class PromptManager : MonoBehaviour
 
     [DllImport("__Internal")]
     private static extern void SendAnswer(string answer);
+    [DllImport("__Internal")]
+    private static extern void SendAnswerPre(string answer);
 
     [DllImport("__Internal")]
     private static extern void ReplayQuestion();
@@ -94,6 +96,32 @@ public class PromptManager : MonoBehaviour
     public void SendAnswerUnity()
     {
         // 답변 보내기
+        // 사전면접 -> SendAnserPre 호출
+        // 면접 -> SendAnser 호출
+        if(server)
+        {
+            InterviewRoom room = server.GetInterviewRoom();
+            if(room.interviewType == 0)
+            {
+                SendAnwerPreInterview();
+            }
+            else
+            {
+                SendAnwerInterview();
+            }
+        }
+    }
+
+    public void SendAnwerPreInterview()
+    {
+#if UNITY_WEBGL == true && UNITY_EDITOR == false
+    answer = inputField.text;
+    SendAnswer(answer);
+#endif
+    }
+
+    public void SendAnwerInterview()
+    {
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
     answer = inputField.text;
     SendAnswer(answer);

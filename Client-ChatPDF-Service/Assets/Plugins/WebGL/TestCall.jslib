@@ -20,6 +20,9 @@ mergeInto(LibraryManager.library, {
   SendAnswer: function (answer) {
     window.dispatchReactUnityEvent("SendAnswer", UTF8ToString(answer));
   },
+  SendAnswerPre: function (answer) {
+    window.dispatchReactUnityEvent("SendAnswerPre", UTF8ToString(answer));
+  },
   ReplayQuestion: function () {
     window.dispatchReactUnityEvent("ReplayQuestion");
   },
