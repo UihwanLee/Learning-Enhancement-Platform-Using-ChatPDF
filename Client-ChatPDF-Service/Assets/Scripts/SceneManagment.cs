@@ -49,6 +49,7 @@ public class SceneManagment : MonoBehaviour
         // InterviewRoom 이동 전 성별 설정
         if (server)
         {
+            server.ClearScoreList();
             server.SetInterViewGender(room.interviewerGender);
             // room Data 전달
             server.RequestInterviewRoomDataUnity(room);

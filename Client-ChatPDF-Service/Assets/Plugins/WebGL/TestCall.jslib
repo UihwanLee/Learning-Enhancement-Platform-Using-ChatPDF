@@ -32,6 +32,9 @@ mergeInto(LibraryManager.library, {
   StopSTT: function () {
     window.dispatchReactUnityEvent("StopSTT");
   },
+  StopSTTPrev: function () {
+    window.dispatchReactUnityEvent("StopSTTPrev");
+  },
   RequestUploadFile: function () {
     window.dispatchReactUnityEvent("RequestUploadFile");
   },
