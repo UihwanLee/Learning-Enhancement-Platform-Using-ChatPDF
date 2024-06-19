@@ -482,6 +482,7 @@ public class InterviewRoomManager : MonoBehaviour
 
     public void EvluateRoom(InterviewRoom room)
     {
+        room.interviewType = 1;
         // Æò°¡
         if (server)
         {
