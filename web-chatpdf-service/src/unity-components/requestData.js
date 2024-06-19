@@ -231,7 +231,7 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
       // 사전 조사인 경우 평가
       sendPreEval();
 
-      sendMessage("InterviewRoomManager", "CreatePrevInterviewRoom", "30/30/70/30/30");
+      //sendMessage("Server", "SetScoreList", "30/30/70/30/30");
     } else {
 
     }
@@ -253,7 +253,8 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
 
     const JSONroomData = JSON.parse(roomData);
     const JSONroomDataDocument = JSONroomData.document;
-
+    let scoreList = "";
+    
     //preQNA 데이터 가져오기
     const preQNAData = await axios.get("http://localhost:3001/prompt/getPreQNA",
       {params: {filename: JSONroomDataDocument}}
@@ -262,8 +263,16 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
     console.log("preQNAData: ", preQNAData.data.questions[0]); // 질문 5개 배열
     console.log("preQNAData: ", preQNAData.data.answers[0]); // 답변 5개 배열
     console.log("preQNAData: ", preQNAData.data.evaluation[0][0]); // 첫번째 질문의 점수
+    console.log("preQNAData: ", typeof(preQNAData.data.evaluation[0][0])); // 첫번째 질문의 점수
     console.log("preQNAData: ", preQNAData.data.evaluation[0][1]); // 첫번째 질문의 모범답변
     console.log("preQNAData: ", preQNAData.data.evaluation[0][2]); // 첫번째 질문의 종합의견
+
+    for(let i = 0; i < 5; i++){
+      scoreList = scoreList + preQNAData.data.evaluation[i][0] + '/'
+    }
+    scoreList = scoreList.slice(0, -1);
+    console.log("scoreList: ", scoreList);
+    sendMessage("Server", "SetScoreList", scoreList);
   });
 
   useEffect(() => {

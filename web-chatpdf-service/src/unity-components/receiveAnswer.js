@@ -47,7 +47,6 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
   // send 눌렀을 때 호출 -> send 누르면 text(answer) 서버에 보냄
   const ReceiveAnswerPre = useCallback(async (answer) => {
     console.log("ReceiveAnswerPre 호출됨 - ", answer);
-    // preInterview();
     if (idx < questions.length) {
       sendMessage("PromptManager", "AddQuestionLog", questions[idx]);
       setAnswer(answer);
@@ -190,12 +189,12 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
 
 
   // API 질문 다시 듣기
-  const StopSTT = useCallback(async() =>{
-    sendMessage("InterviewManager", "SetInterviewerAnimThink", 0);
+  const StopSTTpre = useCallback(async() =>{
+    console.log("StopSTTpre 호출됨 - ", answer);
     if (idx < questions.length) {
       sendMessage("PromptManager", "AddQuestionLog", questions[idx]);
       setAnswer(answer);
-      //sendAnswerToServer(answer);
+      sendAnswerToServerPre(answer);
       sendMessage("PromptManager", "AddAnswerLog", answer);
 
       // 2초 딜레이
@@ -204,8 +203,8 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
       setIdx(prevIdx => {
         const nextIdx = prevIdx + 1;
         if (nextIdx < questions.length) {
-          sendMessage("ButtonManager", "SetVoiceUI", 1);
           speak(questions[nextIdx], window.speechSynthesis);
+          sendMessage("ButtonManager", "SetVoiceUI", 1);
           console.log("idx: ", nextIdx);
           console.log("questions[nextIdx]: ", questions[nextIdx]);
           SendQuestion(questions[nextIdx]);
@@ -215,22 +214,85 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
           setTimeout(() => {
             sendMessage("ButtonManager", "SetVoiceUI", 0);
           }, questionLength); 
+
         } else {
-          // 라우터 POST 요청
-          EndInterview();
+          EndInterviewPre(); 
         }
         return nextIdx;
       });
     }  
-    // if(idx < question.length){
-    //   console.log("start idx: ", idx);
-    //   console.log("questions[idx]: ", questions[idx]);
-    //   sendMessage("PromptManager", "AddQuestionLog", questions[idx]);
-    //   setAnswer(transcript);
-    //   sendAnswerToServer(transcript);
-    //   sendMessage("PromptManager", "AddAnswerLog", transcript);
-    //   idx = idx + 1;
-      //setIdx(prevIdx => prevIdx + 1);
+    
+    stopListening();
+  });
+
+  const StopSTT = useCallback(async() =>{
+    console.log("StopSTT 호출됨 - ", answer);
+    if (idx < questions.length) {
+      const question = (isTailQuestion) ? tailQuestion : questions[idx];
+      sendMessage("PromptManager", "AddQuestionLog", question);
+      setAnswer(answer);
+      sendMessage("PromptManager", "AddAnswerLog", answer);
+
+      // 2초 딜레이
+      await delay(2000);
+      
+      const YesOrNo = await axios.post('http://localhost:3001/prompt/YesOrNo', {
+        question: questions[idx],
+        answer: answer
+      });
+      console.log("YesOrNo: ", YesOrNo);
+
+      // sendAnswerToServer 값이 "Yes" 인 경우
+      if(YesOrNo.data === "Yes" && tailCount < 2){
+        console.log("Yes임");
+
+        tailCount = tailCount + 1;
+        isTailQuestion = true;
+        const TailQuestion = await axios.post('http://localhost:3001/prompt/generateTailQuestion', {
+          question: questions[idx],
+          answer: answer
+        });
+        console.log("TailQuestion: ", TailQuestion);
+        speak(TailQuestion.data, window.speechSynthesis);
+        sendMessage("ButtonManager", "SetVoiceUI", 1);
+        SendQuestion(TailQuestion.data);
+        //setTailQuestion(TailQuestion.data);
+        tailQuestion = TailQuestion.data;
+
+        let questionLength = (TailQuestion.data.length)*160;
+        // 3초 후에 실행
+        setTimeout(() => {
+          sendMessage("ButtonManager", "SetVoiceUI", 0);
+        }, questionLength);
+      } 
+      else {
+        // sendAnswerToServer 값이 "No" 인 경우
+        console.log("No임");
+        tailCount = 0;
+        setIdx(prevIdx => {
+          const nextIdx = prevIdx + 1;
+          if (nextIdx < questions.length) {
+            speak(questions[nextIdx], window.speechSynthesis);
+            sendMessage("ButtonManager", "SetVoiceUI", 1);
+            console.log("idx: ", nextIdx);
+            console.log("questions[nextIdx]: ", questions[nextIdx]);
+            SendQuestion(questions[nextIdx]);
+            isTailQuestion = false;
+            let questionLength = (questions[nextIdx].length)*160;
+            
+            // 3초 후에 실행
+            setTimeout(() => {
+              sendMessage("ButtonManager", "SetVoiceUI", 0);
+            }, questionLength); 
+
+          } else {
+            EndInterview(); // POST 요청 포함
+          }
+          return nextIdx;
+        });
+      } 
+      
+    }
     
     stopListening();
   });
@@ -245,10 +307,16 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
 
   // Unity->React 마이크 녹음 중지 호출
   useEffect(() => {
+    addEventListener("StopSTTPrev", StopSTTpre);
+    return () => {
+      removeEventListener("StopSTTPrev", StopSTTpre);
+    };
+  }, [addEventListener, removeEventListener, StopSTTpre])
+
+  useEffect(() => {
     addEventListener("StopSTT", StopSTT);
     return () => {
       removeEventListener("StopSTT", StopSTT);
-      //console.log("answer:", answer);
     };
   }, [addEventListener, removeEventListener, StopSTT])
   
