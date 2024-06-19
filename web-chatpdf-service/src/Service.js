@@ -74,7 +74,7 @@ function Service() {
   useReplayQuestionEventListener(addEventListener, removeEventListener, question);
 
   try{
-    useReceiveAnswerEventListener(addEventListener, removeEventListener, answer, setAnswer, question, setQuestion, SendQuestion, questions, EndInterview, sendMessage, resetTranscript);
+    useReceiveAnswerEventListener(addEventListener, removeEventListener, answer, setAnswer, question, setQuestion, SendQuestion, questions, EndInterviewPre, EndInterview, sendMessage, resetTranscript);
   }catch(error){
     console.error('An error occurred:', error);
   }
@@ -278,9 +278,13 @@ function Service() {
     } 
   };
 
+  // 꼬리 질문 끝나면 나가기 UI 출력
+  async function EndInterviewPre() {
+    sendMessage("ButtonManager", "NoticeEndPrevInterview");
+  }
   // 질문 5개 끝나면 나가기 UI 출력
   async function EndInterview() {
-    sendMessage("ButtonManager", "NoticeEndPrevInterview");
+    sendMessage("ButtonManager", "NoticeEndInterview");
   }
   
 

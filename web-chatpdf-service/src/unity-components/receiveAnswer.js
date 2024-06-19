@@ -7,6 +7,7 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
   //const questions = ["Question 1", "Question 2", "Question 3", "Question 4", "Question 5"];
   console.log("questions: ", questions);
   const [idx, setIdx] = useState(0);
+  //const [tailQuestion,  setTailQuestion] = useState("");
 
     // TTS 기능 
     const {
@@ -98,10 +99,14 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
     };
   }, [addEventListener, removeEventListener, ReceiveAnswerPre]);
 
+  let isTailQuestion = false;
+  let tailCount = 0;
+  let tailQuestion = "";
   const ReceiveAnswer = useCallback(async (answer) => {
     console.log("ReceiveAnswer 호출됨 - ", answer);
     if (idx < questions.length) {
-      sendMessage("PromptManager", "AddQuestionLog", questions[idx]);
+      const question = (isTailQuestion) ? tailQuestion : questions[idx];
+      sendMessage("PromptManager", "AddQuestionLog", question);
       setAnswer(answer);
       sendMessage("PromptManager", "AddAnswerLog", answer);
 
@@ -113,21 +118,34 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
         answer: answer
       });
       console.log("YesOrNo: ", YesOrNo);
+
       // sendAnswerToServer 값이 "Yes" 인 경우
-      if(YesOrNo.data === "Yes"){
+      if(YesOrNo.data === "Yes" && tailCount < 2){
         console.log("Yes임");
+
+        tailCount = tailCount + 1;
+        isTailQuestion = true;
         const TailQuestion = await axios.post('http://localhost:3001/prompt/generateTailQuestion', {
           question: questions[idx],
           answer: answer
         });
         console.log("TailQuestion: ", TailQuestion);
-        speak(TailQuestion, window.speechSynthesis);
+        speak(TailQuestion.data, window.speechSynthesis);
         sendMessage("ButtonManager", "SetVoiceUI", 1);
-        SendQuestion(TailQuestion);
+        SendQuestion(TailQuestion.data);
+        //setTailQuestion(TailQuestion.data);
+        tailQuestion = TailQuestion.data;
+
+        let questionLength = (TailQuestion.data.length)*160;
+        // 3초 후에 실행
+        setTimeout(() => {
+          sendMessage("ButtonManager", "SetVoiceUI", 0);
+        }, questionLength);
       } 
       else {
         // sendAnswerToServer 값이 "No" 인 경우
         console.log("No임");
+        tailCount = 0;
         setIdx(prevIdx => {
           const nextIdx = prevIdx + 1;
           if (nextIdx < questions.length) {
@@ -136,6 +154,7 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
             console.log("idx: ", nextIdx);
             console.log("questions[nextIdx]: ", questions[nextIdx]);
             SendQuestion(questions[nextIdx]);
+            isTailQuestion = false;
             let questionLength = (questions[nextIdx].length)*160;
             
             // 3초 후에 실행

@@ -107,7 +107,7 @@ async function generateTailQuestion(question, answer) {
   const filename = path.basename(filePath);
   
   const prompt = `${question}에 대한 답으로 ${answer}라고 대답을 했는데 이 대답에 대해 면접에서 추가적으로 물어 볼만한 질문을 하나 뽑아줘. 
-  다른 말 하지말고 질문만 말해주고 말투는 질문하는 듯이 해줘`;
+  다른 말 붙이지 말고 오직 질문만 말해줘. 그리고 말투는 질문 형식으로 해줘.`;
   console.log(prompt);
   const TailQuestion = await chatPDF(filePath, prompt);
   console.log("TailQuestion: ", TailQuestion);
