@@ -390,7 +390,7 @@ public class InterviewRoomManager : MonoBehaviour
 
         List<string> scoreList = SplitString(score);
 
-        for (int i=0; i< scoreList.Count; i++)
+        for (int i=0; i< 5; i++)
         {
             // 30점 이하의 카테고리에 대해서 방 생성
             if (int.Parse(scoreList[i]) <= 50)
@@ -404,7 +404,7 @@ public class InterviewRoomManager : MonoBehaviour
                 room.title = newRoom.title;
                 room.category = newRoom.category;
                 room.document = newRoom.document;
-                if(indexes.Count > 0) room.index = indexes[i];
+                room.index = scoreList[i+5];
 
                 room.interviewerCount = newRoom.interviewerCount;
                 room.interviewerGender = newRoom.interviewerGender;
