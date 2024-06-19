@@ -13,8 +13,7 @@ const Header = ( props ) => {
                     <ul>
                         <Link to="/"><li><a>HOME</a></li></Link>
                         <Link to="/service"><li><a>SERVICE</a></li></Link>
-                        <Link to="/"><li><a>List</a></li></Link>
-                        <Link to="/"><li><a>Bulletin Board</a></li></Link>
+                        <Link to="/bulletinboard"><li><a>Bulletin Board</a></li></Link>
                         <Link to="/mypage"><li><a>My Page</a></li></Link>
                     </ul>
                 </nav>
