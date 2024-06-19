@@ -1,81 +1,110 @@
+import React, { useState, useEffect } from "react";
 import {
-    Line,
-    LineChart,
-    CartesianGrid,
-    XAxis,
-    YAxis,
-    Tooltip,
-    Legend,
-  } from "recharts";
+  BarChart,
+  Bar,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+
+// 데이터
+const originalData = [
+  { name: "각 학습 카테고리 별 총 점수", algorithm: 70, network: 80, operating_system: 75, database: 65 },
+];
+
+const RechartsDay = (props) => {
+
+  const [originalData, setOriginalData] = useState([]);
+  const [maxScore, setMaxScore] = useState(100);
+  const data = props.data;
   
-  const data = [
-    {
-        name: "2024-05-06",
-        algorithm: 0,
-        network: 5,
-        operating_system: 3,
-        database: 0,
-    },
-    {
-        name: "2024-05-07",
-        algorithm: 3,
-        network: 1,
-        operating_system: 2,
-        database: 6,
-    },
-    {
-        name: "2024-05-08",
-        algorithm: 0,
-        network: 3,
-        operating_system: 2,
-        database: 4,
-    },
-    {
-        name: "2024-05-09",
-        algorithm: 6,
-        network: 0,
-        operating_system: 0,
-        database: 4,
-    },
-    {
-        name: "2024-05-10",
-        algorithm: 2,
-        network: 1,
-        operating_system: 5,
-        database: 4,
-    },
-    {
-        name: "2024-05-11",
-        algorithm: 0,
-        network: 2,
-        operating_system: 0,
-        database: 0,
-    },
-    {
-        name: "2024-05-12",
-        algorithm: 6,
-        network: 7,
-        operating_system: 2,
-        database: 0,
-    },
-  ];
-  
-  const RechartsDay = () => {
-    return (
-      <>
-        <LineChart width={600} height={300} data={data}>
-          <Line type="linear" dataKey="algorithm" stroke="#0CD3FF" strokeWidth={3} />
-          <Line type="natural" dataKey="network" stroke="#FFCA29" strokeWidth={3} />
-          <Line type="natural" dataKey="operating_system" stroke="#FF0000" strokeWidth={3} />
-          <Line type="natural" dataKey="database" stroke="#ACBD00" strokeWidth={3} />
-          <CartesianGrid stroke="#ccc" />
-          <YAxis />
-          <XAxis dataKey="name" />
-          <Tooltip />
+  useEffect(() => {
+    if (data.length > 0) {
+      // 초기 점수 합계 객체
+      const totalScores = {
+        "알고리즘": 0,
+        "네트워크": 0,
+        "운영체제": 0,
+        "데이터베이스": 0
+      };
+
+      // 각 카테고리별 평가 점수 합계를 계산
+      data.forEach(item => {
+        const { category, evaluation } = item;
+        if (evaluation) {
+          Object.values(evaluation).forEach(evaluation => {
+            if (evaluation && evaluation.length > 0) {
+              const score = parseInt(evaluation[0], 10);
+              if (!isNaN(score)) {
+                const categoryKey = category.toLowerCase().replace(" ", "_");
+                totalScores[categoryKey] += score;
+                console.log(totalScores[categoryKey]);
+              }
+            }
+          });
+        }
+      });
+
+      // originalData 설정
+      setOriginalData([
+        {
+          name: "각 학습 카테고리 별 총 점수",
+          algorithm: totalScores["알고리즘"],
+          network: totalScores["네트워크"],
+          operating_system: totalScores["운영체제"],
+          database: totalScores["데이터베이스"]
+        }
+      ]);
+
+      // 최대 점수 계산
+      const maxCategoryScore = Math.max(
+        totalScores["알고리즘"],
+        totalScores["네트워크"],
+        totalScores["운영체제"],
+        totalScores["데이터베이스"]
+      );
+      setMaxScore(maxCategoryScore);
+    }
+  }, [data]);
+
+  return (
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+      <ResponsiveContainer width={600} height={400}>
+        <BarChart
+          data={originalData}
+          margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis
+            dataKey="name"
+            interval={0}
+            height={60}
+            textAnchor="end"
+            tick={{ fontSize: 12 }}
+            tickMargin={10}
+            style={{ fontSize: "15px", lineHeight: "14px", textAnchor: "middle" }}
+          />
+          <YAxis
+            domain={[0, maxScore]}
+            allowDataOverflow={true}
+            tickCount={6}
+            width={10}
+            tick={{ fontSize: 10 }}
+            tickMargin={10}
+          />
+          <Tooltip cursor={{ strokeDasharray: "3 3" }} />
           <Legend />
-        </LineChart>
-      </>
-    );
-  };
-  
-  export default RechartsDay;
+          <Bar dataKey="algorithm" fill="#0CD3FF" />
+          <Bar dataKey="network" fill="#FFCA29" />
+          <Bar dataKey="operating_system" fill="#FF0000" />
+          <Bar dataKey="database" fill="#ACBD00" />
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
+
+export default RechartsDay;

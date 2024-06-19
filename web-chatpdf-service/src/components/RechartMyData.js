@@ -11,11 +11,11 @@ const RechartsMyData = (props) => {
     const evaluationCounts = props.data.reduce((acc, item) => {
         Object.values(item.evaluation).forEach(evaluation => {
         const score = parseInt(evaluation[0], 10);
-        if (score <= 30) {
+        if (score <= 60) {
             acc.Bad += 1;
-        } else if (score > 30 && score <= 70) {
+        } else if (score > 60 && score <= 80) {
             acc['Not Bad'] += 1;
-        } else if (score > 70) {
+        } else if (score > 80) {
             acc.Good += 1;
         }
         });
