@@ -92,6 +92,9 @@ public class InterviewRoomManager : MonoBehaviour
 
             // RoomSetting 초기화
             InitRoomSetting();
+
+            // Scheduling 초기화
+            InitScheduling();
         }
     }
 
@@ -125,6 +128,16 @@ public class InterviewRoomManager : MonoBehaviour
         SetIndex(dropdown_document.value);
     }
 
+    private void InitScheduling()
+    {
+        List<string> scoreList = server.GetScoreList();
+
+        if(scoreList.Count > 0)
+        {
+            CreatePrevInterviewRoom(scoreList);
+        }
+    }
+
     public void InitTitle()
     {
         // 방 제목 초기화
@@ -149,6 +162,7 @@ public class InterviewRoomManager : MonoBehaviour
 
             for (int i = 0; i < documentList.Count; i++)
             {
+                if (i == 0) this.document = documentList[i];
                 dropdown_document.options.Add(new TMP_Dropdown.OptionData(documentList[i], null));
             }
 
@@ -166,6 +180,11 @@ public class InterviewRoomManager : MonoBehaviour
                 ChangeIndexList(this.document);
             }
         }
+    }
+
+    public void UpdateIndex()
+    {
+        ChangeIndexList(this.document);
     }
 
     public void ChangeIndexList(string document)
@@ -359,15 +378,8 @@ public class InterviewRoomManager : MonoBehaviour
         SortRoomByID();
     }
 
-    public string[] SplitString(string input)
-    {
-        char[] delimiter = { '/' };
-        string[] parts = input.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
 
-        return parts;
-    }
-
-    public void CreatePrevInterviewRoom(string score)
+    public void CreatePrevInterviewRoom(List<string> scoreList)
     {
         // 현재 사전조사가 끝난 roomData 정보 가져오기
         List<string> indexes = new List<string>();
@@ -379,10 +391,7 @@ public class InterviewRoomManager : MonoBehaviour
             indexes = server.SetIndexByDocument(newRoom.title);
         }
 
-        // 점수 분할
-        string[] scoreList = SplitString(score);
-
-        for(int i=0; i< indexes.Count; i++)
+        for(int i=0; i< scoreList.Count; i++)
         {
             // 30점 이하의 카테고리에 대해서 방 생성
             if (int.Parse(scoreList[i]) <= 30)
@@ -396,7 +405,7 @@ public class InterviewRoomManager : MonoBehaviour
                 room.title = newRoom.title;
                 room.category = newRoom.category;
                 room.document = newRoom.document;
-                room.index = newRoom.index;
+                if(indexes.Count > 0) room.index = indexes[i];
 
                 room.interviewerCount = newRoom.interviewerCount;
                 room.interviewerGender = newRoom.interviewerGender;
@@ -408,7 +417,9 @@ public class InterviewRoomManager : MonoBehaviour
                 // UI 방 목록 생성
                 string roomTitle = "<size=20>" + "스케줄링" + "|</size> " + " <size=20>" + room.category + " | " + room.index + "</size>";
                 room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
-                room.gameObject.transform.GetChild(1).GetComponent<GameObject>().SetActive(false);
+                room.gameObject.transform.GetChild(1).GetComponent<Image>().enabled = false;
+                room.gameObject.transform.GetChild(1).GetComponent<Button>().enabled = false;
+                room.gameObject.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
                 room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() => StartBaseInterview(room));
                 room.gameObject.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(() => EvluateRoom(room));
 
@@ -416,7 +427,9 @@ public class InterviewRoomManager : MonoBehaviour
 
                 if (room.isPrevInterview == 1)
                 {
-                    room.gameObject.transform.GetChild(1).GetComponent<GameObject>().SetActive(false);
+                    room.gameObject.transform.GetChild(1).GetComponent<Image>().enabled = false;
+                    room.gameObject.transform.GetChild(1).GetComponent<Button>().enabled = false;
+                    room.gameObject.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
                 }
             }
         }
