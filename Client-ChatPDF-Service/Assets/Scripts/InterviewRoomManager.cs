@@ -411,8 +411,6 @@ public class InterviewRoomManager : MonoBehaviour
                 room.interviewTime = newRoom.interviewTime;
                 room.interviewStyle = newRoom.interviewStyle;
 
-                roomList.Add(roomObj);
-
                 // UI �� ��� ����
                 string roomTitle = "<size=20>" + "�����ٸ�" + "|</size> " + " <size=20>" + room.category + " | " + room.index + "</size>";
                 room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
