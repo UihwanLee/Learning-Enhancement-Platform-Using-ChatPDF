@@ -13,20 +13,20 @@ const data = [
     score: 70,
   },  
   {
-    name: "질문2",
-    score: 20,
+      name: "질문2",
+      score: 20,
   },
   {
-    name: "질문3",
-    score: 100,
+      name: "질문3",
+      score: 100,
   },
   {
-    name: "질문4",
-    score: 40,
+      name: "질문4",
+      score: 40,
   },
   {
-    name: "질문5",
-    score: 65,
+      name: "질문5",
+      score: 65,
   },
 ];
 
@@ -56,7 +56,13 @@ const MyPage = () => {
         <h1 className="mypage-section-title">전체 지표</h1>
         <div className="mypage-chart-container">
           <RechartsEvaluate />
-          <RechartsDay />
+          <div className="recharts-day-container">
+  <h5 className="mypage-section-subtitle" style={{ textAlign: 'center' }}>{''}<br/>{''}</h5>
+  <div style={{ width: '100%', textAlign: 'center' }}>
+    <RechartsDay />
+  </div>
+</div>
+
         </div>
       </div>
       <div className="mypage-section">

@@ -10,10 +10,23 @@
     font-size: 40px; /* 크기 조정 */
     font-weight: bold; /* 굵게 설정 */
   }
+  .recharts-day-container {
+    margin-top: 20px; /* 예시로 위쪽 마진을 추가 */
+  }
   
   .mypage-subject-title {
     font-weight: bold;
   }
+  .mypage-section-subtitle {
+    text-align: center; /* 텍스트 가운데 정렬 */
+    margin-bottom: 20px; /* 아래 여백 추가 */
+  }
+  
+  .recharts-day-container {
+    display: flex;
+    justify-content: center; /* 가운데 정렬 */
+  }
+  
   
   .mypage-section {
     width: 100%;
