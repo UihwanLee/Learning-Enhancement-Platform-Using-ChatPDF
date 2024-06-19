@@ -227,8 +227,9 @@ async function preEvaluate() {
   
   // '/' 로 점수, 모범답변, 종합의견 구분, '#' 로 각각의 평가 구분
   const evalPrompt = `아래 질문과 답변 5개에 대해 각각 평가를 해줘. 평가는 점수, 모범답변, 종합의견 3가지로 나눠서 해주고 
-  점수는 0~100점, 모범답변은 질문에 대한 올바른 답변, 종합의견은 답변에 대한 평가를 해줘. 
-  다른 말은 하지말고 오직 평가만 해주고 점수, 모범답변, 종합의견 사이에는 '/' 문자를 하나 넣어주고 5개의 평가들 사이에는 '#' 문자 하나를 넣어주고, 첫 평가 앞과 마지막 평가 마지막에 각각 '!' 문자 하나씩 넣어줘.
+  점수는 0~100점, 모범답변은 질문에 대해 가장 정답에 가까운 예시 답변, 종합의견은 답변에 대한 평가를 해줘. 
+  다른 말은 하지말고 오직 평가만 해주고 점수, 모범답변, 종합의견 사이에는 '/' 문자를 하나 넣어주고 5개의 평가들 사이에는 '#' 문자 하나를 넣어주고, 
+  첫 평가 앞과 마지막 평가 마지막에 각각 '!' 문자 하나씩 넣어줘.
   예를 들어 
   1. 질문: 이진 검색 트리에서 삽입 연산의 평균 시간 복잡도는?
   답변: O(log n)
@@ -283,7 +284,7 @@ async function preEvaluate() {
   return evalResult;
 }
 
-// [사전 조사] filename에 따라 questions, answers, evaluation 반환
+// [사전 조사] filename에 따라 questions, answers, evaluation, indexes 반환
 async function getPreQNAData(filename) {
   const db = await connectDB();
   preQNACollection = db.collection('preQNA');
