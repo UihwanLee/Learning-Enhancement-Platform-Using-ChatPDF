@@ -90,12 +90,14 @@ router.get('/getPreQNA', async (req, res) => {
   console.log("[/getPreQNA] filename: ", filename);
   try {
       const preQNAData = await promptService.getPreQNAData(filename);
-
+      await promptService.updatePreQNAWithIndexes();
       if (preQNAData) {
           res.json(preQNAData);
       } else {
           res.status(404).send('Document not found');
       }
+
+
   } catch (error) {
       res.status(500).send('Server error');
   }

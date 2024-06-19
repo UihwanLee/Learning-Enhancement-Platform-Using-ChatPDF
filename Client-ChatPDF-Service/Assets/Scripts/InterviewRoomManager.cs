@@ -11,18 +11,18 @@ using System.Linq;
 public class InterviewRoomManager : MonoBehaviour
 {
     [Header("InterviewRoom")]
-    // InterviewRoom »ý¼ºµÉ ºÎ¸ð ¿ÀºêÁ§Æ®
+    // InterviewRoom ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Î¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
     [SerializeField]
     private GameObject parent;
 
     [SerializeField]
     private GameObject parent_pre;
 
-    // InterviewRoom ÇÁ¸®ÆÕ
+    // InterviewRoom ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     [SerializeField]
     private GameObject prefab;
 
-    // InterviewRoom ÀüÃ¼¸¦ °ü¸®ÇÒ RoomList
+    // InterviewRoom ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ RoomList
     [SerializeField]
     private List<GameObject> roomList = new List<GameObject>();
 
@@ -33,7 +33,7 @@ public class InterviewRoomManager : MonoBehaviour
     [SerializeField]
     private TMP_InputField titleInputField;
 
-    // ¼­¹ö Å¬·¡½º
+    // ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
     private Server server;
 
     [Header("Room Setting")]
@@ -60,25 +60,25 @@ public class InterviewRoomManager : MonoBehaviour
     private List<string> roomDataList;
 
     [Header("Manager")]
-    // ¾À ¸Å´ÏÀú Å¬·¡½º
+    // ï¿½ï¿½ ï¿½Å´ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
     [SerializeField]
     private SceneManagment sceneManager;
 
-    // UI ¸Å´ÏÀú
+    // UI ï¿½Å´ï¿½ï¿½ï¿½
     [SerializeField]
     private UIManager uiManager;
 
     // Start is called before the first frame update
     void Start()
     {
-        // Sever ÃÊ±âÈ­
+        // Sever ï¿½Ê±ï¿½È­
         server = FindObjectOfType<Server>();
 
-        // User ´Ð³×ÀÓ ÃÊ±âÈ­
+        // User ï¿½Ð³ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
         SetUserNickName();
 
 
-        // ¹æ ÃÊ±â »ý¼º
+        // ï¿½ï¿½ ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½
         if (server)
         {
             newRoom = new InterviewRoom();
@@ -89,10 +89,10 @@ public class InterviewRoomManager : MonoBehaviour
                 InitCreateRoom(roomData);
             }
 
-            // ¹æ Á¤·Ä
+            // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             SortRoomByID();
 
-            // RoomSetting ÃÊ±âÈ­
+            // RoomSetting ï¿½Ê±ï¿½È­
             InitRoomSetting();
         }
     }
@@ -102,13 +102,13 @@ public class InterviewRoomManager : MonoBehaviour
         if(server)
         {
             TextMeshProUGUI nicknameText = GameObject.Find("NickName").GetComponent<TextMeshProUGUI>();
-            nicknameText.text = server.GetUserNickName() + System.Environment.NewLine + "´ÔÀÇ ·Îºñ";
+            nicknameText.text = server.GetUserNickName() + System.Environment.NewLine + "ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½";
         }
     }
 
     public void SetRecommendRoom()
     {
-        // ÃßÃµ ¼³Á¤À¸·Î ¼¼ÆÃ
+        // ï¿½ï¿½Ãµ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         InitTitle();
         SetCategory(0);
         SetInterviewerCount(1);
@@ -129,13 +129,13 @@ public class InterviewRoomManager : MonoBehaviour
 
     public void InitTitle()
     {
-        // ¹æ Á¦¸ñ ÃÊ±âÈ­
-        this.titleInputField.text = "³ª¸¸ÀÇ ¸éÁ¢¹æ(" + roomList.Count + ")";
+        // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
+        this.titleInputField.text = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(" + roomList.Count + ")";
     }
 
     private void InitDocument()
     {
-        // ¼­ºñ½º¿¡¼­ Á¦°øµÇ´Â category º° ÇÐ½À ¹®¼­ ÃÊ±âÈ­
+        // ï¿½ï¿½ï¿½ñ½º¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç´ï¿½ category ï¿½ï¿½ ï¿½Ð½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
         documentHashList = server.GetDocumentHashList();
     }
 
@@ -144,7 +144,7 @@ public class InterviewRoomManager : MonoBehaviour
         if (documentHashList.Count < category) return;
         if (server)
         {
-            // ÇöÀç ¼­¹ö¿¡¼­ °¡Áö°í ÀÖ´Â »ç¿ëÀÚÀÇ ÇÐ½À ¹®¼­º° document ÃÊ±âÈ­
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ document ï¿½Ê±ï¿½È­
             dropdown_document.options.Clear();
 
             List<string> documentList = documentHashList[category];
@@ -161,7 +161,7 @@ public class InterviewRoomManager : MonoBehaviour
             dropdown_document.RefreshShownValue();
 
 
-            // ÇÐ½À ¹®¼­°¡ ¼³Á¤µÊ¿¡ µû¶ó ¸ñÂ÷µµ ¼³Á¤
+            // ï¿½Ð½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ê¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             dropdown_index.options.Clear();
             if(documentList.Count > 0)
             {
@@ -180,7 +180,7 @@ public class InterviewRoomManager : MonoBehaviour
     {
         if(server)
         {
-            // ÇöÀç ¼­¹ö¿¡¼­ °¡Áö°í ÀÖ´Â »ç¿ëÀÚÀÇ ÇÐ½À ¹®¼­º° index ÃÊ±âÈ­
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ index ï¿½Ê±ï¿½È­
             dropdown_index.options.Clear();
 
             List<string> indexList = server.SetIndexByDocument(document);
@@ -199,25 +199,25 @@ public class InterviewRoomManager : MonoBehaviour
 
     public void SetTitle()
     {
-        // ÀÔ·Â ¹ÞÀº Á¦¸ñ ¼³Á¤
+        // ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         this.title = this.titleInputField.text;
     }
 
     public void SetCategory(int category)
     {
-        // ÇÐ½À Ä«Å×°í¸® ¼³Á¤
+        // ï¿½Ð½ï¿½ Ä«ï¿½×°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         switch (category)
         {
             case 0:
-                this.category = "¾Ë°í¸®Áò";
+                this.category = "ï¿½Ë°ï¿½ï¿½ï¿½ï¿½ï¿½";
                 ChangeDocumentList(0);
                 break;
             case 1:
-                this.category = "³×Æ®¿öÅ©";
+                this.category = "ï¿½ï¿½Æ®ï¿½ï¿½Å©";
                 ChangeDocumentList(1);
                 break;
             case 2:
-                this.category = "¿î¿µÃ¼Á¦";
+                this.category = "ï¿½î¿µÃ¼ï¿½ï¿½";
                 ChangeDocumentList(2);
                 break;
             case 3:
@@ -249,40 +249,40 @@ public class InterviewRoomManager : MonoBehaviour
             return;
         }
 
-        // ÇÐ½À ¸ñÂ÷ ¼³Á¤
+        // ï¿½Ð½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         this.index = dropdown_index.options[option].text;
     }
 
     public void SetInterviewerCount(int num)
     {
-        // ¸éÁ¢ÀÚ ¼ö ¼³Á¤
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         this.interviewerCount = num;
     }
 
     public void SetInterviewerGender(int gender)
     {
-        // ¸éÁ¢ÀÚ ¼ºº° ¼³Á¤
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         this.interviewerGender = gender;
     }
 
     public void SetInterviewTime(float time)
     {
-        // ¸éÁ¢ ´äº¯ ½Ã°£ ÃÊ ¼³Á¤
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½äº¯ ï¿½Ã°ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         this.interviewTime = time;
     }
 
     public void SetInterviewStyle(int style)
     {
-        // ¸éÁ¢ ½ºÅ¸ÀÏ ¼³Á¤
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         this.interviewStyle = style;
     }
 
     public void TryCreateRoom()
     {
-        // ¹æ »ý¼º Àü ¿¹¿ÜÃ³¸®
+        // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ã³ï¿½ï¿½
         if(this.document == "")
         {
-            uiManager.NoticeMessage("ÇöÀç ¸éÁ¢ °¡´ÉÇÑ ÇÐ½À ¹®¼­°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+            uiManager.NoticeMessage("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½.");
             return;
         }
 
@@ -291,12 +291,12 @@ public class InterviewRoomManager : MonoBehaviour
 
     private void InitCreateRoom(string roomData)
     {
-        // ÃÊ±â ¹æ »ý¼º 
+        // ï¿½Ê±ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
         JsonUtility.FromJsonOverwrite(roomData, newRoom);
 
         var roomObj = Instantiate(prefab, parent.transform) as GameObject;
 
-        // Room Setting Àû¿ë
+        // Room Setting ï¿½ï¿½ï¿½ï¿½
         var room = roomObj.GetComponent<InterviewRoom>();
         room.id = newRoom.id;
         if(server) room.nickname = server.GetUserNickName();
@@ -312,7 +312,7 @@ public class InterviewRoomManager : MonoBehaviour
 
         roomList.Add(roomObj);
 
-        // UI ¹æ ¸ñ·Ï »ý¼º
+        // UI ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         string roomTitle = "<size=20>" + room.title + "|</size> " + " <size=20>" + room.category + " | " + room.index + "</size>";
         room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
         room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => StartPrevInterview(room));
@@ -327,13 +327,13 @@ public class InterviewRoomManager : MonoBehaviour
 
     public void CreateRoom()
     {
-        // Room »ý¼º
+        // Room ï¿½ï¿½ï¿½ï¿½
         var roomObj = Instantiate(prefab, parent.transform) as GameObject;
 
-        // Room Setting ¼³Á¤
+        // Room Setting ï¿½ï¿½ï¿½ï¿½
         SetTitle();
 
-        // Room Setting Àû¿ë
+        // Room Setting ï¿½ï¿½ï¿½ï¿½
         var room = roomObj.GetComponent<InterviewRoom>();
         room.id = roomList.Count;
         if (server) room.nickname = server.GetUserNickName();
@@ -351,14 +351,14 @@ public class InterviewRoomManager : MonoBehaviour
 
         roomList.Add(roomObj);
 
-        // UI ¹æ ¸ñ·Ï »ý¼º
+        // UI ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         string roomTitle = "<size=20>" + room.title + "|</size> " + " <size=20>" + room.category + " | " + room.index + "</size>" ;
         room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
         room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => StartPrevInterview(room));
         room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(()=> StartBaseInterview(room));
         room.gameObject.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(()=> EvluateRoom(room));
 
-        // Room Data ÀúÀå
+        // Room Data ï¿½ï¿½ï¿½ï¿½
         if (server)
         {
             server.SaveInterviewRoomData(room);
@@ -378,7 +378,7 @@ public class InterviewRoomManager : MonoBehaviour
 
     public void CreatePrevInterviewRoom(string score)
     {
-        // ÇöÀç »çÀüÁ¶»ç°¡ ³¡³­ roomData Á¤º¸ °¡Á®¿À±â
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ç°¡ ï¿½ï¿½ï¿½ï¿½ roomData ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         List<string> indexes = new List<string>();
         if (server)
         {
@@ -392,12 +392,12 @@ public class InterviewRoomManager : MonoBehaviour
 
         for (int i=0; i< scoreList.Count; i++)
         {
-            // 30Á¡ ÀÌÇÏÀÇ Ä«Å×°í¸®¿¡ ´ëÇØ¼­ ¹æ »ý¼º
+            // 30ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½×°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (int.Parse(scoreList[i]) <= 50)
             {
                 var roomObj = Instantiate(prefab, parent_pre.transform) as GameObject;
 
-                // Room Setting Àû¿ë
+                // Room Setting ï¿½ï¿½ï¿½ï¿½
                 var room = roomObj.GetComponent<InterviewRoom>();
                 room.id = newRoom.id;
                 if (server) room.nickname = server.GetUserNickName();
@@ -413,8 +413,8 @@ public class InterviewRoomManager : MonoBehaviour
 
                 roomList.Add(roomObj);
 
-                // UI ¹æ ¸ñ·Ï »ý¼º
-                string roomTitle = "<size=20>" + "½ºÄÉÁÙ¸µ" + "|</size> " + " <size=20>" + room.category + " | " + room.index + "</size>";
+                // UI ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+                string roomTitle = "<size=20>" + "ï¿½ï¿½ï¿½ï¿½ï¿½Ù¸ï¿½" + "|</size> " + " <size=20>" + room.category + " | " + room.index + "</size>";
                 room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
                 room.gameObject.transform.GetChild(1).GetComponent<Image>().enabled = false;
                 room.gameObject.transform.GetChild(1).GetComponent<Button>().enabled = false;
@@ -436,7 +436,7 @@ public class InterviewRoomManager : MonoBehaviour
 
     public void SortRoomByID()
     {
-        // ID ¼ø´ë·Î ¹æ Á¤·Ä(»ý¼ºµÈ ¼øÀ¸·Î Á¤·Ä)
+        // ID ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
         roomList.Sort((a, b) => {
             InterviewRoom roomA = a.GetComponent<InterviewRoom>();
             InterviewRoom roomB = b.GetComponent<InterviewRoom>();
@@ -459,7 +459,7 @@ public class InterviewRoomManager : MonoBehaviour
 
     public void SortRoomByCategory()
     {
-        // Ä«Å×°í¸® ¼ø´ë·Î ¹æ Á¤·Ä(»ý¼ºµÈ ¼øÀ¸·Î Á¤·Ä)
+        // Ä«ï¿½×°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
         roomList.Sort((a, b) => {
             InterviewRoom roomA = a.GetComponent<InterviewRoom>();
             InterviewRoom roomB = b.GetComponent<InterviewRoom>();
@@ -495,7 +495,7 @@ public class InterviewRoomManager : MonoBehaviour
     public void EvluateRoom(InterviewRoom room)
     {
         room.interviewType = 1;
-        // Æò°¡
+        // ï¿½ï¿½
         if (server)
         {
             server.RequestEvaluateUnity(room);
@@ -504,7 +504,7 @@ public class InterviewRoomManager : MonoBehaviour
 
     public void UploadFile()
     {
-        // ¼­¹ö¿¡ ¾÷·Îµå ¿äÃ»
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Îµï¿½ ï¿½ï¿½Ã»
         server.UploadFile();
     }
 }

@@ -290,10 +290,35 @@ async function getPreQNAData(filename) {
 
   const preQNAData = await preQNACollection.findOne(
     { filename: filename },
-    { projection: { questions: 1, answers: 1, evaluation: 1, _id: 0 } }
+    { projection: { questions: 1, answers: 1, evaluation: 1, indexes: 1, _id: 0 } }
   );
 
   return preQNAData;
+}
+
+async function updatePreQNAWithIndexes() {
+  try {
+    const db = await connectDB();
+    const fileInfoCollection = db.collection('fileInfo');
+    const preQNACollection = db.collection('preQNA');
+
+    // fileInfo 컬렉션에서 모든 문서 가져오기
+    const fileInfos = await fileInfoCollection.find({}).toArray();
+
+    for (const fileInfo of fileInfos) {
+      const { filename, indexes } = fileInfo;
+
+      // preQNA 컬렉션에서 filename이 일치하는 문서 업데이트
+      const updateResult = await preQNACollection.updateMany(
+        { filename: filename },
+        { $set: { indexes: indexes } }
+      );
+
+      console.log(`${filename}의 indexes 업데이트 결과:`, updateResult.modifiedCount);
+    }
+  } catch (error) {
+    console.error('MongoDB 작업 중 오류 발생:', error);
+  } 
 }
 
 module.exports = {
@@ -303,5 +328,6 @@ module.exports = {
   preEvaluate,
   getPreQNAData,
   checkTailQuestion,
-  generateTailQuestion
+  generateTailQuestion,
+  updatePreQNAWithIndexes
 };

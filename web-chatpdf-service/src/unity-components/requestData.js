@@ -260,19 +260,23 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
       {params: {filename: JSONroomDataDocument}}
     );
 
-    console.log("preQNAData: ", preQNAData.data.questions[0]); // 질문 5개 배열
-    console.log("preQNAData: ", preQNAData.data.answers[0]); // 답변 5개 배열
-    console.log("preQNAData: ", preQNAData.data.evaluation[0][0]); // 첫번째 질문의 점수
-    console.log("preQNAData: ", typeof(preQNAData.data.evaluation[0][0])); // 첫번째 질문의 점수
-    console.log("preQNAData: ", preQNAData.data.evaluation[0][1]); // 첫번째 질문의 모범답변
-    console.log("preQNAData: ", preQNAData.data.evaluation[0][2]); // 첫번째 질문의 종합의견
-
+    // console.log("preQNAData: ", preQNAData.data.questions[0]); // 질문 5개 배열
+    // console.log("preQNAData: ", preQNAData.data.answers[0]); // 답변 5개 배열
+    // console.log("preQNAData: ", preQNAData.data.evaluation[0][0]); // 첫번째 질문의 점수
+    // console.log("preQNAData: ", typeof(preQNAData.data.evaluation[0][0])); // 첫번째 질문의 점수
+    // console.log("preQNAData: ", preQNAData.data.evaluation[0][1]); // 첫번째 질문의 모범답변
+    // console.log("preQNAData: ", preQNAData.data.evaluation[0][2]); // 첫번째 질문의 종합의견
     for(let i = 0; i < 5; i++){
       scoreList = scoreList + preQNAData.data.evaluation[i][0] + '/'
     }
+
+    for(let j = 0; j < 5; j++){
+      scoreList = scoreList + preQNAData.data.indexes[j] + '/'
+    }
+
     scoreList = scoreList.slice(0, -1);
     console.log("scoreList: ", scoreList);
-    sendMessage("Server", "SetScoreList", scoreList);
+    //sendMessage("InterviewRoomManager", "CreatePrevInterviewRoom", scoreList);
   });
 
   useEffect(() => {
