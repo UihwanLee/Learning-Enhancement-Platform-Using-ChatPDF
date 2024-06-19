@@ -13,6 +13,7 @@ const Header = ( props ) => {
                     <ul>
                         <Link to="/"><li><a>HOME</a></li></Link>
                         <Link to="/service"><li><a>SERVICE</a></li></Link>
+                        <Link to="/bulletinboard"><li><a>Bulletin Board</a></li></Link>
                         <Link to="/mypage"><li><a>My Page</a></li></Link>
                         <Link to="/login"><li><a>Login</a></li></Link>
                         <Link to="/register"><li><a>Register</a></li></Link>

@@ -254,4 +254,139 @@ const TestPage = () => {
     );
 };
 
-export default TestPage;
+const MyPage = () => {
+
+    const [data, setData] = useState(null);
+
+  // 데이터 정보 받아오기
+//   useEffect(() => {
+//     // 데이터 fetch 함수
+//     const fetchData = async () => {
+//       try {
+//         const response = await fetch('/api/data'); // API 경로 수정 필요
+//         const result = await response.json();
+//         setData(result);
+//       } catch (error) {
+//         console.error('Error fetching data:', error);
+//       }
+//     };
+
+//     fetchData();
+//   }, []);
+
+    useEffect(() => {
+        // 데이터 fetch 함수
+        setData(jsonData);
+
+    }, []); 
+
+    if (!data) {
+        return <div>Loading...</div>;
+    }
+
+    // 데이터 원소의 개수
+    const dataCount = data.length;
+
+    // 질문 답변 횟수 계산
+    const totalEvaluations = data.reduce((total, item) => {
+        const evaluationCount = item.evaluation ? Object.keys(item.evaluation).length : 0;
+        return total + evaluationCount;
+    }, 0);
+
+    // 카테고리별로 데이터 필터링
+    const algorithmDocuments = data.filter(doc => doc.category === '알고리즘');
+    const networkDocuments = data.filter(doc => doc.category === '네트워크');
+    const osDocuments = data.filter(doc => doc.category === '운영체제');
+    const dbDocuments = data.filter(doc => doc.category === '데이터베이스');
+
+    return (
+      <div className="mypage-container">
+        <Header element="nexon" />
+        <div className="mypage-section">
+          <h1 className="mypage-section-title">My Page</h1>
+          <div className="mypage-user-info">
+            <div style={{display: 'flex'}}>
+            <div>
+            <h2>USER ID: {user_id}</h2>
+            <h2>면접 횟수: {dataCount} </h2>
+            <h2>질문 답변 횟수: {totalEvaluations}</h2>
+            <br/>
+            <h2>[카테고리 학습량]</h2>
+            <h2>알고리즘: {algorithmDocuments.length}</h2>
+            <h2>네트워크: {networkDocuments.length}</h2>
+            <h2>운영체제: {osDocuments.length}</h2>
+            <h2>데이터베이스: {dbDocuments.length}</h2>
+            </div>
+            <div>
+            <br/>
+            </div>
+        </div>
+          </div>
+        </div>
+        <div className="mypage-section">
+        <RechartsCategory data={data} />
+        <RechartsMyData data={data} />
+        </div>
+        <div className="mypage-section">
+          <h1 className="mypage-section-title">전체 지표</h1>
+          <div className="mypage-chart-container">
+            <RechartsEvaluate data={data} />
+            <div className="recharts-day-container">
+    <h5 className="mypage-section-subtitle" style={{ textAlign: 'center' }}>{''}<br/>{''}</h5>
+    <div style={{ width: '100%', textAlign: 'center' }}>
+    <RechartsDay data={data}/>
+    </div>
+  </div>
+  
+          </div>
+        </div>
+        <div className="mypage-section">
+          <h1 className="mypage-section-title">학습 문서 별 지표</h1>
+          <div className="mypage-document-section">
+            <div className="mypage-subject-box">
+              <h2 className="mypage-subject-title">알고리즘</h2>
+              <div className="mypage-document-container">
+              <div style={{display: 'flex'}}>
+        {algorithmDocuments.map((doc, index) => (
+            <RechartsDocument document={doc.filename} data={doc.evaluation} color={COLORS[0]} />
+            ))}
+        </div>
+              </div>
+            </div>
+            <div className="mypage-subject-box">
+              <h2 className="mypage-subject-title">네트워크</h2>
+              <div className="mypage-document-container">
+              <div style={{display: 'flex'}}>
+        {networkDocuments.map((doc, index) => (
+            <RechartsDocument document={doc.filename} data={doc.evaluation} color={COLORS[1]} />
+            ))}
+        </div>
+              </div>
+            </div>
+            <div className="mypage-subject-box">
+              <h2 className="mypage-subject-title">운영체제</h2>
+              <div className="mypage-document-container">
+              <div style={{display: 'flex'}}>
+        {osDocuments.map((doc, index) => (
+            <RechartsDocument document={doc.filename} data={doc.evaluation} color={COLORS[2]} />
+            ))}
+        </div>
+              </div>
+            </div>
+            <div className="mypage-subject-box">
+              <h2 className="mypage-subject-title">데이터베이스</h2>
+              <div className="mypage-document-container">
+              <div style={{display: 'flex'}}>
+        {dbDocuments.map((doc, index) => (
+            <RechartsDocument document={doc.filename} data={doc.evaluation} color={COLORS[3]} />
+            ))}
+        </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
+export default MyPage;
