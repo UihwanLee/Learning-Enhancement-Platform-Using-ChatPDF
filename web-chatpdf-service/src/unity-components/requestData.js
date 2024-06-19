@@ -113,6 +113,11 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
     };
   }, [addEventListener, removeEventListener, RequestStudyRoomData]);
 
+  // 딜레이 함수
+  function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
   // 1. JSONroomDataDocument를 서버에 보내주기
   // 2. 서버에서 JSONroomDataDocument 파일명을 가진 AWS S3에서 파일 가져오기
   // 3. 가져온 파일로 ChatPDF API 호출
@@ -168,23 +173,22 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
     // roomData를 파싱하여 필요한 값을 추출합니다
     const JSONroomData = JSON.parse(roomData);
     const JSONroomDataDocument = JSONroomData.document; // 평가방에서 쓰일 파일명
-    sendMessage("Server", "ClearLogData");
 
-    // //preQNA 데이터 가져오기
-    // const preQNAData = await axios.get("http://localhost:3001/prompt/getPreQNA",
-    //   {params: {filename: JSONroomDataDocument}}
-    // );
+    //preQNA 데이터 가져오기
+    const preQNAData = await axios.get("http://localhost:3001/prompt/getPreQNA",
+      {params: {filename: JSONroomDataDocument}}
+    );
 
-    // console.log("preQNAData: ", preQNAData);
+    console.log("preQNAData: ", preQNAData);
     
-    // for (let i = 0; i < 5; i++) {
-    //   // [사전 조사] 평가방 5번 반복
-    //   console.log("Test!!:,", preQNAData.evaluation[i][1]);
-    //   sendMessage("PromptManager", "AddQuestionLog", preQNAData.questions[i]);
-    //   sendMessage("PromptManager", "AddAnswerLogData", preQNAData.answers[i]);
-    //   sendMessage("PromptManager", "AddModelAnswerLogData", preQNAData.evaluation[i][1]);
-    //   sendMessage("PromptManager", "AddComprehensiveEvaluationLogData", preQNAData.evaluation[i][2]);
-    // }
+    sendMessage("Server", "ClearLogData");
+    await delay(5000);
+    for(let k = 0; k < 5; k++){
+      sendMessage("LogManager", "AddQuestionLog", preQNAData.data.questions[k]);
+      sendMessage("LogManager", "AddAnswerLog", preQNAData.data.answers[k]);
+      sendMessage("LogManager", "AddCorrectLog", preQNAData.data.evaluation[k][1]);
+      sendMessage("LogManager", "AddComprehensiveEvaluationLog", preQNAData.data.evaluation[k][2]);
+    }
     
   });
 
@@ -278,13 +282,17 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
     console.log("scoreList: ", scoreList);
     sendMessage("InterviewRoomManager", "CreatePrevInterviewRoom", scoreList);
 
-    sendMessage("Server", "ClearLogData");
-    for(let k = 0; k < 5; k++){
-      sendMessage("Server", "AddQuestionLogData", preQNAData.data.questions[k]);
-      sendMessage("Server", "AddAnswerLogData", preQNAData.data.answers[k]);
-      sendMessage("Server", "AddModelAnswerLogData", preQNAData.data.evaluation[k][1]);
-      sendMessage("Server", "AddComprehensiveEvaluationLogData", preQNAData.data.evaluation[k][2]);
-    }
+    // 평가 방 생성
+    sendMessage("EvaluateRoomManager", "CreateCurrentEvaluteRoom");
+
+    // sendMessage("Server", "ClearLogData");
+    
+    // for(let k = 0; k < 5; k++){
+    //   sendMessage("Server", "AddQuestionLogData", preQNAData.data.questions[k]);
+    //   sendMessage("Server", "AddAnswerLogData", preQNAData.data.answers[k]);
+    //   sendMessage("Server", "AddModelAnswerLogData", preQNAData.data.evaluation[k][1]);
+    //   sendMessage("Server", "AddComprehensiveEvaluationLogData", preQNAData.data.evaluation[k][2]);
+    // }
   });
 
   useEffect(() => {
