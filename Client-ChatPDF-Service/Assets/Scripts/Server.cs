@@ -35,7 +35,7 @@ public class Server : MonoBehaviour
     private static extern void RequestEvaluateRoomData(string roomData);
 
     [DllImport("__Internal")]
-    private static extern void RequestEndInterviewData();
+    private static extern void RequestEndInterviewData(string roomData);
     [DllImport("__Internal")]
     private static extern void RequestEvaluate(string roomData);
 
@@ -225,11 +225,12 @@ public class Server : MonoBehaviour
 #endif
     }
 
-    public void EndInterview()
+    public void EndInterview(InterviewRoom room)
     {
         // 면접이 끝났다는 것을 알림
+        string roomData = JsonUtility.ToJson(room);
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
-    RequestEndInterviewData();
+    RequestEndInterviewData(roomData);
 #endif
     }
 

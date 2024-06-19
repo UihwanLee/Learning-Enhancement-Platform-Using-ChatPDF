@@ -22,8 +22,9 @@ public class SceneManagment : MonoBehaviour
     {
         if (server)
         {
+            InterviewRoom room = server.GetInterviewRoom();
             server.isCreateEvaluteRoom = true;
-            server.EndInterview();
+            server.EndInterview(room);
         }
         // Lobby æ¿¿∏∑Œ ¿Ãµø
         SceneManager.LoadScene(1);
