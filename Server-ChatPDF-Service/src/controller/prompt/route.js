@@ -84,10 +84,10 @@ router.post('/preEval', async (req, res) => {
   }
 });
 
-router.get('/preQNA/:filename', async (req, res) => {
-  console.log('/preQNA/:filename 호출됨');
-  const filename = req.params.filename;
-
+router.get('/getPreQNA', async (req, res) => {
+  console.log('/getPreQNA 호출됨');
+  const { filename } = req.query;
+  console.log("[/getPreQNA] filename: ", filename);
   try {
       const preQNAData = await promptService.getPreQNAData(filename);
 

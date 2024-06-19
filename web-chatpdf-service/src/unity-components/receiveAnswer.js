@@ -3,7 +3,7 @@ import axios from "axios";
 import { speak } from "../TTS";
 import SpeechRecognition, { useSpeechRecognition } from 'react-speech-recognition';
 
-export function useReceiveAnswerEventListener(addEventListener, removeEventListener, answer, setAnswer, question, setQuestion, SendQuestion, questions, EndInterview, sendMessage, resetTranscript2) {
+export function useReceiveAnswerEventListener(addEventListener, removeEventListener, answer, setAnswer, question, setQuestion, SendQuestion, questions, EndInterviewPre, EndInterview, sendMessage, resetTranscript2) {
   //const questions = ["Question 1", "Question 2", "Question 3", "Question 4", "Question 5"];
   console.log("questions: ", questions);
   const [idx, setIdx] = useState(0);
@@ -73,7 +73,7 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
           }, questionLength); 
 
         } else {
-          EndInterview(); // POST 요청 포함
+          EndInterviewPre(); 
         }
         return nextIdx;
       });

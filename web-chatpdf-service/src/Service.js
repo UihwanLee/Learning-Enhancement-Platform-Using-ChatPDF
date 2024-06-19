@@ -73,13 +73,6 @@ function Service() {
   // API 질문 다시 듣기 이벤트 리스너 추가
   useReplayQuestionEventListener(addEventListener, removeEventListener, question);
 
-  try{
-    useReceiveAnswerEventListener(addEventListener, removeEventListener, answer, setAnswer, question, setQuestion, SendQuestion, questions, EndInterviewPre, EndInterview, sendMessage, resetTranscript);
-  }catch(error){
-    console.error('An error occurred:', error);
-  }
-  
-
   // Unity-> React Server 데이터 통신 요구
   // useEffect(() => {
   //   addEventListener("RequestData", RequestData);
@@ -280,13 +273,20 @@ function Service() {
 
   // 꼬리 질문 끝나면 나가기 UI 출력
   async function EndInterviewPre() {
+    console.log("End InterviewPre!!")
     sendMessage("ButtonManager", "NoticeEndPrevInterview");
   }
   // 질문 5개 끝나면 나가기 UI 출력
   async function EndInterview() {
+    console.log("End Interview!!")
     sendMessage("ButtonManager", "NoticeEndInterview");
   }
   
+  try{
+    useReceiveAnswerEventListener(addEventListener, removeEventListener, answer, setAnswer, question, setQuestion, SendQuestion, questions, EndInterviewPre, EndInterview, sendMessage, resetTranscript);
+  }catch(error){
+    console.error('An error occurred:', error);
+  }
 
   return (
     <div className="App">

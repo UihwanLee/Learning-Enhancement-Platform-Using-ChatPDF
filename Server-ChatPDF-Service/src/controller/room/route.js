@@ -127,7 +127,6 @@ router.post('/studyRoomData', async (req, res) => {
 
 router.post('/evaluateRoomData', async (req, res) => {
   try {
-    //console.log("test: ", req.body);
     console.log("POST /evaluateRoomData");
     const jsonEvaluateRoomData = req.body;
     evalRoomData = JSON.parse(jsonEvaluateRoomData.currentInterViewRoomData);
