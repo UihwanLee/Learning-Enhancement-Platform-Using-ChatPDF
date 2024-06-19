@@ -51,12 +51,6 @@ public class EvaluateRoomManager : MonoBehaviour
 
             // ¹æ Á¤·Ä
             SortRoomByID();
-
-            if (server.isCreateEvaluteRoom)
-            {
-                CreateRoom(server.GetInterviewRoom());
-                server.isCreateEvaluteRoom = false;
-            }
         }
     }
 
