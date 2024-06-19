@@ -44,10 +44,18 @@ router.post('/studyRoomData', async (req, res) => {
 
     // fileInfo 컬렉션 추가
     const documentName = path.parse(roomData.titlePDF).name;
+
+    // 데스크탑 코드
+    // filepath: 'C:/Users/sktpg/OneDrive/Desktop/졸작 파일/' + roomData.titlePDF,
+    // s3downloadedFilepath: 'C:/Users/sktpg/OneDrive/문서/GitHub/Learning-Enhancement-Platform-Using-ChatPDF/Server-ChatPDF-Service/src/controller/files/S3files/' + documentName + '/' + roomData.titlePDF
+    
+    //노트북 코드
+    // filepath: 'C:/Users/lenovo/Desktop/노트북 졸작 테스트 파일/' + roomData.titlePDF,
+    // s3downloadedFilepath:'C:/Users/lenovo/Documents/GitHub/Learning-Enhancement-Platform-Using-ChatPDF/Server-ChatPDF-Service/src/controller/files/S3files' + documentName + '/' + roomData.titlePDF
     const FileInfo = {
       filename: roomData.titlePDF,
-      filepath: 'C:/Users/sktpg/OneDrive/Desktop/졸작 파일/' + roomData.titlePDF,
-      s3downloadedFilepath: 'C:/Users/sktpg/OneDrive/문서/GitHub/Learning-Enhancement-Platform-Using-ChatPDF/Server-ChatPDF-Service/src/controller/files/S3files/' + documentName + '/' + roomData.titlePDF
+      filepath: 'C:/Users/lenovo/Desktop/노트북 졸작 테스트 파일/' + roomData.titlePDF,
+      s3downloadedFilepath:'C:/Users/lenovo/Documents/GitHub/Learning-Enhancement-Platform-Using-ChatPDF/Server-ChatPDF-Service/src/controller/files/S3files' + documentName + '/' + roomData.titlePDF
     };
     console.log("FileInfo:", FileInfo);
 
