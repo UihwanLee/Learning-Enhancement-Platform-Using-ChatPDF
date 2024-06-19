@@ -51,6 +51,9 @@ public class ButtonManager : MonoBehaviour
     private static extern void StartSTT();
 
     [DllImport("__Internal")]
+    private static extern void StopSTTPrev();
+
+    [DllImport("__Internal")]
     private static extern void StopSTT();
 
     // 서버 클래스
@@ -175,6 +178,29 @@ public class ButtonManager : MonoBehaviour
     public void StopVoice()
     {
         // 마이크 녹음 중지
+        if (server)
+        {
+            InterviewRoom room = server.GetInterviewRoom();
+            if (room.interviewType == 0)
+            {
+                StopVoicePrev();
+            }
+            else
+            {
+                StopVoiceInterview();
+            }
+        }
+    }
+
+    private void StopVoicePrev()
+    {
+#if UNITY_WEBGL == true && UNITY_EDITOR == false
+    StopSTTPrev();
+#endif
+    }
+
+    private void StopVoiceInterview()
+    {
 #if UNITY_WEBGL == true && UNITY_EDITOR == false
     StopSTT();
 #endif
@@ -203,7 +229,7 @@ public class ButtonManager : MonoBehaviour
         // noticeUI 설정
         string content = "<size=24>" + "면접이 끝났습니다." + "</size>";
         newNoticeUI.gameObject.transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = content;
-        newNoticeUI.gameObject.transform.GetChild(3).GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => sceneManager.LoadLobby());
+        newNoticeUI.gameObject.transform.GetChild(3).GetComponent<UnityEngine.UI.Button>().onClick.AddListener(() => sceneManager.LoadLobbyAndCreateEvaluateRoom());
     }
 
     public void SetVoiceUI(int isActive)

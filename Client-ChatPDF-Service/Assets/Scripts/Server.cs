@@ -65,6 +65,9 @@ public class Server : MonoBehaviour
     private InterviewRoom currentInterviewRoom;
     public bool isCreateEvaluteRoom = false;
 
+    // scoreList
+    private List<string> scoreList = new List<string>();
+
     private void Awake()
     {
         // 오브젝트 유지
@@ -336,6 +339,25 @@ public class Server : MonoBehaviour
         return roomData;
     }
 
+    public List<string> SplitString(string input)
+    {
+        char[] delimiter = { '/' };
+        List<string> parts = input.Split(delimiter, StringSplitOptions.RemoveEmptyEntries).ToList();
+
+        return parts;
+    }
+
+    public void ClearScoreList()
+    {
+        scoreList.Clear();
+    }
+
+    public void SetScoreList(string score)
+    {
+        scoreList.Clear();
+        scoreList = SplitString(score);
+    }
+
     public StudyRoom GetStudyRoom() { return  currentStudyRoom; }
     public InterviewRoom GetInterviewRoom() {  return currentInterviewRoom; }
 
@@ -343,4 +365,6 @@ public class Server : MonoBehaviour
     public List<string> GetAnswerList() { return answerLogList; }
     public List<string> GetModelAnswerList() { return modelAnswerLogList; }
     public List<string> GetComprehensiveEvaluationList() { return comprehensiveEvaluationList; }
+
+    public List<string> GetScoreList() { return scoreList; }
 }
