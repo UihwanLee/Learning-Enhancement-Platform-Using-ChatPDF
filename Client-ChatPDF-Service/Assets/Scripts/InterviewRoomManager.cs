@@ -390,7 +390,7 @@ public class InterviewRoomManager : MonoBehaviour
 
         List<string> scoreList = SplitString(score);
 
-        for (int i=0; i< scoreList.Count; i++)
+        for (int i=0; i< 5; i++)
         {
             // 30�� ������ ī�װ����� ���ؼ� �� ����
             if (int.Parse(scoreList[i]) <= 50)
@@ -404,7 +404,7 @@ public class InterviewRoomManager : MonoBehaviour
                 room.title = newRoom.title;
                 room.category = newRoom.category;
                 room.document = newRoom.document;
-                if(indexes.Count > 0) room.index = indexes[i];
+                room.index = scoreList[i+5];
 
                 room.interviewerCount = newRoom.interviewerCount;
                 room.interviewerGender = newRoom.interviewerGender;

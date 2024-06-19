@@ -153,6 +153,7 @@ public class Server : MonoBehaviour
         studyRoomDataList.Add(roomData);
     }
 
+
     public void LoadInterviewRoomData(string roomData)
     {
         // roomData JSON 데이터 저장
