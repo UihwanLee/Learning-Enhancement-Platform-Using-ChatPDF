@@ -48,12 +48,37 @@ router.post('/preSendAnswer', async (req, res) => {
   }
 });
 
-// [면접 진행] answer db 저장
-router.post('/sendAnswer', async (req, res) => {
+// // [면접 진행] question db 저장
+// router.post('/sendQuestion', async (req, res) => {
+//   console.log('sendQuestion 호출됨');
+//   try {
+//     const response = await promptService.updateQuestion(req.body.question);
+//   } catch (error) {
+//     console.error('POST /sendQuestion error', error);
+//     res.status(500).json({ 'error': error.message });
+//   }
+// });
+
+// // [면접 진행] answer db 저장
+// router.post('/sendAnswer', async (req, res) => {
+//   console.log('sendAnswer 호출됨');
+//   try {
+//     const response = await promptService.updateAnswer(req.body.answer);
+//   } catch (error) {
+//     console.error('POST /sendAnswer error', error);
+//     res.status(500).json({ 'error': error.message });
+//   }
+// });
+
+router.post('/sendData', async (req, res) => {
+  console.log('sendData 호출됨');
+  const { question, answer } = req.body;
   try {
-    const response = await promptService.updateAnswer(req.body.answer);
+    await promptService.updateData(question, answer);
+    // await promptService.updateQuestion(req.body.question);
+    // await promptService.updateAnswer(req.body.answer);
   } catch (error) {
-    console.error('POST /sendAnswer error', error);
+    console.error('POST /sendData error', error);
     res.status(500).json({ 'error': error.message });
   }
 });
@@ -123,7 +148,7 @@ router.get('/getAllQNA', async (req, res) => {
     console.log('/getAllQNA 호출됨');
     QNADocuments = await promptService.getAllQNAData();
 
-    res.json(preQNADocuments);
+    res.json(QNADocuments);
 
   } catch (error) {
     console.error('MongoDB 작업 중 오류 발생:', error);

@@ -210,6 +210,16 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
       });
   };
 
+  const sendEval = async () => {
+    await axios.post('http://localhost:3001/prompt/eval')
+      .then(response => {
+        console.log('POST /eval Success:', response);
+      })
+      .catch(error => {
+        console.error('POST /eval Error sending:', error);
+      });
+  };
+
   const sendEvaluateRoomData = async (currentInterViewRoomData) => {
     console.log("currentInterViewRoomData: ", currentInterViewRoomData);
     await axios.post('http://localhost:3001/room/evaluateRoomData', { currentInterViewRoomData: currentInterViewRoomData })
@@ -234,12 +244,10 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
       console.log("사전조사인 경우");
       // 사전 조사인 경우 평가
       sendPreEval();
-
     } else {
-
+      console.log("면접인 경우");
+      sendEval();
     }
-
-    
 
   });
   
@@ -260,6 +268,10 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
     
     //preQNA 데이터 가져오기
     const preQNAData = await axios.get("http://localhost:3001/prompt/getPreQNA",
+      {params: {filename: JSONroomDataDocument}}
+    );
+
+    const QNAData = await axios.get("http://localhost:3001/prompt/getQNA",
       {params: {filename: JSONroomDataDocument}}
     );
 

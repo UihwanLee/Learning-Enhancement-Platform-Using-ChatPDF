@@ -80,9 +80,12 @@ async function generateDetailQuestions(numQuestions, category) {
   const prompt = `이 pdf 파일을 참조해서 ${category}와 관련된 지식 수준을 파악하기 위한 주관식 문제 ${numQuestions}개를 직접 만들어서 내줘. 
   다른 말은 하지말고 문제만 말해주고 말 끝은 반드시 ! 하나를 넣어줘.`;
 
-  const question = await chatPDF(filePath, prompt);
+  let question = await chatPDF(filePath, prompt);
+
+  question = PreCleanData(question);
+
   const split_questions = question.split('!');
-  split_questions.pop();
+  //split_questions.pop();
   const questions = split_questions.map(item => item.trim());
 
   // 동일한 filename이 이미 존재하는지 확인
@@ -92,8 +95,8 @@ async function generateDetailQuestions(numQuestions, category) {
     console.log(`filename이 ${filename}인 문서가 이미 존재합니다. Insert를 생략합니다.`);
   } else {
     // 동일한 filename이 존재하지 않는 경우에만 삽입
-    await db.collection('QNA').insertOne({ filename: filename, questions: questions, answers: null });
-    console.log(`filename이 ${filename}인 문서가 성공적으로 삽입되었습니다.`);
+    // await db.collection('QNA').insertOne({ filename: filename, questions: questions, answers: null });
+    // console.log(`filename이 ${filename}인 문서가 성공적으로 삽입되었습니다.`);
   }
 
   return questions;
@@ -130,6 +133,35 @@ async function preUpdateAnswer(answer) {
   return result;
 }
 
+// [면접 진행] question db 저장
+async function updateQuestion(question) {
+  const db = await connectDB();
+  const QNACollection = db.collection('QNA');
+  const filePath = getDocumentPath(); 
+  const filename = path.basename(filePath);
+
+  console.log("updateQuestion question: ", question);
+  
+  // 특정 filename을 가진 도큐먼트 찾기
+  const document = await QNACollection.findOne({ filename: filename });
+
+  if (document) {
+    // 도큐먼트가 존재하면 question 필드 업데이트
+    const updateResult = await QNACollection.updateOne(
+      { filename: filename },
+      { $push: { questions: question } }
+    );
+    console.log(`filename이 ${filename}인 문서의 questions 필드가 업데이트되었습니다.`);
+    
+  } else {
+    // 도큐먼트가 존재하지 않으면 새로운 도큐먼트 삽입
+    const insertResult = await QNACollection.insertOne({
+      filename: filename,
+      questions: [question]
+    });
+    console.log(`filename이 ${filename}인 새로운 문서가 삽입되었습니다.`);
+  }
+}
 // [면접 진행] answer 받기 처리
 async function updateAnswer(answer) {
   const db = await connectDB();
@@ -137,36 +169,58 @@ async function updateAnswer(answer) {
   const filePath = getDocumentPath(); 
   const filename = path.basename(filePath);
 
-  // answers 배열에 새로운 answer 추가
-  answers.push(answer);
-  console.log("updateAnswer answer: ", answer);
+  // 특정 filename을 가진 도큐먼트 찾기
+  const document = await QNACollection.findOne({ filename: filename });
 
-  const QNA = await QNACollection.findOne(
-    { filename: filename },
-    { projection: { questions: 1, answers: 1, _id: 0 } }
-  );
-
-  const questionCount = QNA.questions.length;
-
-  // answers 배열의 크기가 questionCount가 되면 업데이트 수행
-  if (answers.length === questionCount) {
-    const newAnswerArray = answers.slice(); // answers 배열 복사
-
-    const result = await db.collection('QNA').updateMany(
-        { filename: filename },
-        { $set: { answers: newAnswerArray } }
+  if (document) {
+    // 도큐먼트가 존재하면 answer 필드 업데이트
+    const updateResult = await QNACollection.updateOne(
+      { filename: filename },
+      { $push: { answers: answer } }
     );
-
-    if (result.modifiedCount > 0) {
-        console.log(`QNA 컬렉션의 ${result.modifiedCount}개의 문서가 성공적으로 업데이트되었습니다.`);
-    } else {
-        console.log('업데이트된 문서가 없습니다.');
-    }
-
-    // 업데이트 후 answers 배열 초기화
-    answers.length = 0;
+    console.log(`filename이 ${filename}인 문서의 answers 필드가 업데이트되었습니다.`);
+    
+  } else {
+    // 도큐먼트가 존재하지 않으면 새로운 도큐먼트 삽입
+    const insertResult = await QNACollection.insertOne({
+      filename: filename,
+      answers: [answer]
+    });
+    console.log(`filename이 ${filename}인 새로운 문서가 삽입되었습니다.`);
   }
-  return result;
+}
+
+async function updateData(question, answer) {
+  const db = await connectDB();
+  const QNACollection = db.collection('QNA');
+  const filePath = getDocumentPath(); 
+  const filename = path.basename(filePath);
+
+  console.log("updateData question: ", question);
+  console.log("updateData answer: ", answer);
+  
+  // 특정 filename을 가진 도큐먼트 찾기
+  const document = await QNACollection.findOne({ filename: filename });
+
+  if (document) {
+    // 도큐먼트가 존재하면 question 필드 업데이트
+    await QNACollection.updateOne(
+      { filename: filename },
+      { 
+        $push: { questions: question, answers: answer }
+      }
+    );
+    console.log(`filename이 ${filename}인 문서의 questions 필드가 업데이트되었습니다.`);
+    
+  } else {
+    // 도큐먼트가 존재하지 않으면 새로운 도큐먼트 삽입
+    await QNACollection.insertOne({
+      filename: filename,
+      questions: [question],
+      answers: [answer]
+    });
+    console.log(`filename이 ${filename}인 새로운 문서가 삽입되었습니다.`);
+  }
 }
 
 // [면접 진행] 꼬리 질문을 생성해야할지 판단하는 라우터, YesOrNo
@@ -175,7 +229,7 @@ async function checkTailQuestion(question, answer) {
   const filePath = getDocumentPath(); 
   const filename = path.basename(filePath);
 
-  const prompt = `${question} 에 대한 답으로 ${answer} 라고 대답을 했는데 어느 정도 정답에 가까운 거 같아? 
+  const prompt = `${question} 에 대한 답으로 ${answer} 라고 대답을 했을 때, 정답이면 Yes, 아니면 No로 대답해줘. 
   다른 말 하지말고 Yes/No 중에 대답해줘`;
   console.log(prompt);
   const YesOrNo = await chatPDF(filePath, prompt);
@@ -190,7 +244,7 @@ async function generateTailQuestion(question, answer) {
   const filename = path.basename(filePath);
   
   const prompt = `${question}에 대한 답으로 ${answer}라고 대답을 했을 때 이 대답에 대해 면접 상황에서 추가적으로 물어 볼만한 문제를 내줘. 
-  다른 말 하지 말고 오직 문제만 말해줘. 그리고 말투는 질문 형식으로 해줘.`;
+  다른 말 하지 말고 오직 문제만 말해줘. 그리고 말투는 질문 형식으로 해줘. 세줄 이하로 말해줘.`;
   console.log(prompt);
   const TailQuestion = await chatPDF(filePath, prompt);
   console.log("TailQuestion: ", TailQuestion);
@@ -353,7 +407,7 @@ async function evaluate() {
       console.log('해당 filename을 가진 문서를 찾을 수 없습니다.');
   }
   
-  const evalPrompt = `아래 질문과 답변들에 대해 각각 평가를 해줘. 평가는 점수, 모범답변, 종합의견 3가지로 나눠서 해주고 
+  let evalPrompt = `아래 질문과 답변들에 대해 각각 평가를 해줘. 평가는 점수, 모범답변, 종합의견 3가지로 나눠서 해주고 
   점수는 0~100점, 모범답변은 질문에 대해 가장 정답에 가까운 예시 답변, 종합의견은 답변에 대한 평가를 해줘. 
   다른 말은 하지말고 오직 평가만 해주고 점수, 모범답변, 종합의견 사이에는 '/' 문자를 하나 넣어주고 각각의 평가들 사이에는 '#' 문자 하나를 넣어주고, 
   첫 평가 앞과 마지막 평가 마지막에 각각 '!' 문자 하나씩 넣어줘.
@@ -374,13 +428,14 @@ async function evaluate() {
   95/ 큐/ 올바른 답변입니다. 정확한 자료 구조를 제시했습니다.#
   70/ 잘못된 결과/ 문제점을 정확히 지적했으나, 음수 가중치가 존재할 때 다익스트라 알고리즘이 왜 잘못된 결과를 도출하는지에 대한 추가 설명이 있으면 좋습니다.#
   100/ 안정적/ 올바른 답변입니다. 병합 정렬의 안정성 여부를 정확히 제시했습니다.!"
-  이런 형식으로 다음 질문과 답변들에 대해 각각 평가를 해줘.`;
+  반드시 이 형식{점수/모범답변/종합의견#}에 따라서 다음 질문과 답변들에 대해 각각 평가를 해주고 다른 말은 하지말고 평가만 말해줘.`;
 
   // 질문과 답변 프롬프트에 추가
-  for (let i = 1; i <= questionCount; i++) {
-    evalPrompt += `${i}. 질문: ${QNA.questions[i]} 답변: ${QNA.answers[i]}`;
+  for (let i = 0; i < questionCount; i++) {
+    evalPrompt += `${i+1}. 질문: ${QNA.questions[i]} 답변: ${QNA.answers[i]} `;
   }
 
+  console.log("evalPrompt: ", evalPrompt);
   const evalResponse = await chatPDF(filePath, evalPrompt);
   console.log("[면접 진행] chatpdf의 평가: ", evalResponse);
 
@@ -563,7 +618,9 @@ module.exports = {
   generateQuestions,
   generateDetailQuestions,
   preUpdateAnswer,
+  updateQuestion,
   updateAnswer,
+  updateData,
   preEvaluate,
   evaluate,
   getAllPreQNAData,

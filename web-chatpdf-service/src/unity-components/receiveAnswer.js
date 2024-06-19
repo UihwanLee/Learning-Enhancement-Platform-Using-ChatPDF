@@ -103,10 +103,14 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
   let tailQuestion = "";
   const ReceiveAnswer = useCallback(async (answer) => {
     console.log("ReceiveAnswer 호출됨 - ", answer);
+    console.log("questions: ", questions);
     if (idx < questions.length) {
       const question = (isTailQuestion) ? tailQuestion : questions[idx];
       sendMessage("PromptManager", "AddQuestionLog", question);
       setAnswer(answer);
+      // sendQuestionToServer(question);
+      // sendAnswerToServer(answer);
+      sendDataToServer(question, answer);
       sendMessage("PromptManager", "AddAnswerLog", answer);
 
       // 2초 딜레이
@@ -171,6 +175,19 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
     }  
   }, [idx, questions, setAnswer, sendMessage]);
 
+  const sendDataToServer = async (question, answer) => {
+    console.log("sendDataToServer 호출됨");
+    try {
+      const response = await axios.post('http://localhost:3001/prompt/sendData', {
+        question: question,
+        answer: answer
+      });
+      
+    } catch (error) {
+      console.error('Error sending answer:', error);
+    }
+  };
+
   useEffect(() => {
     addEventListener("SendAnswer", ReceiveAnswer);
     return () => {
@@ -226,11 +243,14 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
   });
 
   const StopSTT = useCallback(async() =>{
-    console.log("StopSTT 호출됨 - ", answer);
+    console.log("StopSTT 호출됨 - ", question);
     if (idx < questions.length) {
       const question = (isTailQuestion) ? tailQuestion : questions[idx];
       sendMessage("PromptManager", "AddQuestionLog", question);
       setAnswer(answer);
+      console.log("StopSTT 호출됨 - ", answer);
+      sendDataToServer(question, answer);
+      //sendAnswerToServer(answer);
       sendMessage("PromptManager", "AddAnswerLog", answer);
 
       // 2초 딜레이
