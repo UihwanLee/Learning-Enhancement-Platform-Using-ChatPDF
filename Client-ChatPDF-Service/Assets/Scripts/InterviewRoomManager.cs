@@ -393,7 +393,7 @@ public class InterviewRoomManager : MonoBehaviour
         for (int i=0; i< scoreList.Count; i++)
         {
             // 30점 이하의 카테고리에 대해서 방 생성
-            if (int.Parse(scoreList[i]) <= 30)
+            if (int.Parse(scoreList[i]) <= 50)
             {
                 var roomObj = Instantiate(prefab, parent_pre.transform) as GameObject;
 
