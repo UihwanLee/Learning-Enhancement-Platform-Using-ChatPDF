@@ -87,6 +87,11 @@ public class EvaluateRoomManager : MonoBehaviour
         room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => sceneManager.LoadEvaluateRoom(room));
     }
 
+    public void CreateCurrentEvaluteRoom()
+    {
+        CreateRoom(server.GetInterviewRoom());
+    }
+
     public void CreateRoom(InterviewRoom interviewRoom)
     {
         var roomObj = Instantiate(prefab, parent.transform) as GameObject;
