@@ -231,7 +231,6 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
       // 사전 조사인 경우 평가
       sendPreEval();
 
-      //sendMessage("Server", "SetScoreList", "30/30/70/30/30");
     } else {
 
     }
@@ -266,6 +265,7 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
     // console.log("preQNAData: ", typeof(preQNAData.data.evaluation[0][0])); // 첫번째 질문의 점수
     // console.log("preQNAData: ", preQNAData.data.evaluation[0][1]); // 첫번째 질문의 모범답변
     // console.log("preQNAData: ", preQNAData.data.evaluation[0][2]); // 첫번째 질문의 종합의견
+
     for(let i = 0; i < 5; i++){
       scoreList = scoreList + preQNAData.data.evaluation[i][0] + '/'
     }
@@ -276,7 +276,15 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
 
     scoreList = scoreList.slice(0, -1);
     console.log("scoreList: ", scoreList);
-    //sendMessage("InterviewRoomManager", "CreatePrevInterviewRoom", scoreList);
+    sendMessage("InterviewRoomManager", "CreatePrevInterviewRoom", scoreList);
+
+    sendMessage("Server", "ClearLogData");
+    for(let k = 0; k < 5; k++){
+      sendMessage("Server", "AddQuestionLogData", preQNAData.data.questions[k]);
+      sendMessage("Server", "AddAnswerLogData", preQNAData.data.answers[k]);
+      sendMessage("Server", "AddModelAnswerLogData", preQNAData.data.evaluation[k][1]);
+      sendMessage("Server", "AddComprehensiveEvaluationLogData", preQNAData.data.evaluation[k][2]);
+    }
   });
 
   useEffect(() => {
