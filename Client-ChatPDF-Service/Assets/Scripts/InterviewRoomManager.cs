@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System;
+using UnityEngine.SocialPlatforms.Impl;
+using System.Linq;
 
 public class InterviewRoomManager : MonoBehaviour
 {
@@ -92,9 +94,6 @@ public class InterviewRoomManager : MonoBehaviour
 
             // RoomSetting 초기화
             InitRoomSetting();
-
-            // Scheduling 초기화
-            InitScheduling();
         }
     }
 
@@ -126,16 +125,6 @@ public class InterviewRoomManager : MonoBehaviour
 
         dropdown_index.onValueChanged.AddListener(delegate { SetIndex(dropdown_document.value); });
         SetIndex(dropdown_document.value);
-    }
-
-    private void InitScheduling()
-    {
-        List<string> scoreList = server.GetScoreList();
-
-        if(scoreList.Count > 0)
-        {
-            CreatePrevInterviewRoom(scoreList);
-        }
     }
 
     public void InitTitle()
@@ -378,8 +367,16 @@ public class InterviewRoomManager : MonoBehaviour
         SortRoomByID();
     }
 
+    public List<string> SplitString(string input)
+    {
+        char[] delimiter = { '/' };
+        List<string> parts = input.Split(delimiter, StringSplitOptions.RemoveEmptyEntries).ToList();
 
-    public void CreatePrevInterviewRoom(List<string> scoreList)
+        return parts;
+    }
+
+
+    public void CreatePrevInterviewRoom(string score)
     {
         // 현재 사전조사가 끝난 roomData 정보 가져오기
         List<string> indexes = new List<string>();
@@ -391,10 +388,12 @@ public class InterviewRoomManager : MonoBehaviour
             indexes = server.SetIndexByDocument(newRoom.title);
         }
 
-        for(int i=0; i< scoreList.Count; i++)
+        List<string> scoreList = SplitString(score);
+
+        for (int i=0; i< scoreList.Count; i++)
         {
             // 30점 이하의 카테고리에 대해서 방 생성
-            if (int.Parse(scoreList[i]) <= 30)
+            if (int.Parse(scoreList[i]) <= 50)
             {
                 var roomObj = Instantiate(prefab, parent_pre.transform) as GameObject;
 
