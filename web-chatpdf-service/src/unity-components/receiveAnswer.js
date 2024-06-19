@@ -81,7 +81,7 @@ export function useReceiveAnswerEventListener(addEventListener, removeEventListe
 
   const sendAnswerToServerPre = async (answer) => {
     try {
-      const response = await axios.post('http://localhost:3001/prompt/sendAnswer', {
+      const response = await axios.post('http://localhost:3001/prompt/preSendAnswer', {
         answer: answer
       });
       

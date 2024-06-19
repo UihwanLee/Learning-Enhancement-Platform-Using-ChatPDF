@@ -39,6 +39,16 @@ router.post('/startInterview', async (req, res) => {
 });
 
 // [사전 조사] answer db 저장
+router.post('/preSendAnswer', async (req, res) => {
+  try {
+    const response = await promptService.preUpdateAnswer(req.body.answer);
+  } catch (error) {
+    console.error('POST /preSendAnswer error', error);
+    res.status(500).json({ 'error': error.message });
+  }
+});
+
+// [면접 진행] answer db 저장
 router.post('/sendAnswer', async (req, res) => {
   try {
     const response = await promptService.updateAnswer(req.body.answer);
@@ -76,10 +86,21 @@ router.post('/generateTailQuestion', async (req, res) => {
 router.post('/preEval', async (req, res) => {
   try {
     console.log('POST /preEval 호출됨');
-    const evalResult = await promptService.preEvaluate();
-    console.log("평가 완료", evalResult);
+    const preEvalResult = await promptService.preEvaluate();
+    console.log("사전조사 평가 완료", preEvalResult);
   } catch (error) {
     console.error('GET /preEval error', error);
+    res.status(500).json({ 'error': error.message });
+  }
+});
+
+router.post('/eval', async (req, res) => {
+  try {
+    console.log('POST /eval 호출됨');
+    const evalResult = await promptService.evaluate();
+    console.log("면접 평가 완료", evalResult);
+  } catch (error) {
+    console.error('GET /eval error', error);
     res.status(500).json({ 'error': error.message });
   }
 });
@@ -88,6 +109,19 @@ router.get('/getAllPreQNA', async (req, res) => {
   try {
     console.log('/getAllPreQNA 호출됨');
     preQNADocuments = await promptService.getAllPreQNAData();
+
+    res.json(preQNADocuments);
+
+  } catch (error) {
+    console.error('MongoDB 작업 중 오류 발생:', error);
+    res.status(500).send('서버 오류 발생');
+  } 
+});
+
+router.get('/getAllQNA', async (req, res) => {
+  try {
+    console.log('/getAllQNA 호출됨');
+    QNADocuments = await promptService.getAllQNAData();
 
     res.json(preQNADocuments);
 
@@ -118,7 +152,26 @@ router.get('/getPreQNA', async (req, res) => {
   }
 });
 
+router.get('/getQNA', async (req, res) => {
+  console.log('/getQNA 호출됨');
+  const { filename } = req.query;
+  console.log("[/getQNA] filename: ", filename);
+  try {
+      const QNAData = await promptService.getQNAData(filename);
+      await promptService.updateQNAWithIndexes();
+      await promptService.updateQNAWithCategory();
+  
+      if (QNAData) {
+          res.json(QNAData);
+      } else {
+          res.status(404).send('Document not found');
+      }
 
+
+  } catch (error) {
+      res.status(500).send('Server error');
+  }
+});
 
 
 module.exports = router;

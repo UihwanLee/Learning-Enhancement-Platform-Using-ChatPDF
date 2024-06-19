@@ -64,8 +64,8 @@ async function generateQuestions(numQuestions) {
     console.log(`filename이 ${filename}인 문서가 이미 존재합니다. Insert를 생략합니다.`);
   } else {
     // 동일한 filename이 존재하지 않는 경우에만 삽입
-    const insertResult = await db.collection('preQNA').insertOne({ filename: filename, questions: questions, answers: null });
-    console.log(`filename이 ${filename}인 문서가 성공적으로 삽입되었습니다.`, insertResult.insertedId);
+    await db.collection('preQNA').insertOne({ filename: filename, questions: questions, answers: null });
+    console.log(`filename이 ${filename}인 문서가 성공적으로 삽입되었습니다.`);
   }
   
 
@@ -85,20 +85,29 @@ async function generateDetailQuestions(numQuestions, category) {
   split_questions.pop();
   const questions = split_questions.map(item => item.trim());
 
-  await db.collection('QNA').insertOne({ filename: filename, questions: questions, answers: null });
+  // 동일한 filename이 이미 존재하는지 확인
+  const existingDocument = await db.collection('QNA').findOne({ filename: filename });
+
+  if (existingDocument) {
+    console.log(`filename이 ${filename}인 문서가 이미 존재합니다. Insert를 생략합니다.`);
+  } else {
+    // 동일한 filename이 존재하지 않는 경우에만 삽입
+    await db.collection('QNA').insertOne({ filename: filename, questions: questions, answers: null });
+    console.log(`filename이 ${filename}인 문서가 성공적으로 삽입되었습니다.`);
+  }
 
   return questions;
 }
 
-
-async function updateAnswer(answer) {
+// [사전 조사] answer 받기 처리
+async function preUpdateAnswer(answer) {
   const db = await connectDB();
   const filePath = getDocumentPath(); 
   const filename = path.basename(filePath);
 
   // answers 배열에 새로운 answer 추가
   answers.push(answer);
-  console.log("updateAnswer answer: ", answer);
+  console.log("preUpdateAnswer answer: ", answer);
 
   // answers 배열의 크기가 5가 되면 업데이트 수행
   if (answers.length === 5) {
@@ -111,6 +120,45 @@ async function updateAnswer(answer) {
 
     if (result.modifiedCount > 0) {
         console.log(`preQNA 컬렉션의 ${result.modifiedCount}개의 문서가 성공적으로 업데이트되었습니다.`);
+    } else {
+        console.log('업데이트된 문서가 없습니다.');
+    }
+
+    // 업데이트 후 answers 배열 초기화
+    answers.length = 0;
+  }
+  return result;
+}
+
+// [면접 진행] answer 받기 처리
+async function updateAnswer(answer) {
+  const db = await connectDB();
+  const QNACollection = db.collection('QNA');
+  const filePath = getDocumentPath(); 
+  const filename = path.basename(filePath);
+
+  // answers 배열에 새로운 answer 추가
+  answers.push(answer);
+  console.log("updateAnswer answer: ", answer);
+
+  const QNA = await QNACollection.findOne(
+    { filename: filename },
+    { projection: { questions: 1, answers: 1, _id: 0 } }
+  );
+
+  const questionCount = QNA.questions.length;
+
+  // answers 배열의 크기가 questionCount가 되면 업데이트 수행
+  if (answers.length === questionCount) {
+    const newAnswerArray = answers.slice(); // answers 배열 복사
+
+    const result = await db.collection('QNA').updateMany(
+        { filename: filename },
+        { $set: { answers: newAnswerArray } }
+    );
+
+    if (result.modifiedCount > 0) {
+        console.log(`QNA 컬렉션의 ${result.modifiedCount}개의 문서가 성공적으로 업데이트되었습니다.`);
     } else {
         console.log('업데이트된 문서가 없습니다.');
     }
@@ -226,7 +274,7 @@ async function preEvaluate() {
   }
   
   // '/' 로 점수, 모범답변, 종합의견 구분, '#' 로 각각의 평가 구분
-  const evalPrompt = `아래 질문과 답변 5개에 대해 각각 평가를 해줘. 평가는 점수, 모범답변, 종합의견 3가지로 나눠서 해주고 
+  const preEvalPrompt = `아래 질문과 답변 5개에 대해 각각 평가를 해줘. 평가는 점수, 모범답변, 종합의견 3가지로 나눠서 해주고 
   점수는 0~100점, 모범답변은 질문에 대해 가장 정답에 가까운 예시 답변, 종합의견은 답변에 대한 평가를 해줘. 
   다른 말은 하지말고 오직 평가만 해주고 점수, 모범답변, 종합의견 사이에는 '/' 문자를 하나 넣어주고 5개의 평가들 사이에는 '#' 문자 하나를 넣어주고, 
   첫 평가 앞과 마지막 평가 마지막에 각각 '!' 문자 하나씩 넣어줘.
@@ -254,8 +302,87 @@ async function preEvaluate() {
   4. 질문: ${preQNA.questions[3]} 답변: ${preQNA.answers[3]}
   5. 질문: ${preQNA.questions[4]} 답변: ${preQNA.answers[4]}`;
 
+  const preEvalResponse = await chatPDF(filePath, preEvalPrompt);
+  console.log("[사전 조사] chatpdf의 평가: ", preEvalResponse);
+
+  // 평가 데이터 정제
+  const cleaned_preEvalResponse = cleanData(preEvalResponse);
+
+  // '#'로 구분된 섹션을 분리
+  const sections = cleaned_preEvalResponse.split('#');
+  let preEvalResult = {};
+
+  // 각 섹션을 '/'로 나누어 result 객체에 저장
+  sections.forEach((section, index) => {
+    preEvalResult[index] = section.split('/');
+  });
+
+  // preQNA에 filename을 기준으로 evaluation 필드 추가
+  const updateResult = await preQNACollection.updateMany(
+    { filename: filename },
+    { $set: { evaluation: preEvalResult } }
+  );
+
+  if (updateResult.modifiedCount > 0) {
+      console.log(`${updateResult.modifiedCount}개의 문서가 성공적으로 업데이트되었습니다.`);
+  } else {
+      console.log('업데이트된 문서가 없습니다.');
+  }
+
+  return preEvalResult;
+}
+
+// [면접 진행] 5개의 QNA 평가
+async function evaluate() {
+  updateFileInfoWithCategory();
+  const db = await connectDB();
+  QNACollection = db.collection('QNA');
+  const filePath = getDocumentPath(); 
+  const filename = path.basename(filePath);
+
+  const QNA = await QNACollection.findOne(
+    { filename: filename },
+    { projection: { questions: 1, answers: 1, _id: 0 } }
+  );
+
+  const questionCount = QNA.questions.length;
+  if (QNA) {
+    console.log('questions:', QNA.questions);
+    console.log('answers:', QNA.answers);
+  } else {
+      console.log('해당 filename을 가진 문서를 찾을 수 없습니다.');
+  }
+  
+  const evalPrompt = `아래 질문과 답변들에 대해 각각 평가를 해줘. 평가는 점수, 모범답변, 종합의견 3가지로 나눠서 해주고 
+  점수는 0~100점, 모범답변은 질문에 대해 가장 정답에 가까운 예시 답변, 종합의견은 답변에 대한 평가를 해줘. 
+  다른 말은 하지말고 오직 평가만 해주고 점수, 모범답변, 종합의견 사이에는 '/' 문자를 하나 넣어주고 각각의 평가들 사이에는 '#' 문자 하나를 넣어주고, 
+  첫 평가 앞과 마지막 평가 마지막에 각각 '!' 문자 하나씩 넣어줘.
+  예를 들어 
+  1. 질문: 이진 검색 트리에서 삽입 연산의 평균 시간 복잡도는?
+  답변: O(log n)
+  2. 질문: 퀵 정렬의 최악의 경우 시간 복잡도는?
+  답변: O(n^2)
+  3. 질문: 그래프 탐색에서 BFS가 사용하는 자료 구조는?
+  답변: 큐
+  4. 질문: 다익스트라 알고리즘에서 가중치가 음수인 간선이 존재할 때의 문제점은?
+  답변: 잘못된 결과
+  5. 질문: 병합 정렬의 안정성 여부는?
+  답변: 안정적
+  이 질문과 답변들에 대한 평가를
+  "!80/ O(log n)/ 올바른 답변입니다. 정확한 시간 복잡도를 제시했습니다.#
+  90/ O(n^2)/ 올바른 답변입니다. 다만, 최악의 경우를 피하기 위한 피벗 선택 전략에 대한 추가 설명이 있으면 더 좋습니다.#
+  95/ 큐/ 올바른 답변입니다. 정확한 자료 구조를 제시했습니다.#
+  70/ 잘못된 결과/ 문제점을 정확히 지적했으나, 음수 가중치가 존재할 때 다익스트라 알고리즘이 왜 잘못된 결과를 도출하는지에 대한 추가 설명이 있으면 좋습니다.#
+  100/ 안정적/ 올바른 답변입니다. 병합 정렬의 안정성 여부를 정확히 제시했습니다.!"
+  이런 형식으로 다음 질문과 답변들에 대해 각각 평가를 해줘.`;
+
+  // 질문과 답변 프롬프트에 추가
+  for (let i = 1; i <= questionCount; i++) {
+    evalPrompt += `${i}. 질문: ${QNA.questions[i]} 답변: ${QNA.answers[i]}`;
+  }
+
   const evalResponse = await chatPDF(filePath, evalPrompt);
-  console.log("chatpdf의 평가: ", evalResponse);
+  console.log("[면접 진행] chatpdf의 평가: ", evalResponse);
 
   // 평가 데이터 정제
   const cleaned_evalResponse = cleanData(evalResponse);
@@ -270,7 +397,7 @@ async function preEvaluate() {
   });
 
   // preQNA에 filename을 기준으로 evaluation 필드 추가
-  const updateResult = await preQNACollection.updateMany(
+  const updateResult = await QNACollection.updateMany(
     { filename: filename },
     { $set: { evaluation: evalResult } }
   );
@@ -358,15 +485,95 @@ async function updatePreQNAWithCategory() {
   } 
 }
 
+// 모든 QNA 데이터 가져오기
+async function getAllQNAData() {
+  const db = await connectDB();
+  QNACollection = db.collection('QNA');
+
+  // 모든 도큐먼트 가져오기
+  const documents = await QNACollection.find({}).toArray();
+
+  return documents;
+}
+
+// [면접 진행] filename에 따라 questions, answers, evaluation, indexes 반환
+async function getQNAData(filename) {
+  const db = await connectDB();
+  QNACollection = db.collection('QNA');
+
+  const QNAData = await QNACollection.findOne(
+    { filename: filename },
+    { projection: { questions: 1, answers: 1, evaluation: 1, indexes: 1, _id: 0 } }
+  );
+
+  return QNAData;
+}
+
+async function updateQNAWithIndexes() {
+  try {
+    const db = await connectDB();
+    const fileInfoCollection = db.collection('fileInfo');
+    const QNACollection = db.collection('QNA');
+
+    // fileInfo 컬렉션에서 모든 문서 가져오기
+    const fileInfos = await fileInfoCollection.find({}).toArray();
+
+    for (const fileInfo of fileInfos) {
+      const { filename, indexes } = fileInfo;
+
+      // QNA 컬렉션에서 filename이 일치하는 문서 업데이트
+      const updateResult = await QNACollection.updateMany(
+        { filename: filename },
+        { $set: { indexes: indexes } }
+      );
+
+      console.log(`${filename}의 indexes 업데이트 결과:`, updateResult.modifiedCount);
+    }
+  } catch (error) {
+    console.error('MongoDB 작업 중 오류 발생:', error);
+  } 
+}
+
+async function updateQNAWithCategory() {
+  try {
+    const db = await connectDB();
+    const fileInfoCollection = db.collection('fileInfo');
+    const QNACollection = db.collection('QNA');
+
+    // fileInfo 컬렉션에서 모든 문서 가져오기
+    const fileInfos = await fileInfoCollection.find({}).toArray();
+
+    for (const fileInfo of fileInfos) {
+      const { filename, category } = fileInfo;
+
+      // preQNA 컬렉션에서 filename이 일치하는 문서 업데이트
+      const updateResult = await QNACollection.updateMany(
+        { filename: filename },
+        { $set: { category: category } }
+      );
+
+      console.log(`${filename}의 indexes 업데이트 결과:`, updateResult.modifiedCount);
+    }
+  } catch (error) {
+    console.error('MongoDB 작업 중 오류 발생:', error);
+  } 
+}
+
 module.exports = {
   generateQuestions,
   generateDetailQuestions,
+  preUpdateAnswer,
   updateAnswer,
   preEvaluate,
+  evaluate,
   getAllPreQNAData,
   getPreQNAData,
   checkTailQuestion,
   generateTailQuestion,
   updatePreQNAWithIndexes,
-  updatePreQNAWithCategory
+  updatePreQNAWithCategory,
+  getAllQNAData,
+  getQNAData,
+  updateQNAWithIndexes,
+  updateQNAWithCategory
 };
