@@ -182,7 +182,7 @@ export function useRequestDataEventListener(addEventListener, removeEventListene
     console.log("preQNAData: ", preQNAData);
     
     sendMessage("Server", "ClearLogData");
-    await delay(5000);
+    await delay(1000);
     for(let k = 0; k < 5; k++){
       sendMessage("LogManager", "AddQuestionLog", preQNAData.data.questions[k]);
       sendMessage("LogManager", "AddAnswerLog", preQNAData.data.answers[k]);

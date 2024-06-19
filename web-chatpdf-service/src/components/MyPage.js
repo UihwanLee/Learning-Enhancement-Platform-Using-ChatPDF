@@ -6,6 +6,9 @@ import RechartsDocument from './RechartsDocument';
 import RechartsMyData from './RechartMyData';
 import RechartsCategory from './RechartCategory';
 import './MyPage.css'; // CSS 파일을 import
+import axios from 'axios';
+
+
 
 // JSON 데이터
 const jsonData = [
@@ -153,24 +156,31 @@ const COLORS = ['#0CD3FF', '#AB0F21', '#0088FE', '#FF8042'];
 
 
 const MyPage = () => {
+  const [data, setData] = useState([]);
+  const [preQNAdata, setPreQNAData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  const [data, setData] = useState(null);
+  //데이터 정보 받아오기
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const preQNA = await axios.get('http://localhost:3001/prompt/getAllPreQNA');
+        console.log(preQNA.data[0].filename);
+        console.log(preQNA.data[0].questions);
+        console.log(preQNA.data[0].answers);
+        console.log(preQNA.data[0].evaluation);
+        console.log(preQNA.data[0].indexes);
+        setPreQNAData(preQNA.data);
+        setLoading(false);
+      } catch (error) {
+        setError(error.toString());
+        setLoading(false);
+      }
+    };
 
-// 데이터 정보 받아오기
-//   useEffect(() => {
-//     // 데이터 fetch 함수
-//     const fetchData = async () => {
-//       try {
-//         const response = await fetch('/api/data'); // API 경로 수정 필요
-//         const result = await response.json();
-//         setData(result);
-//       } catch (error) {
-//         console.error('Error fetching data:', error);
-//       }
-//     };
-
-//     fetchData();
-//   }, []);
+    fetchData();
+  }, []);
 
   useEffect(() => {
       // 데이터 fetch 함수
@@ -178,24 +188,32 @@ const MyPage = () => {
 
   }, []); 
 
-  if (!data) {
+  if (!preQNAdata) {
       return <div>Loading...</div>;
   }
 
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>Error: {error}</p>;
+  }
+
   // 데이터 원소의 개수
-  const dataCount = data.length;
+  const dataCount = preQNAdata.length;
 
   // 질문 답변 횟수 계산
-  const totalEvaluations = data.reduce((total, item) => {
+  const totalEvaluations = preQNAdata.reduce((total, item) => {
       const evaluationCount = item.evaluation ? Object.keys(item.evaluation).length : 0;
       return total + evaluationCount;
   }, 0);
 
   // 카테고리별로 데이터 필터링
-  const algorithmDocuments = data.filter(doc => doc.category === '알고리즘');
-  const networkDocuments = data.filter(doc => doc.category === '네트워크');
-  const osDocuments = data.filter(doc => doc.category === '운영체제');
-  const dbDocuments = data.filter(doc => doc.category === '데이터베이스');
+  const algorithmDocuments = preQNAdata.filter(doc => doc.category === '알고리즘');
+  const networkDocuments = preQNAdata.filter(doc => doc.category === '네트워크');
+  const osDocuments = preQNAdata.filter(doc => doc.category === '운영체제');
+  const dbDocuments = preQNAdata.filter(doc => doc.category === '데이터베이스');
 
   return (
     <div>
@@ -223,17 +241,17 @@ const MyPage = () => {
         </div>
       </div>
       <div className="mypage-section">
-      <RechartsCategory data={data} />
-      <RechartsMyData data={data} />
+      <RechartsCategory data={preQNAdata} />
+      <RechartsMyData data={preQNAdata} />
       </div>
       <div className="mypage-section">
         <h1 className="mypage-section-title">전체 지표</h1>
         <div className="mypage-chart-container">
-          <RechartsEvaluate data={data} />
+          <RechartsEvaluate data={preQNAdata} />
           <div className="recharts-day-container">
   <h5 className="mypage-section-subtitle" style={{ textAlign: 'center' }}>{''}<br/>{''}</h5>
   <div style={{ width: '100%', textAlign: 'center' }}>
-  <RechartsDay data={data}/>
+  <RechartsDay data={preQNAdata}/>
   </div>
 </div>
 

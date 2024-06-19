@@ -284,6 +284,17 @@ async function preEvaluate() {
   return evalResult;
 }
 
+// 모든 preQNA 데이터 가져오기
+async function getAllPreQNAData() {
+  const db = await connectDB();
+  preQNACollection = db.collection('preQNA');
+
+  // 모든 도큐먼트 가져오기
+  const documents = await preQNACollection.find({}).toArray();
+
+  return documents;
+}
+
 // [사전 조사] filename에 따라 questions, answers, evaluation, indexes 반환
 async function getPreQNAData(filename) {
   const db = await connectDB();
@@ -322,13 +333,40 @@ async function updatePreQNAWithIndexes() {
   } 
 }
 
+async function updatePreQNAWithCategory() {
+  try {
+    const db = await connectDB();
+    const fileInfoCollection = db.collection('fileInfo');
+    const preQNACollection = db.collection('preQNA');
+
+    // fileInfo 컬렉션에서 모든 문서 가져오기
+    const fileInfos = await fileInfoCollection.find({}).toArray();
+
+    for (const fileInfo of fileInfos) {
+      const { filename, category } = fileInfo;
+
+      // preQNA 컬렉션에서 filename이 일치하는 문서 업데이트
+      const updateResult = await preQNACollection.updateMany(
+        { filename: filename },
+        { $set: { category: category } }
+      );
+
+      console.log(`${filename}의 indexes 업데이트 결과:`, updateResult.modifiedCount);
+    }
+  } catch (error) {
+    console.error('MongoDB 작업 중 오류 발생:', error);
+  } 
+}
+
 module.exports = {
   generateQuestions,
   generateDetailQuestions,
   updateAnswer,
   preEvaluate,
+  getAllPreQNAData,
   getPreQNAData,
   checkTailQuestion,
   generateTailQuestion,
-  updatePreQNAWithIndexes
+  updatePreQNAWithIndexes,
+  updatePreQNAWithCategory
 };

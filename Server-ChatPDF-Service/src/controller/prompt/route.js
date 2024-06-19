@@ -84,6 +84,19 @@ router.post('/preEval', async (req, res) => {
   }
 });
 
+router.get('/getAllPreQNA', async (req, res) => {
+  try {
+    console.log('/getAllPreQNA 호출됨');
+    preQNADocuments = await promptService.getAllPreQNAData();
+
+    res.json(preQNADocuments);
+
+  } catch (error) {
+    console.error('MongoDB 작업 중 오류 발생:', error);
+    res.status(500).send('서버 오류 발생');
+  } 
+});
+
 router.get('/getPreQNA', async (req, res) => {
   console.log('/getPreQNA 호출됨');
   const { filename } = req.query;
@@ -91,6 +104,8 @@ router.get('/getPreQNA', async (req, res) => {
   try {
       const preQNAData = await promptService.getPreQNAData(filename);
       await promptService.updatePreQNAWithIndexes();
+      await promptService.updatePreQNAWithCategory();
+  
       if (preQNAData) {
           res.json(preQNAData);
       } else {
