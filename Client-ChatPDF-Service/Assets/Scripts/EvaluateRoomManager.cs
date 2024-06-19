@@ -51,12 +51,6 @@ public class EvaluateRoomManager : MonoBehaviour
 
             // 방 정렬
             SortRoomByID();
-
-            if (server.isCreateEvaluteRoom)
-            {
-                CreateRoom(server.GetInterviewRoom());
-                server.isCreateEvaluteRoom = false;
-            }
         }
     }
 
@@ -85,6 +79,11 @@ public class EvaluateRoomManager : MonoBehaviour
         string roomTitle = "<size=20> 평가 |" + room.title + "|</size> " + " <size=20>" + room.title;
         room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
         room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => sceneManager.LoadEvaluateRoom(room));
+    }
+
+    public void CreateCurrentEvaluteRoom()
+    {
+        CreateRoom(server.GetInterviewRoom());
     }
 
     public void CreateRoom(InterviewRoom interviewRoom)
