@@ -54,8 +54,8 @@ router.post('/studyRoomData', async (req, res) => {
     // s3downloadedFilepath:'C:/Users/lenovo/Documents/GitHub/Learning-Enhancement-Platform-Using-ChatPDF/Server-ChatPDF-Service/src/controller/files/S3files' + documentName + '/' + roomData.titlePDF
     const FileInfo = {
       filename: roomData.titlePDF,
-      filepath: 'C:/Users/sktpg/OneDrive/Desktop/졸작 파일/' + roomData.titlePDF,
-      s3downloadedFilepath: 'C:/Users/sktpg/OneDrive/문서/GitHub/Learning-Enhancement-Platform-Using-ChatPDF/Server-ChatPDF-Service/src/controller/files/S3files/' + documentName + '/' + roomData.titlePDF
+      filepath: 'C:/Users/lenovo/Desktop/노트북 졸작 테스트 파일/' + roomData.titlePDF,
+      s3downloadedFilepath:'C:/Users/lenovo/Documents/GitHub/Learning-Enhancement-Platform-Using-ChatPDF/Server-ChatPDF-Service/src/controller/files/S3files' + documentName + '/' + roomData.titlePDF
     };
     console.log("FileInfo:", FileInfo);
 
