@@ -4,34 +4,50 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
+using UnityEngine.SocialPlatforms.Impl;
+using System.Linq;
 
 public class InterviewRoomManager : MonoBehaviour
 {
     [Header("InterviewRoom")]
-    // InterviewRoom »ý¼ºµÉ ºÎ¸ð ¿ÀºêÁ§Æ®
+    // InterviewRoom ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Î¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
     [SerializeField]
     private GameObject parent;
 
-    // InterviewRoom ÇÁ¸®ÆÕ
+    [SerializeField]
+    private GameObject parent_pre;
+
+    // InterviewRoom ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
     [SerializeField]
     private GameObject prefab;
 
-    // InterviewRoom ÀüÃ¼¸¦ °ü¸®ÇÒ RoomList
+    // InterviewRoom ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ RoomList
     [SerializeField]
     private List<GameObject> roomList = new List<GameObject>();
+
+    private List<GameObject> preRoomList = new List<GameObject>();
 
     [Header("UI")]
     // Title InputField
     [SerializeField]
     private TMP_InputField titleInputField;
 
-    // ¼­¹ö Å¬·¡½º
+    // ï¿½ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
     private Server server;
 
+    [Header("Room Setting")]
     // RoomSetting variable
     private string title;
     private string category;
-    private int index;
+    private string document;
+    private string index;
+
+    private List<List<string>> documentHashList = new List<List<string>>();
+    [SerializeField]
+    private TMP_Dropdown dropdown_document;
+    [SerializeField]
+    private TMP_Dropdown dropdown_index;
 
     // PromptSetting variable
     private int interviewerCount;
@@ -44,25 +60,26 @@ public class InterviewRoomManager : MonoBehaviour
     private List<string> roomDataList;
 
     [Header("Manager")]
-    // ¾À ¸Å´ÏÀú Å¬·¡½º
+    // ï¿½ï¿½ ï¿½Å´ï¿½ï¿½ï¿½ Å¬ï¿½ï¿½ï¿½ï¿½
     [SerializeField]
     private SceneManagment sceneManager;
 
-    // UI ¸Å´ÏÀú
+    // UI ï¿½Å´ï¿½ï¿½ï¿½
     [SerializeField]
     private UIManager uiManager;
 
     // Start is called before the first frame update
     void Start()
     {
-        // Sever ÃÊ±âÈ­
+        // Sever ï¿½Ê±ï¿½È­
         server = FindObjectOfType<Server>();
 
-        // User ´Ð³×ÀÓ ÃÊ±âÈ­
+        // User ï¿½Ð³ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
         SetUserNickName();
 
-        // ¹æ ÃÊ±â »ý¼º
-        if(server)
+
+        // ï¿½ï¿½ ï¿½Ê±ï¿½ ï¿½ï¿½ï¿½ï¿½
+        if (server)
         {
             newRoom = new InterviewRoom();
             roomDataList = server.GetInterviewRoomDataList();
@@ -72,8 +89,11 @@ public class InterviewRoomManager : MonoBehaviour
                 InitCreateRoom(roomData);
             }
 
-            // ¹æ Á¤·Ä
+            // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             SortRoomByID();
+
+            // RoomSetting ï¿½Ê±ï¿½È­
+            InitRoomSetting();
         }
     }
 
@@ -82,16 +102,15 @@ public class InterviewRoomManager : MonoBehaviour
         if(server)
         {
             TextMeshProUGUI nicknameText = GameObject.Find("NickName").GetComponent<TextMeshProUGUI>();
-            nicknameText.text = server.GetUserNickName() + System.Environment.NewLine + "´ÔÀÇ ·Îºñ";
+            nicknameText.text = server.GetUserNickName() + System.Environment.NewLine + "ï¿½ï¿½ï¿½ï¿½ ï¿½Îºï¿½";
         }
     }
 
     public void SetRecommendRoom()
     {
-        // ÃßÃµ ¼³Á¤À¸·Î ¼¼ÆÃ
+        // ï¿½ï¿½Ãµ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         InitTitle();
         SetCategory(0);
-        SetIndex();
         SetInterviewerCount(1);
         SetInterviewerGender(1);
         SetInterviewTime(60.0f);
@@ -100,87 +119,190 @@ public class InterviewRoomManager : MonoBehaviour
         uiManager.SetRecommandState();
     }
 
+    private void InitRoomSetting()
+    {
+        InitDocument();
+
+        dropdown_index.onValueChanged.AddListener(delegate { SetIndex(dropdown_document.value); });
+        SetIndex(dropdown_document.value);
+    }
+
     public void InitTitle()
     {
-        // ¹æ Á¦¸ñ ÃÊ±âÈ­
-        this.titleInputField.text = "³ª¸¸ÀÇ ÇÐ½À¹æ(" + roomList.Count + ")";
+        // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
+        this.titleInputField.text = "ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½(" + roomList.Count + ")";
+    }
+
+    private void InitDocument()
+    {
+        // ï¿½ï¿½ï¿½ñ½º¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ç´ï¿½ category ï¿½ï¿½ ï¿½Ð½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ê±ï¿½È­
+        documentHashList = server.GetDocumentHashList();
+    }
+
+    private void ChangeDocumentList(int category)
+    {
+        if (documentHashList.Count < category) return;
+        if (server)
+        {
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ document ï¿½Ê±ï¿½È­
+            dropdown_document.options.Clear();
+
+            List<string> documentList = documentHashList[category];
+
+            for (int i = 0; i < documentList.Count; i++)
+            {
+                if (i == 0) this.document = documentList[i];
+                dropdown_document.options.Add(new TMP_Dropdown.OptionData(documentList[i], null));
+            }
+
+            dropdown_document.onValueChanged.AddListener(delegate { SetDocument(dropdown_document.value); });
+            SetDocument(dropdown_document.value);
+
+            dropdown_document.RefreshShownValue();
+
+
+            // ï¿½Ð½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ê¿ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            dropdown_index.options.Clear();
+            if(documentList.Count > 0)
+            {
+                this.document = dropdown_document.options[0].text;
+                ChangeIndexList(this.document);
+            }
+        }
+    }
+
+    public void UpdateIndex()
+    {
+        ChangeIndexList(this.document);
+    }
+
+    public void ChangeIndexList(string document)
+    {
+        if(server)
+        {
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ö´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ index ï¿½Ê±ï¿½È­
+            dropdown_index.options.Clear();
+
+            List<string> indexList = server.SetIndexByDocument(document);
+
+            for(int i=0; i<indexList.Count; i++)
+            {
+                dropdown_index.options.Add(new TMP_Dropdown.OptionData(indexList[i], null));
+            }
+
+            dropdown_index.onValueChanged.AddListener(delegate { SetIndex(dropdown_index.value); });
+            SetIndex(dropdown_index.value);
+
+            dropdown_index.RefreshShownValue();
+        }
     }
 
     public void SetTitle()
     {
-        // ÀÔ·Â ¹ÞÀº Á¦¸ñ ¼³Á¤
+        // ï¿½Ô·ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         this.title = this.titleInputField.text;
     }
 
     public void SetCategory(int category)
     {
-        // ÇÐ½À Ä«Å×°í¸® ¼³Á¤
+        // ï¿½Ð½ï¿½ Ä«ï¿½×°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         switch (category)
         {
             case 0:
-                this.category = "¾Ë°í¸®Áò";
+                this.category = "ï¿½Ë°ï¿½ï¿½ï¿½ï¿½ï¿½";
+                ChangeDocumentList(0);
                 break;
             case 1:
-                this.category = "³×Æ®¿öÅ©";
+                this.category = "ï¿½ï¿½Æ®ï¿½ï¿½Å©";
+                ChangeDocumentList(1);
                 break;
             case 2:
-                this.category = "¿î¿µÃ¼Á¦";
+                this.category = "ï¿½î¿µÃ¼ï¿½ï¿½";
+                ChangeDocumentList(2);
                 break;
             case 3:
-                this.category = "Web";
+                this.category = "Database";
+                ChangeDocumentList(3);
                 break;
             default:
                 break;
         }
     }
 
-    public void SetIndex()
+    public void SetDocument(int option)
     {
-        // ÇÐ½À ¸ñÂ÷ ¼³Á¤
-        this.index = 0;
+        if(dropdown_document.options.Count == 0)
+        {
+            this.document = "";
+            return;
+        }
+
+        this.document = dropdown_document.options[option].text;
+        ChangeIndexList(this.document);
+    }
+
+    public void SetIndex(int option)
+    {
+        if (dropdown_index.options.Count == 0)
+        {
+            this.index = "";
+            return;
+        }
+
+        // ï¿½Ð½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        this.index = dropdown_index.options[option].text;
     }
 
     public void SetInterviewerCount(int num)
     {
-        // ¸éÁ¢ÀÚ ¼ö ¼³Á¤
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         this.interviewerCount = num;
     }
 
     public void SetInterviewerGender(int gender)
     {
-        // ¸éÁ¢ÀÚ ¼ºº° ¼³Á¤
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         this.interviewerGender = gender;
     }
 
     public void SetInterviewTime(float time)
     {
-        // ¸éÁ¢ ´äº¯ ½Ã°£ ÃÊ ¼³Á¤
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½äº¯ ï¿½Ã°ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         this.interviewTime = time;
     }
 
     public void SetInterviewStyle(int style)
     {
-        // ¸éÁ¢ ½ºÅ¸ÀÏ ¼³Á¤
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Å¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         this.interviewStyle = style;
     }
 
     public void TryCreateRoom()
     {
-        // ¹æ »ý¼º Àü ¿¹¿ÜÃ³¸®
+        // ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ã³ï¿½ï¿½
+        if(this.document == "")
+        {
+            uiManager.NoticeMessage("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½.");
+            return;
+        }
+
+        CreateRoom();
     }
 
     private void InitCreateRoom(string roomData)
     {
-        // ÃÊ±â ¹æ »ý¼º 
+        // ï¿½Ê±ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ 
         JsonUtility.FromJsonOverwrite(roomData, newRoom);
 
         var roomObj = Instantiate(prefab, parent.transform) as GameObject;
 
-        // Room Setting Àû¿ë
+        // Room Setting ï¿½ï¿½ï¿½ï¿½
         var room = roomObj.GetComponent<InterviewRoom>();
         room.id = newRoom.id;
+        if(server) room.nickname = server.GetUserNickName();
         room.title = newRoom.title;
         room.category = newRoom.category;
+        room.document = newRoom.document;
         room.index = newRoom.index;
 
         room.interviewerCount = newRoom.interviewerCount;
@@ -190,28 +312,38 @@ public class InterviewRoomManager : MonoBehaviour
 
         roomList.Add(roomObj);
 
-        // UI ¹æ ¸ñ·Ï »ý¼º
-        string roomTitle = "<size=36>" + room.title + "|</size> " + " <size=20>" + room.category + " | " + room.index + "</size>";
+        // UI ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        string roomTitle = "<size=20>" + room.title + "|</size> " + " <size=20>" + room.category + " | " + room.index + "</size>";
         room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
-        room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => sceneManager.LoadInterviewRoom(room.interviewerGender));
-        room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() => DestroyRoom(room.id));
+        room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => StartPrevInterview(room));
+        room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() => StartBaseInterview(room));
+        room.gameObject.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(() => EvluateRoom(room));
+
+        if(room.isPrevInterview == 1)
+        {
+            room.gameObject.transform.GetChild(1).GetComponent<GameObject>().SetActive(false);
+        }
     }
 
     public void CreateRoom()
     {
-        // Room »ý¼º
+        // Room ï¿½ï¿½ï¿½ï¿½
         var roomObj = Instantiate(prefab, parent.transform) as GameObject;
 
-        // Room Setting ¼³Á¤
+        // Room Setting ï¿½ï¿½ï¿½ï¿½
         SetTitle();
 
-        // Room Setting Àû¿ë
+        // Room Setting ï¿½ï¿½ï¿½ï¿½
         var room = roomObj.GetComponent<InterviewRoom>();
         room.id = roomList.Count;
+        if (server) room.nickname = server.GetUserNickName();
         room.title = this.title;
         room.category = this.category;
+        room.document = this.document;
         room.index = this.index;
 
+        room.isPrevInterview = 0;
+        room.interviewType = 0;
         room.interviewerCount = this.interviewerCount;
         room.interviewerGender = this.interviewerGender;
         room.interviewTime = this.interviewTime;
@@ -219,13 +351,14 @@ public class InterviewRoomManager : MonoBehaviour
 
         roomList.Add(roomObj);
 
-        // UI ¹æ ¸ñ·Ï »ý¼º
-        string roomTitle = "<size=36>" + room.title + "|</size> " + " <size=20>" + room.category + " | " + room.index + "</size>" ;
+        // UI ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+        string roomTitle = "<size=20>" + room.title + "|</size> " + " <size=20>" + room.category + " | " + room.index + "</size>" ;
         room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
-        room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(()=> sceneManager.LoadInterviewRoom(room.interviewerGender));
-        room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(()=> DestroyRoom(room.id));
+        room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => StartPrevInterview(room));
+        room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(()=> StartBaseInterview(room));
+        room.gameObject.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(()=> EvluateRoom(room));
 
-        // Room Data ÀúÀå
+        // Room Data ï¿½ï¿½ï¿½ï¿½
         if (server)
         {
             server.SaveInterviewRoomData(room);
@@ -234,9 +367,74 @@ public class InterviewRoomManager : MonoBehaviour
         SortRoomByID();
     }
 
+    public List<string> SplitString(string input)
+    {
+        char[] delimiter = { '/' };
+        List<string> parts = input.Split(delimiter, StringSplitOptions.RemoveEmptyEntries).ToList();
+
+        return parts;
+    }
+
+
+    public void CreatePrevInterviewRoom(string score)
+    {
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ç°¡ ï¿½ï¿½ï¿½ï¿½ roomData ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+        List<string> indexes = new List<string>();
+        if (server)
+        {
+            string roomJSON = server.GetCurrentInterviewRoom();
+            InterviewRoom newRoom = new InterviewRoom();
+            JsonUtility.FromJsonOverwrite(roomJSON, newRoom);
+            indexes = server.SetIndexByDocument(newRoom.title);
+        }
+
+        List<string> scoreList = SplitString(score);
+
+        for (int i=0; i< 5; i++)
+        {
+            // 30ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ Ä«ï¿½×°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+            if (int.Parse(scoreList[i]) <= 50)
+            {
+                var roomObj = Instantiate(prefab, parent_pre.transform) as GameObject;
+
+                // Room Setting ï¿½ï¿½ï¿½ï¿½
+                var room = roomObj.GetComponent<InterviewRoom>();
+                room.id = newRoom.id;
+                if (server) room.nickname = server.GetUserNickName();
+                room.title = newRoom.title;
+                room.category = newRoom.category;
+                room.document = newRoom.document;
+                room.index = scoreList[i+5];
+
+                room.interviewerCount = newRoom.interviewerCount;
+                room.interviewerGender = newRoom.interviewerGender;
+                room.interviewTime = newRoom.interviewTime;
+                room.interviewStyle = newRoom.interviewStyle;
+
+                // UI ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+                string roomTitle = "<size=20>" + "ï¿½ï¿½ï¿½ï¿½ï¿½Ù¸ï¿½" + "|</size> " + " <size=20>" + room.category + " | " + room.index + "</size>";
+                room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
+                room.gameObject.transform.GetChild(1).GetComponent<Image>().enabled = false;
+                room.gameObject.transform.GetChild(1).GetComponent<Button>().enabled = false;
+                room.gameObject.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
+                room.gameObject.transform.GetChild(2).GetComponent<Button>().onClick.AddListener(() => StartBaseInterview(room));
+                room.gameObject.transform.GetChild(3).GetComponent<Button>().onClick.AddListener(() => EvluateRoom(room));
+
+                preRoomList.Add(roomObj);
+
+                if (room.isPrevInterview == 1)
+                {
+                    room.gameObject.transform.GetChild(1).GetComponent<Image>().enabled = false;
+                    room.gameObject.transform.GetChild(1).GetComponent<Button>().enabled = false;
+                    room.gameObject.transform.GetChild(1).GetChild(0).GetComponent<TextMeshProUGUI>().text = "";
+                }
+            }
+        }
+    }
+
     public void SortRoomByID()
     {
-        // ID ¼ø´ë·Î ¹æ Á¤·Ä(»ý¼ºµÈ ¼øÀ¸·Î Á¤·Ä)
+        // ID ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
         roomList.Sort((a, b) => {
             InterviewRoom roomA = a.GetComponent<InterviewRoom>();
             InterviewRoom roomB = b.GetComponent<InterviewRoom>();
@@ -259,7 +457,7 @@ public class InterviewRoomManager : MonoBehaviour
 
     public void SortRoomByCategory()
     {
-        // Ä«Å×°í¸® ¼ø´ë·Î ¹æ Á¤·Ä(»ý¼ºµÈ ¼øÀ¸·Î Á¤·Ä)
+        // Ä«ï¿½×°ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½(ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
         roomList.Sort((a, b) => {
             InterviewRoom roomA = a.GetComponent<InterviewRoom>();
             InterviewRoom roomB = b.GetComponent<InterviewRoom>();
@@ -280,25 +478,31 @@ public class InterviewRoomManager : MonoBehaviour
         }
     }
 
-    public void DestroyRoom(int id)
+    public void StartPrevInterview(InterviewRoom room)
     {
-        // prefab ¿ÀºêÁ§Æ® »èÁ¦
-        Destroy(roomList[id]);
+        room.interviewType = 0;
+        sceneManager.LoadInterviewRoom(room);
+    }
 
-        // ¸®½ºÆ®¿¡¼­ »èÁ¦
-        for (int i = roomList.Count - 1; i >= 0; i--)
+    public void StartBaseInterview(InterviewRoom room)
+    {
+        room.interviewType = 1;
+        sceneManager.LoadInterviewRoom(room);
+    }
+
+    public void EvluateRoom(InterviewRoom room)
+    {
+        room.interviewType = 1;
+        // ï¿½ï¿½
+        if (server)
         {
-            if(i== id)
-            {
-                roomList.Remove(roomList[i]);
-                server.RemoveInterviewRoomData(i);
-            }
+            server.RequestEvaluateUnity(room);
         }
     }
 
     public void UploadFile()
     {
-        // ¼­¹ö¿¡ ¾÷·Îµå ¿äÃ»
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Îµï¿½ ï¿½ï¿½Ã»
         server.UploadFile();
     }
 }

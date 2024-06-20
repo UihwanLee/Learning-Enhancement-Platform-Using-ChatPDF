@@ -6,8 +6,10 @@ import reportWebVitals from './reportWebVitals';
 
 import { BrowserRouter as Router, Route, Routes, BrowserRouter } from 'react-router-dom';
 import Service from './Service';
-import MyPage from './components/MyPage'
+import MyPage from './components/MyPage';
 import Login from './login';
+import TestPage from './components/TestPage';
+import BulletinBoard from './components/BulletinBoard';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -16,7 +18,8 @@ root.render(
       <Routes>
         <Route path="/" element={<App/>} />
         <Route path="/mypage" element={<MyPage/>} />
-        <Route path="/service" element={<Login/>} />
+        <Route path="/service" element={<Service/>} />
+        <Route path="/bulletinboard" element={<BulletinBoard />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>

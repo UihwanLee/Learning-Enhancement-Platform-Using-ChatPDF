@@ -12,28 +12,62 @@ public class SceneManagment : MonoBehaviour
         server = FindObjectOfType<Server>();
     }
 
-
     public void LoadLobby()
     {
         // Lobby 씬으로 이동
         SceneManager.LoadScene(1);
     }
 
-    public void LoadStudyRoom(string titlePDF)
+    public void LoadLobbyAndCreateEvaluateRoom()
+    {
+        if (server)
+        {
+            InterviewRoom room = server.GetInterviewRoom();
+            server.isCreateEvaluteRoom = true;
+            server.EndInterview(room);
+        }
+        // Lobby 씬으로 이동
+        SceneManager.LoadScene(1);
+    }
+
+    public void LoadStudyRoom(StudyRoom room)
     {
         // StudyRoom 이동 전 성별 설정
-        if (server) server.SetPDFTitle(titlePDF);
+        if (server)
+        {
+            server.SetPDFTitle(room.titlePDF);
+            server.RequestStudyRoomDataUnity(room);
+            server.SetCurrentStudyRoom(room);
+        }
 
         // StudyRoom 씬으로 이동
         SceneManager.LoadScene(2);
     }
 
-    public void LoadInterviewRoom(int interviewGender)
+    public void LoadInterviewRoom(InterviewRoom room)
     {
         // InterviewRoom 이동 전 성별 설정
-        if (server) server.SetInterViewGender(interviewGender);
+        if (server)
+        {
+            server.ClearScoreList();
+            server.SetInterViewGender(room.interviewerGender);
+            // room Data 전달
+            server.RequestInterviewRoomDataUnity(room);
+            server.SetCurrentInterviewRoom(room);
+        }
 
         // InterviewRoom 씬으로 이동
         SceneManager.LoadScene(3);
+    }
+
+    public void LoadEvaluateRoom(InterviewRoom room)
+    {
+        // roomData 불러와서 logData 세팅
+        if(server)
+        {
+            server.RequestEvaluateRoomDataUnity(room);
+        }
+
+        SceneManager.LoadScene(4);
     }
 }

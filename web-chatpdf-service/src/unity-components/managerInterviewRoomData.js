@@ -1,11 +1,12 @@
 import { useCallback, useEffect } from "react";
+import axios from "axios";
 
 export function useManagerInterviewRoomDataEventListener(addEventListener, removeEventListener) {
 
   // roomdata 서버로 send
   const sendRoomdataToServer = async (roomData) => {
     try {
-      const response = await axios.post('http://localhost:3001/room/RoomData', {
+      const response = await axios.post('http://localhost:3001/room/interviewRoomData', {
         roomData: roomData
       });
       
@@ -45,4 +46,19 @@ export function useManagerInterviewRoomDataEventListener(addEventListener, remov
       removeEventListener("DeleteInterviewRoomData", DeleteRoomData);
     };
   }, [addEventListener, removeEventListener, SaveRoomData]);
+
+  // Room Data 저장
+  // 방 생성 누르면 호출
+  const SaveEvaluateRoom = useCallback((roomData) =>{
+    // RoomDataList에 roomData JSON 정보 저장
+    console.log(roomData);
+    sendRoomdataToServer(roomData);
+  });
+
+  useEffect(() => {
+    addEventListener("SendEvaluateRoomData", SaveEvaluateRoom);
+    return () => {
+      removeEventListener("SendEvaluateRoomData", SaveEvaluateRoom);
+    };
+  }, [addEventListener, removeEventListener, SaveEvaluateRoom]);
 }

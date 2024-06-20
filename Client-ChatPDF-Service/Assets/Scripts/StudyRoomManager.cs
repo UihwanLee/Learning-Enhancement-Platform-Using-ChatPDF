@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -45,7 +46,7 @@ public class StudyRoomManager : MonoBehaviour
         if (server)
         {
             newRoom = new StudyRoom();
-            roomDataList = server.GetInterviewRoomDataList();
+            roomDataList = server.GetStudyRoomDataList();
 
             if(roomDataList.Count > 0)
             {
@@ -54,27 +55,15 @@ public class StudyRoomManager : MonoBehaviour
                     InitCreateRoom(roomData);
                 }
             }
-            else
-            {
-                // 檬扁 StudyRoom 积己
-                CreateRecommendStudyRoom();
-            }
 
             // 规 沥纺
             SortRoomByID();
         }
     }
 
-    private void CreateRecommendStudyRoom()
-    {
-        this.title = "舅绊府硫";
-        this.titlePDF = "Alogrithm Notes";
-
-        CreateRoom();
-    }
-
     private void InitCreateRoom(string roomData)
     {
+
         // 檬扁 规 积己 
         JsonUtility.FromJsonOverwrite(roomData, newRoom);
 
@@ -82,40 +71,87 @@ public class StudyRoomManager : MonoBehaviour
 
         // Room Setting 利侩
         var room = roomObj.GetComponent<StudyRoom>();
-        room.id = roomList.Count;
-        room.title = this.title;
-        room.titlePDF = this.titlePDF;
+        room.id = newRoom.id;
+        room.nickname = newRoom.nickname;
+        room.title = newRoom.title;
+        room.titlePDF = newRoom.titlePDF;
+        room.category = newRoom.category;
+        room.indexes = newRoom.indexes;
 
         roomList.Add(roomObj);
 
         // UI 规 格废 积己
-        string roomTitle = "<size=36>" + room.title + "|</size> " + " <size=20>" + room.titlePDF;
+        string roomTitle = "<size=20>" + room.title + "|</size> " + " <size=20>" + room.titlePDF;
         room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
-        room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => sceneManager.LoadStudyRoom(room.titlePDF));
+        room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => sceneManager.LoadStudyRoom(room));
+
+        if (server)
+        {
+            server.AddDocument(room.category, room.titlePDF);
+        }
     }
 
-    public void CreateRoom()
+    public static void SplitString(string input, out string firstPart, out string secondPart, out string thirdPart, out string FourPart, out string FithPart, out string SixPart, out string SevenPart)
     {
+        char[] delimiter = { '/' };
+        string[] parts = input.Split(delimiter, StringSplitOptions.RemoveEmptyEntries);
+
+        if (parts.Length >= 2)
+        {
+            firstPart = parts[0];
+            secondPart = parts[1];
+            thirdPart = parts[2];
+            FourPart = parts[3];
+            FithPart = parts[4];
+            SixPart = parts[5];
+            SevenPart = parts[6];
+        }
+        else
+        {
+            firstPart = input;
+            secondPart = string.Empty;
+            thirdPart = string.Empty;
+            FourPart = string.Empty;
+            FithPart = string.Empty;
+            SixPart = string.Empty;
+            SevenPart = string.Empty;
+        }
+    }
+
+    public void CreateRoom(string data)
+    {
+        string category, file, index1, index2, index3, index4, index5;
+        SplitString(data, out category, out file, out index1, out index2, out index3, out index4, out index5);
+
         // Room 积己
         var roomObj = Instantiate(prefab, parent.transform) as GameObject;
 
         // Room Setting 利侩
         var room = roomObj.GetComponent<StudyRoom>();
         room.id = roomList.Count;
-        room.title = this.title;
-        room.titlePDF = this.titlePDF;
+        if(server) room.nickname = server.GetUserNickName();
+        room.title = "唱父狼 切嚼规(" + roomList.Count + ")";
+        room.category = category;
+        room.titlePDF = file;
+        room.indexes.Add("傈眉");
+        room.indexes.Add(index1);
+        room.indexes.Add(index2);
+        room.indexes.Add(index3);
+        room.indexes.Add(index4);
+        room.indexes.Add(index5);
 
         roomList.Add(roomObj);
 
         // UI 规 格废 积己
-        string roomTitle = "<size=36>" + room.title + "|</size> " + " <size=20>" + room.titlePDF;
+        string roomTitle = "<size=20>" + room.title + "|</size> " + " <size=20>" + room.titlePDF;
         room.gameObject.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = roomTitle;
-        room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => sceneManager.LoadStudyRoom(room.titlePDF));
+        room.gameObject.transform.GetChild(1).GetComponent<Button>().onClick.AddListener(() => sceneManager.LoadStudyRoom(room));
 
         // Room Data 历厘
         if (server)
         {
             server.SaveStudyRoomData(room);
+            server.AddDocument(category, file);
         }
 
         SortRoomByID();
