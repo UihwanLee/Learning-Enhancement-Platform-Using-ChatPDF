@@ -18,7 +18,6 @@ import {
 
     return (
       <>
-        <h3>{props.document}</h3>
         <LineChart width={600} height={300} data={evaluationData}>
           <Line type="linear" dataKey="score" stroke={props.color} strokeWidth={3} />
           <CartesianGrid stroke="#ccc" />
@@ -27,6 +26,7 @@ import {
           <Tooltip />
           <Legend />
         </LineChart>
+        <h3>{props.type}</h3>
       </>
     );
   };

@@ -20,6 +20,7 @@ const RechartsDay = (props) => {
   const [originalData, setOriginalData] = useState([]);
   const [maxScore, setMaxScore] = useState(100);
   const data = props.data;
+  const data2 = props.data2;
   
   useEffect(() => {
     if (data.length > 0) {
@@ -31,8 +32,25 @@ const RechartsDay = (props) => {
         "데이터베이스": 0
       };
 
-      // 각 카테고리별 평가 점수 합계를 계산
+      // 사전조사: 각 카테고리별 평가 점수 합계를 계산
       data.forEach(item => {
+        const { category, evaluation } = item;
+        if (evaluation) {
+          Object.values(evaluation).forEach(evaluation => {
+            if (evaluation && evaluation.length > 0) {
+              const score = parseInt(evaluation[0], 10);
+              if (!isNaN(score)) {
+                const categoryKey = category.toLowerCase().replace(" ", "_");
+                totalScores[categoryKey] += score;
+                console.log(totalScores[categoryKey]);
+              }
+            }
+          });
+        }
+      });
+
+      // 면접: 각 카테고리별 평가 점수 합계를 계산
+      data2.forEach(item => {
         const { category, evaluation } = item;
         if (evaluation) {
           Object.values(evaluation).forEach(evaluation => {
