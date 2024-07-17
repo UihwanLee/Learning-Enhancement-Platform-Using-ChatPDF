@@ -5,6 +5,8 @@
 
 ![02](https://github.com/UihwanLee/TEST/assets/36596037/9de2b076-2426-4636-9e7e-9a9658f9c7a5)
 
+ [유튜브영상](https://youtu.be/B3WGliptlHU?si=_hpj4mY6gPAMujLJ)
+
 ## 1. 프로젝트 소개
 
 ChatPDF 활용한 학습 증진 플랫폼은 ChatPDF API를 활용하여 웹 서비스에서 운영하는 응용프로그램을 통해 사용자의 학습을 증진해 주는 플랫폼 서비스 입니다.
