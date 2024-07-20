@@ -58,7 +58,7 @@ ChatPDF 활용한 학습 증진 플랫폼은 ChatPDF API를 활용하여 웹 서
 
 ## 7. 서비스 화면
 
-  ![1](https://github.com/user-attachments/assets/52fca17d-2d34-4b35-9fea-90c853473b6a) | !![02](https://github.com/user-attachments/assets/d0003a5b-7ad0-445a-a62d-f4ae4272d3e2)
+  ![1](https://github.com/user-attachments/assets/52fca17d-2d34-4b35-9fea-90c853473b6a) | ![02](https://github.com/user-attachments/assets/d0003a5b-7ad0-445a-a62d-f4ae4272d3e2)
   ---|---|
 
 
