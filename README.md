@@ -58,13 +58,16 @@ ChatPDF 활용한 학습 증진 플랫폼은 ChatPDF API를 활용하여 웹 서
 
 ## 7. 서비스 화면
 
-  ![1](https://github.com/user-attachments/assets/52fca17d-2d34-4b35-9fea-90c853473b6a) !![02](https://github.com/user-attachments/assets/d0003a5b-7ad0-445a-a62d-f4ae4272d3e2)
+  ![1](https://github.com/user-attachments/assets/52fca17d-2d34-4b35-9fea-90c853473b6a) | !![02](https://github.com/user-attachments/assets/d0003a5b-7ad0-445a-a62d-f4ae4272d3e2)
+  ---|---|
 
 
-  ![3](https://github.com/user-attachments/assets/451a3076-5b8a-49d9-9ea8-61a91836f1ce) ![4](https://github.com/user-attachments/assets/2aebfdb2-7d32-4e6f-afa5-7c4f9e49a076)
+  ![3](https://github.com/user-attachments/assets/451a3076-5b8a-49d9-9ea8-61a91836f1ce) | ![4](https://github.com/user-attachments/assets/2aebfdb2-7d32-4e6f-afa5-7c4f9e49a076)
+  ---|---|
 
   
-  ![5](https://github.com/user-attachments/assets/94def4d9-f171-4c98-8fcb-daf68b36b7ed) ![6](https://github.com/user-attachments/assets/e698f93c-0d1a-4b3d-9a82-d13a19941656)
+  ![5](https://github.com/user-attachments/assets/94def4d9-f171-4c98-8fcb-daf68b36b7ed) | ![6](https://github.com/user-attachments/assets/e698f93c-0d1a-4b3d-9a82-d13a19941656)
+  ---|---|
 
 
 ## Members
